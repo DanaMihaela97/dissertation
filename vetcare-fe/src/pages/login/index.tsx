@@ -1,7 +1,6 @@
 import React from 'react';
-import './style.css';
 import Image from 'next/image';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Navbar/Navbar';
 import { ArrowRight, LogIn } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { redirectToGoogleLogin } from '@/services/loginService';

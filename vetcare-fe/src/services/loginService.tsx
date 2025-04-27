@@ -1,11 +1,11 @@
 
-const URL = 'http://localhost:8080';
+const URL = "http://localhost:8060"
 
 // export const redirectToGoogleLogin = () => {
 //   window.location.href = `${URL}/oauth2/authorization/google`;
 // };
 export async function redirectToGoogleLogin() {
-  fetch("http://localhost:8080/api/animals/", {
+  fetch(`${URL}/api/animals/`, {
     method: "GET"
   });
 }

@@ -1,0 +1,256 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  color: #0066cc;
+  margin-bottom: 15px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
+
+p {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+  margin-bottom: 40px;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto 30px;
+}
+
+.cta-button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cta-button:hover {
+  background-color: #0055aa;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.feature-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.how-it-works {
+  padding: 60px 20px;
+  background-color: #f0f7ff;
+  border-radius: 10px;
+  margin-bottom: 60px;
+}
+
+.section-description {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 40px;
+  font-size: 1.1rem;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.step {
+  text-align: center;
+  padding: 20px;
+}
+
+.step-number {
+  background-color: #0066cc;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Final CTA */
+.final-cta {
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .features,
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.login-container {
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.login-card {
+  padding: 3rem 4rem;
+  border-radius: 2xl;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  background: linear-gradient(135deg, #e0faeb, #ffffff);
+}
+
+.login-card h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.login-card p {
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.google-btn {
+  background-color: #fff;
+  color: #444;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.google-btn:hover {
+  background-color: #f5f5f5;
+  border-color: #bbb;
+}
+
+.google-icon {
+  vertical-align: middle;
+}
+
+.arrow-container {
+  display: flex;
+  align-items: center;
+}
+
+.auth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: white;
+  color: #333;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+
+}
+
+.auth-btn:hover {
+  background-color: #f5f5f5;
+  border-color: #bbb;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.auth-btn .arrow {
+  position: absolute;
+  right: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  transform: translateX(-8px);
+  width: 20px;
+  height: 20px;
+}
+
+.auth-btn:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
+
+}

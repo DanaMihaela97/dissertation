@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Navbar from '@/components/Navbar'; 
+import Navbar from '@/components/Navbar/Navbar'; 
 import Link from 'next/link';              
-import Image from 'next/image';        
-import './style.css';  
+import Image from 'next/image';
 import Swal from 'sweetalert2';
 
 export default function ConsultatiiVeterinare() {

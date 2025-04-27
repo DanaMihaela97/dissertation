@@ -3,7 +3,7 @@ import { getDogBreeds, getCatBreeds, getVaccines } from '@/services/animalServic
 import { useRouter } from 'next/router';
 import { CreateAnimalProfile } from '@/components/entities/createAnimalProfile';
 import { Vaccine } from '@/components/entities/vaccines';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/Navbar/Navbar';
 
 const CreateAnimalProfileComponent = () => {
   const [step, setStep] = useState(1);

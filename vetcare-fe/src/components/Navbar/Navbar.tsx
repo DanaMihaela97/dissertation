@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import './style.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from 'next/router';
-import { isLoggedIn, logout } from '@/services/loginService';
+import { logout } from '@/services/loginService';
 
 const Navbar = () => {
 
