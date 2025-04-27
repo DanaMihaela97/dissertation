@@ -1,0 +1,37 @@
+server:
+  port: 7003
+spring:
+  application:
+    name: api-animals
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/disertatie/protocol/openid-connect/certs
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/animal_api
+    username: root
+    password: root
+    jpa:
+      hibernate:
+        ddl-auto: validate
+    flyway:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      enabled: true
+      locations: classpath:db/migration
+      baseline-on-migrate: true
+
+logging.level:
+  org.springframework.cloud.gateway: DEBUG
+  org.springframework.security: DEBUG
+  org.springframework.web.reactive.function.client: TRACE
+
+  # API Keys (external services)
+dog:
+  api:
+    key: live_RbE6Q73mvZcPNpCsClhTZBRg5GpjDSJt0VRWTe1icJb9C7JuFg0qXpBuP8DNA2e6
+
+cat:
+  api:
+    key: live_MaKQgnba218TOUQK3KyY7axysy6benaQ7VnLORJlI8uwUoK1edG5sugvKC9YaYGm

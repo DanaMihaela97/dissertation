@@ -1,0 +1,18 @@
+server:
+    port: 7004
+spring:
+    application:
+        name: api-chat
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    jwk-set-uri: http://localhost:8080/realms/disertatie/protocol/openid-connect/certs
+
+logging.level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web.reactive.function.client: TRACE
+gemini:
+    api:
+        key: AIzaSyB92WxOG-KSTROLlfyeUqNbZRu18D8dbuk
