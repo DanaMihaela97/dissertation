@@ -21,19 +21,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/animals")
 public class AnimalController {
     private final AnimalService animalService;
-    private final VaccineService vaccineService;
     private final AnimalServiceImpl animalServiceImpl;
     private final AnimalVaccineService animalVaccineService;
 
     @Autowired
     public AnimalController(AnimalService animalService, VaccineService vaccineService, AnimalServiceImpl animalServiceImpl, AnimalVaccineService animalVaccineService) {
         this.animalService = animalService;
-        this.vaccineService = vaccineService;
         this.animalServiceImpl = animalServiceImpl;
         this.animalVaccineService = animalVaccineService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<AnimalInfoDto> createAnimal(@RequestBody AnimalCreateDto animalCreateDto) {
         AnimalInfoDto animalInfoDto = animalService.createAnimal(animalCreateDto);
         return ResponseEntity.ok(animalInfoDto);
@@ -45,16 +43,11 @@ public class AnimalController {
         return ResponseEntity.ok(animals);
     }
 
-    @GetMapping("/vaccines")
-    public ResponseEntity<List<Vaccine>> getAllVaccines() {
-        List<Vaccine> vaccines = vaccineService.getVaccines();
-        return ResponseEntity.ok(vaccines);
-    }
     @PostMapping("/{animalId}/vaccines")
     public ResponseEntity<List<AnimalVaccineInfoDto>> addVaccinesToAnimal(@PathVariable Long animalId,
-                                                                          @RequestBody List<AnimalVaccineCreateDto> vaccineCreateDtos, Long vaccineId) {
+                                                                          @RequestBody List<AnimalVaccineCreateDto> vaccineCreateDtos) {
         // Apelăm metoda din serviciu pentru a adăuga vaccinurile la animal
-        List<AnimalVaccineInfoDto> vaccineInfoDtos = animalVaccineService.createAnimalVaccine(animalId, vaccineCreateDtos, vaccineId);
+        List<AnimalVaccineInfoDto> vaccineInfoDtos = animalVaccineService.createAnimalVaccine(animalId, vaccineCreateDtos);
 
         return ResponseEntity.ok(vaccineInfoDtos); // Returnăm lista de vaccinuri adăugate
     }
