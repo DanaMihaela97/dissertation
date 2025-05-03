@@ -1,7 +1,12 @@
 package org.example.apianimals.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class AnimalInfoDto {
     public String animalName;
     public String birthdate;
@@ -11,68 +16,4 @@ public class AnimalInfoDto {
     public String type;
     public String breed;
     public List<AnimalVaccineInfoDto> vaccines;
-
-    public String getAnimalName() {
-        return animalName;
-    }
-
-    public void setAnimalName(String animalName) {
-        this.animalName = animalName;
-    }
-
-    public String getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getWeight() {
-        return weight;
-    }
-
-    public void setWeight(String weight) {
-        this.weight = weight;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getBreed() {
-        return breed;
-    }
-
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
-
-    public List<AnimalVaccineInfoDto> getVaccines() {
-        return vaccines;
-    }
-
-    public void setVaccines(List<AnimalVaccineInfoDto> vaccines) {
-        this.vaccines = vaccines;
-    }
 }

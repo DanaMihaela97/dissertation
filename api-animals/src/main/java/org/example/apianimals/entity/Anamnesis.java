@@ -2,8 +2,12 @@ package org.example.apianimals.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name="anamnesis")
 public class Anamnesis {
     @Id
@@ -15,38 +19,6 @@ public class Anamnesis {
     @JoinColumn(name = "animal_id", nullable = false)
     @JsonBackReference //nu trb serializata
     private Animal animal;
-
-    public Animal getAnimal() {
-        return animal;
-    }
-
-    public void setAnimal(Animal animal) {
-        this.animal = animal;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAnamnesis() {
-        return anamnesis;
-    }
-
-    public void setAnamnesis(String anamnesis) {
-        this.anamnesis = anamnesis;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     @Override
     public String toString() {

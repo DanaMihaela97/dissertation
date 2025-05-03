@@ -1,11 +1,11 @@
 package org.example.apianimals.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Getter
+@Setter
 @Entity
 @Table(name="vaccines")
 public class Vaccine {
@@ -25,45 +25,5 @@ public class Vaccine {
     @Enumerated(EnumType.STRING)
     @Column(name = "animal_type", nullable = false)
     private AnimalType animalType;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAgeWeeks() {
-        return ageWeeks;
-    }
-
-    public void setAgeWeeks(int ageWeeks) {
-        this.ageWeeks = ageWeeks;
-    }
-
-    public String getRapel() {
-        return rapel;
-    }
-
-    public void setRapel(String rapel) {
-        this.rapel = rapel;
-    }
-
-    public AnimalType getAnimalType() {
-        return animalType;
-    }
-
-    public void setAnimalType(AnimalType animalType) {
-        this.animalType = animalType;
-    }
 }
 
