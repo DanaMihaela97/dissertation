@@ -8,7 +8,6 @@ import org.example.apianimals.dto.AnimalVaccineCreateDto;
 import org.example.apianimals.dto.AnimalVaccineInfoDto;
 import org.example.apianimals.entity.Animal;
 import org.example.apianimals.entity.AnimalVaccine;
-import org.example.apianimals.entity.AnimalVaccineId;
 import org.example.apianimals.entity.Vaccine;
 import org.example.apianimals.repository.AnimalRepository;
 import org.example.apianimals.repository.AnimalVaccineRepository;
@@ -22,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,9 +68,18 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     @Override
     public AnimalInfoDto createAnimal(AnimalCreateDto createAnimalDto) {
         Animal animal = AnimalMapper.toEntity(createAnimalDto);
-        animal = animalRepository.save(animal);
-
-
+        animal = animalRepository.save(animal);             // save to generate ID
+        List<AnimalVaccine> animalVaccines = new ArrayList<>();
+        for (AnimalVaccineCreateDto animalVaccineCreateDto : createAnimalDto.vaccines) {
+            AnimalVaccine animalVaccine = new AnimalVaccine();
+            animalVaccine.setDateAdministered(animalVaccineCreateDto.getDateAdministered());
+            animalVaccine.setAnimal(animal);
+            Vaccine vaccine = vaccineRepository.getVaccinesById(animalVaccineCreateDto.getVaccineId());
+            animalVaccine.setVaccine(vaccine);
+            animalVaccines.add(animalVaccineRepository.save(animalVaccine));
+        }
+        animal.setAnimalVaccines(animalVaccines);
+        animal = animalRepository.save(animal);             // save with animal vaccines
         return AnimalMapper.toDto(animal);
     }
 
@@ -86,24 +93,23 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     }
 
     @Override
-    public List<AnimalVaccineInfoDto> createAnimalVaccine(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos, Long vaccineId) {
+    public List<AnimalVaccineInfoDto> createAnimalVaccine(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos) {
         List<AnimalVaccineInfoDto> vaccineInfoDtos = new ArrayList<>();
 
         Animal animal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new RuntimeException("Animal not found"));
 
         for (AnimalVaccineCreateDto vaccineDto : vaccineCreateDtos) {
-            Vaccine vaccine = vaccineRepository.findById(vaccineId)
+            Vaccine vaccine = vaccineRepository.findById(vaccineDto.getVaccineId())
                     .orElseThrow(() -> new RuntimeException("Vaccine not found"));
 
             AnimalVaccine animalVaccine = new AnimalVaccine();
-            AnimalVaccineId id = new AnimalVaccineId(animalId, vaccineDto.getVaccineId(), Date.valueOf(vaccineDto.getDateAdministered()));
-            animalVaccine.setId(id);
             animalVaccine.setAnimal(animal);
             animalVaccine.setVaccine(vaccine);
             animalVaccine.setDateAdministered(vaccineDto.getDateAdministered());
 
             animalVaccineRepository.save(animalVaccine);
+            animalRepository.save(animal);                      // save the vaccines to animal
 
             AnimalVaccineInfoDto result = new AnimalVaccineInfoDto();
             result.setAnimalId(animalVaccine.getAnimal().getId());

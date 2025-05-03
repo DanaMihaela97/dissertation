@@ -6,7 +6,7 @@ import org.example.apianimals.dto.AnimalVaccineInfoDto;
 import java.util.List;
 
 public interface AnimalVaccineService {
-    List<AnimalVaccineInfoDto> createAnimalVaccine(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos, Long vaccineId);
+    List<AnimalVaccineInfoDto> createAnimalVaccine(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos);
     List<AnimalVaccineInfoDto> getAnimalVaccine(Long animalId);
 
 }
