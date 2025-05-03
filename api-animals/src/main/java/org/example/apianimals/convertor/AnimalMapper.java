@@ -4,12 +4,8 @@ import org.example.apianimals.dto.AnimalCreateDto;
 import org.example.apianimals.dto.AnimalInfoDto;
 import org.example.apianimals.dto.AnimalVaccineInfoDto;
 import org.example.apianimals.entity.Animal;
-import org.example.apianimals.entity.AnimalVaccine;
-import org.example.apianimals.entity.AnimalVaccineId;
-import org.example.apianimals.entity.Vaccine;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class AnimalMapper {
@@ -23,29 +19,6 @@ public class AnimalMapper {
         animal.setWeight(dto.weight);
         animal.setType(dto.type);
         animal.setBreed(dto.breed);
-
-        if (dto.vaccines != null) {
-            List<AnimalVaccine> animalVaccines = dto.vaccines.stream()
-                    .map(vaccineDto -> {
-                        AnimalVaccine animalVaccine = new AnimalVaccine();
-
-                        AnimalVaccineId id = new AnimalVaccineId();
-                        id.setVaccineId(vaccineDto.getVaccineId());
-
-                        animalVaccine.setId(id);
-                        animalVaccine.setDateAdministered(vaccineDto.getDateAdministered());
-                        animalVaccine.setAnimal(animal);
-
-                        Vaccine vaccine = new Vaccine();
-                        vaccine.setId(vaccineDto.getVaccineId());
-                        animalVaccine.setVaccine(vaccine);
-
-                        return animalVaccine;
-                    })
-                    .collect(Collectors.toList());
-
-            animal.setAnimalVaccines(animalVaccines);
-        }
         return animal;
     }
 
