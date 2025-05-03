@@ -1,15 +1,14 @@
 import { Vaccine } from '@/components/entities/vaccines';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
 
 const URL = "http://localhost:8060";
-// Funcție pentru a obține rasele de câini
+
 export const getDogBreeds = async (): Promise<string[]> => {
-  const token = localStorage.getItem("jwt"); // Preia tokenul din localStorage
+  const token = localStorage.getItem("jwt"); 
   try {
-    const response = await axios.get(`${URL}/dog-breeds`, {
+    const response = await axios.get(`${URL}/api/animals/dog-breeds`, {
       headers: {
-        Authorization: `Bearer ${token}`  // Adaugă tokenul în antet
+        Authorization: `Bearer ${token}`  
       }
     });
     return response.data;
@@ -19,15 +18,17 @@ export const getDogBreeds = async (): Promise<string[]> => {
   }
 };
 
-// Funcție pentru a obține rasele de pisici
 export const getCatBreeds = async (): Promise<string[]> => {
-  const token = localStorage.getItem("jwt"); // Preia tokenul din localStorage
+  const accessToken = localStorage.getItem("jwt");
   try {
-    const response = await axios.get(`${URL}/cat-breeds`, {
-      headers: {
-        Authorization: `Bearer ${token}`  // Adaugă tokenul în antet
+    const response = await axios.get(`${URL}/api/animals/cat-breeds`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`  
+        }
       }
-    });
+    );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching cat breeds:", error);
@@ -35,14 +36,13 @@ export const getCatBreeds = async (): Promise<string[]> => {
   }
 };
 
-// Funcție pentru a obține vaccinuri
 export const getVaccines = async (): Promise<Vaccine[]> => {
   const accessToken = localStorage.getItem("jwt");
   try {
     const response = await axios.get(`${URL}/api/animals/vaccines`,
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`  // Adaugă tokenul în antet
+          Authorization: `Bearer ${accessToken}`  
         }
       }
     );

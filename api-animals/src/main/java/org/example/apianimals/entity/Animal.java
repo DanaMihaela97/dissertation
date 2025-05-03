@@ -22,14 +22,21 @@ public class Animal {
     private String weight;
     private String type;
     private String breed;
-    private String anamnesis;
-    @ManyToMany
-    @JoinTable(
-            name = "animal_vaccines",
-            joinColumns = @JoinColumn(name = "animal_id"),
-            inverseJoinColumns = @JoinColumn(name = "vaccine_id")
-    )
-    private List<Vaccine> vaccines = new ArrayList<>();
+
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AnimalVaccine> animalVaccines = new ArrayList<>();
+
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    private List<Anamnesis> anamneses = new ArrayList<>();
+
+
+    public List<Anamnesis> getAnamneses() {
+        return anamneses;
+    }
+
+    public void setAnamneses(List<Anamnesis> anamneses) {
+        this.anamneses = anamneses;
+    }
 
     public Long getId() {
         return id;
@@ -95,20 +102,12 @@ public class Animal {
         this.breed = breed;
     }
 
-    public String getAnamnesis() {
-        return anamnesis;
+    public List<AnimalVaccine> getAnimalVaccines() {
+        return animalVaccines;
     }
 
-    public void setAnamnesis(String anamnesis) {
-        this.anamnesis = anamnesis;
-    }
-
-    public List<Vaccine> getVaccines() {
-        return vaccines;
-    }
-
-    public void setVaccines(List<Vaccine> vaccines) {
-        this.vaccines = vaccines;
+    public void setAnimalVaccines(List<AnimalVaccine> animalVaccines) {
+        this.animalVaccines = animalVaccines;
     }
 
     private int calculateAge(String birthDate) {
@@ -131,14 +130,14 @@ public class Animal {
         return "Animal{" +
                 "id=" + id +
                 ", animalName='" + animalName + '\'' +
-                ", birthdate='" + birthdate + '\'' +
+                ", birthdate=" + birthdate +
                 ", sex='" + sex + '\'' +
                 ", age=" + age +
                 ", weight='" + weight + '\'' +
                 ", type='" + type + '\'' +
                 ", breed='" + breed + '\'' +
-                ", anamnesis='" + anamnesis + '\'' +
-                ", vaccines=" + vaccines +
+                ", animalVaccines=" + animalVaccines +
+                ", anamneses=" + anamneses +
                 '}';
     }
 }

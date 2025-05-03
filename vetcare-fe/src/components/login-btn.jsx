@@ -1,6 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react"
 
-export default function LoginIIIIn() {
+export default function Login() {
   const { data: session } = useSession()
   if (session) {
     localStorage.setItem("jwt", session.accessToken);

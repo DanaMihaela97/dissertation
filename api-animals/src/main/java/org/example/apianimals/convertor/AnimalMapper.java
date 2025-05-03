@@ -1,11 +1,11 @@
 package org.example.apianimals.convertor;
 
-
-
 import org.example.apianimals.dto.AnimalCreateDto;
 import org.example.apianimals.dto.AnimalInfoDto;
-import org.example.apianimals.dto.VaccineInfoDto;
+import org.example.apianimals.dto.AnimalVaccineInfoDto;
 import org.example.apianimals.entity.Animal;
+import org.example.apianimals.entity.AnimalVaccine;
+import org.example.apianimals.entity.AnimalVaccineId;
 import org.example.apianimals.entity.Vaccine;
 
 import java.time.LocalDate;
@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AnimalMapper {
+
     public static Animal toEntity(AnimalCreateDto dto) {
         Animal animal = new Animal();
         animal.setAnimalName(dto.animalName);
@@ -22,22 +23,32 @@ public class AnimalMapper {
         animal.setWeight(dto.weight);
         animal.setType(dto.type);
         animal.setBreed(dto.breed);
-        animal.setAnamnesis(dto.anamnesis);
 
         if (dto.vaccines != null) {
-            List<Vaccine> vacc = dto.vaccines.stream()
-                    .map(v -> {
+            List<AnimalVaccine> animalVaccines = dto.vaccines.stream()
+                    .map(vaccineDto -> {
+                        AnimalVaccine animalVaccine = new AnimalVaccine();
+
+                        AnimalVaccineId id = new AnimalVaccineId();
+                        id.setVaccineId(vaccineDto.getVaccineId());
+
+                        animalVaccine.setId(id);
+                        animalVaccine.setDateAdministered(vaccineDto.getDateAdministered());
+                        animalVaccine.setAnimal(animal);
+
                         Vaccine vaccine = new Vaccine();
-                        vaccine.setId(v.id);
-                        return vaccine;
+                        vaccine.setId(vaccineDto.getVaccineId());
+                        animalVaccine.setVaccine(vaccine);
+
+                        return animalVaccine;
                     })
                     .collect(Collectors.toList());
 
-            animal.setVaccines(vacc);
+            animal.setAnimalVaccines(animalVaccines);
         }
-
         return animal;
     }
+
     public static AnimalInfoDto toDto(Animal animal) {
         AnimalInfoDto dto = new AnimalInfoDto();
         dto.animalName = animal.getAnimalName();
@@ -47,19 +58,19 @@ public class AnimalMapper {
         dto.weight = animal.getWeight();
         dto.type = animal.getType();
         dto.breed = animal.getBreed();
-        dto.anamnesis = animal.getAnamnesis();
 
-        if (animal.getVaccines() != null) {
-            dto.vaccines = animal.getVaccines().stream()
-                    .map(v -> {
-                        VaccineInfoDto vaccineDto = new VaccineInfoDto();
-                        vaccineDto.id = v.getId();
-                        return vaccineDto;
+        if (animal.getAnimalVaccines() != null) {
+            dto.vaccines = animal.getAnimalVaccines().stream()
+                    .map(animalVaccine -> {
+                        AnimalVaccineInfoDto animalVaccineInfoDto = new AnimalVaccineInfoDto();
+                        animalVaccineInfoDto.setVaccineId(animalVaccine.getVaccine().getId());
+                        animalVaccineInfoDto.setAnimalId(animal.getId());
+                        animalVaccineInfoDto.setDateAdministered(animalVaccine.getDateAdministered());
+
+                        return animalVaccineInfoDto;
                     })
                     .collect(Collectors.toList());
         }
-
         return dto;
     }
-
 }

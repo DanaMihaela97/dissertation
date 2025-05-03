@@ -1,57 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useRouter } from 'next/router';
-import { logout } from '@/services/loginService';
+import { useSession, signOut } from 'next-auth/react';  // Importă hook-ul useSession
 
 const Navbar = () => {
-
-    const [loggedIn, setLoggedIn] = useState(false);
-    const router = useRouter();
-
+    const { data: session } = useSession(); // Obține sesiunea
     const [isOpenAnimal, setIsOpenAnimal] = useState(false);
     const dropdownRef = useRef<HTMLLIElement | null>(null);
+
     const toggleAnimalDropdown = () => {
         setIsOpenAnimal(prev => !prev);
     };
+
     const handleClickOutside = (event: MouseEvent) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
             setIsOpenAnimal(false);
         }
     };
+
     useEffect(() => {
         document.addEventListener('click', handleClickOutside);
-
         return () => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
 
-    useEffect(() => {
-        const jwt = localStorage.getItem('jwt');
-        if (jwt) {
-
-            setLoggedIn(true);
-
-        } else {
-            setLoggedIn(false);
-            localStorage.removeItem('jwt')
-        }
-    }, []);
-
-    useEffect(() => {
-        const handleStorageChange = () => {
-            const jwt = localStorage.getItem('jwt');
-            setLoggedIn(!!jwt);
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-
-        return () => {
-            window.removeEventListener('storage', handleStorageChange);
-        };
-    }, []);
-
+    const handleLogout = () => {
+        signOut({ callbackUrl: '/' }); // Deconectează utilizatorul și redirecționează-l la home
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-md">
@@ -81,7 +57,7 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item dropdown" ref={dropdownRef}>
-                            {loggedIn ? (
+                            {session ? ( 
                                 <>
                                     <button
                                         onClick={toggleAnimalDropdown}
@@ -108,12 +84,10 @@ const Navbar = () => {
                                 </>
                             ) : null}
                         </li>
-
-
                     </ul>
 
                     <ul className="navbar-nav ms-auto">
-                        {!loggedIn ? (
+                        {!session ? ( // Dacă nu există sesiune, arată butonul de login
                             <li className="nav-item">
                                 <a className="nav-link btn btn-dark" href="/login">
                                     Autentificare
@@ -121,7 +95,7 @@ const Navbar = () => {
                             </li>
                         ) : (
                             <li className="nav-item">
-                                <button className="nav-link btn " onClick={logout}>
+                                <button className="nav-link btn" onClick={handleLogout}>
                                     Logout
                                 </button>
                             </li>

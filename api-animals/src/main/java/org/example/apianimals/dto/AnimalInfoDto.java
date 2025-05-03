@@ -10,6 +10,69 @@ public class AnimalInfoDto {
     public String weight;
     public String type;
     public String breed;
-    public String anamnesis;
-    public List<VaccineInfoDto> vaccines; // Modificat din VaccineCreateDto în VaccineInfoDto
+    public List<AnimalVaccineInfoDto> vaccines;
+
+    public String getAnimalName() {
+        return animalName;
+    }
+
+    public void setAnimalName(String animalName) {
+        this.animalName = animalName;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public List<AnimalVaccineInfoDto> getVaccines() {
+        return vaccines;
+    }
+
+    public void setVaccines(List<AnimalVaccineInfoDto> vaccines) {
+        this.vaccines = vaccines;
+    }
 }

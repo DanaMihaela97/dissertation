@@ -1,5 +1,6 @@
 package org.example.apianimals.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -24,17 +25,6 @@ public class Vaccine {
     @Enumerated(EnumType.STRING)
     @Column(name = "animal_type", nullable = false)
     private AnimalType animalType;
-
-    @ManyToMany(mappedBy = "vaccines")
-    private List<Animal> animals = new ArrayList<>();
-
-    public List<Animal> getAnimals() {
-        return animals;
-    }
-
-    public void setAnimals(List<Animal> animals) {
-        this.animals = animals;
-    }
 
     public Long getId() {
         return id;
