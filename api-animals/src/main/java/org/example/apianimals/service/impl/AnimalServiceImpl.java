@@ -70,13 +70,15 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
         Animal animal = AnimalMapper.toEntity(createAnimalDto);
         animal = animalRepository.save(animal);             // save to generate ID
         List<AnimalVaccine> animalVaccines = new ArrayList<>();
-        for (AnimalVaccineCreateDto animalVaccineCreateDto : createAnimalDto.vaccines) {
-            AnimalVaccine animalVaccine = new AnimalVaccine();
-            animalVaccine.setDateAdministered(animalVaccineCreateDto.getDateAdministered());
-            animalVaccine.setAnimal(animal);
-            Vaccine vaccine = vaccineRepository.getVaccinesById(animalVaccineCreateDto.getVaccineId());
-            animalVaccine.setVaccine(vaccine);
-            animalVaccines.add(animalVaccineRepository.save(animalVaccine));
+        if (createAnimalDto.getVaccines() != null) {
+            for (AnimalVaccineCreateDto animalVaccineCreateDto : createAnimalDto.vaccines) {
+                AnimalVaccine animalVaccine = new AnimalVaccine();
+                animalVaccine.setDateAdministered(animalVaccineCreateDto.getDateAdministered());
+                animalVaccine.setAnimal(animal);
+                Vaccine vaccine = vaccineRepository.getVaccinesById(animalVaccineCreateDto.getVaccineId());
+                animalVaccine.setVaccine(vaccine);
+                animalVaccines.add(animalVaccineRepository.save(animalVaccine));
+            }
         }
         animal.setAnimalVaccines(animalVaccines);
         animal = animalRepository.save(animal);             // save with animal vaccines
