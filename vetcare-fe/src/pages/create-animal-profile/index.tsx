@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getDogBreeds, getCatBreeds, getVaccines } from '@/services/animalService';
+import { getDogBreeds, getCatBreeds, getVaccines, createAnimal, createAnimalVaccines } from '@/services/animalService';
 import { useRouter } from 'next/router';
 import { CreateAnimalProfile } from '@/components/entities/createAnimalProfile';
 import { Vaccine } from '@/components/entities/vaccines';
@@ -108,15 +108,54 @@ const CreateAnimalProfileComponent = () => {
       [name]: value
     }));
   };
-  const handleSubmit = () => {
-    Swal.fire({
-      title: 'Profil creat!',
-      text: `Profilul lui ${formData.animalName} a fost creat!`,
-      icon: 'success',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#3085d6'
-    });
+  const handleSubmit = async () => {
+    try {
+      const animalPayload = {
+        animalName: formData.animalName,
+        birthdate: formData.birthdate,
+        sex: formData.sex,
+        age: formData.age,
+        weight: formData.weight,
+        type: formData.type,
+        breed: formData.breed,
+      };
+  
+      const createdAnimal = await createAnimal(animalPayload);
+      const animalId = createdAnimal.id;
+  
+      const selectedVaccines = Object.entries(formData.vaccineDates)
+        .filter(([_, date]) => date !== "")
+        .map(([vaccineName, date]) => {
+          const vaccine = vaccines.find((v) => v.name === vaccineName);
+          return {
+            animalId,
+            vaccineId: vaccine?.id,
+            dateAdministered: date
+          };
+        });
+  
+      if (selectedVaccines.length > 0) {
+        await createAnimalVaccines(animalId, selectedVaccines);
+      }
+  
+      Swal.fire({
+        title: 'Profil creat!',
+        text: `Profilul lui ${formData.animalName} a fost creat!`,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6'
+      }) 
+    } catch (error) {
+      console.error('Eroare la trimiterea formularului:', error);
+      Swal.fire({
+        title: 'Eroare!',
+        text: 'A apărut o eroare la salvarea datelor.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
   };
+  
   return (
     <>
       <Navbar />
@@ -199,7 +238,7 @@ const CreateAnimalProfileComponent = () => {
                   value={formData.type}
                   onChange={(e) => handleSelectChange("type", e.target.value)}
                 >
-                  <option value="">Alege</option> {/* Adăugăm opțiunea goală pentru "Alege" */}
+                  <option value="">Alege</option> 
                   <option value="Câine">Câine</option>
                   <option value="Pisică">Pisică</option>
                 </select>

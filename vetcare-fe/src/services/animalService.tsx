@@ -1,55 +1,40 @@
+import { CreateAnimalProfile } from '@/components/entities/createAnimalProfile';
 import { Vaccine } from '@/components/entities/vaccines';
 import axios from 'axios';
 
 const URL = "http://localhost:8060";
+const getAuthHeaders = () => ({
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("jwt")}`
+  }
+});
+
+export const createAnimal = async (animal: any): Promise<any> => {
+  const response = await axios.post(`${URL}/api/animals/`, animal, getAuthHeaders());
+  return response.data;
+};
+
+export const createAnimalVaccines = async (animalId: number, vaccines: any[]): Promise<any> => {
+  if (!vaccines || vaccines.length === 0) return; 
+  const response = await axios.post(`${URL}/api/animals/${animalId}/vaccines`, vaccines, getAuthHeaders());
+  return response.data;
+};
+export const getAllAnimals = async (): Promise<CreateAnimalProfile[]> => {
+  const response = await axios.get(`${URL}/api/animals/`, getAuthHeaders());
+  return response.data;
+};
 
 export const getDogBreeds = async (): Promise<string[]> => {
-  const token = localStorage.getItem("jwt"); 
-  try {
-    const response = await axios.get(`${URL}/api/animals/dog-breeds`, {
-      headers: {
-        Authorization: `Bearer ${token}`  
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching dog breeds:", error);
-    throw error;
-  }
+  const response = await axios.get(`${URL}/api/animals/dog-breeds`, getAuthHeaders());
+  return response.data;
 };
 
 export const getCatBreeds = async (): Promise<string[]> => {
-  const accessToken = localStorage.getItem("jwt");
-  try {
-    const response = await axios.get(`${URL}/api/animals/cat-breeds`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`  
-        }
-      }
-    );
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching cat breeds:", error);
-    throw error;
-  }
+  const response = await axios.get(`${URL}/api/animals/cat-breeds`, getAuthHeaders());
+  return response.data;
 };
 
 export const getVaccines = async (): Promise<Vaccine[]> => {
-  const accessToken = localStorage.getItem("jwt");
-  try {
-    const response = await axios.get(`${URL}/api/animals/vaccines`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`  
-        }
-      }
-    );
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching vaccines:", error);
-    throw error;
-  }
-};
+    const response = await axios.get(`${URL}/api/vaccines/`, getAuthHeaders());
+  return response.data;
+}

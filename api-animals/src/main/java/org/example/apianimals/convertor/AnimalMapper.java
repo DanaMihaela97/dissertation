@@ -24,6 +24,7 @@ public class AnimalMapper {
 
     public static AnimalInfoDto toDto(Animal animal) {
         AnimalInfoDto dto = new AnimalInfoDto();
+        dto.id=animal.getId();
         dto.animalName = animal.getAnimalName();
         dto.birthdate = String.valueOf(animal.getBirthdate());
         dto.sex = animal.getSex();

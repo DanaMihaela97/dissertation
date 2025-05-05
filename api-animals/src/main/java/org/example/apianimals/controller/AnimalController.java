@@ -12,10 +12,7 @@ import org.example.apianimals.service.impl.AnimalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @RestController
 @RequestMapping("/api/animals")
@@ -25,7 +22,7 @@ public class AnimalController {
     private final AnimalVaccineService animalVaccineService;
 
     @Autowired
-    public AnimalController(AnimalService animalService, VaccineService vaccineService, AnimalServiceImpl animalServiceImpl, AnimalVaccineService animalVaccineService) {
+    public AnimalController(AnimalService animalService, AnimalServiceImpl animalServiceImpl, AnimalVaccineService animalVaccineService) {
         this.animalService = animalService;
         this.animalServiceImpl = animalServiceImpl;
         this.animalVaccineService = animalVaccineService;
@@ -46,14 +43,12 @@ public class AnimalController {
     @PostMapping("/{animalId}/vaccines")
     public ResponseEntity<List<AnimalVaccineInfoDto>> addVaccinesToAnimal(@PathVariable Long animalId,
                                                                           @RequestBody List<AnimalVaccineCreateDto> vaccineCreateDtos) {
-        // Apelăm metoda din serviciu pentru a adăuga vaccinurile la animal
+
         List<AnimalVaccineInfoDto> vaccineInfoDtos = animalVaccineService.createAnimalVaccine(animalId, vaccineCreateDtos);
 
-        return ResponseEntity.ok(vaccineInfoDtos); // Returnăm lista de vaccinuri adăugate
+        return ResponseEntity.ok(vaccineInfoDtos);
     }
 
-
-    // Endpoint pentru obținerea vaccinurilor asociate unui animal
     @GetMapping("/{animalId}/vaccines")
     public ResponseEntity<List<AnimalVaccineInfoDto>> getVaccinesForAnimal(@PathVariable Long animalId) {
         List<AnimalVaccineInfoDto> vaccineDtos = animalVaccineService.getAnimalVaccine(animalId);

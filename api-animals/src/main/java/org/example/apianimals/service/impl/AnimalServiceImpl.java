@@ -68,7 +68,7 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     @Override
     public AnimalInfoDto createAnimal(AnimalCreateDto createAnimalDto) {
         Animal animal = AnimalMapper.toEntity(createAnimalDto);
-        animal = animalRepository.save(animal);             // save to generate ID
+        animal = animalRepository.save(animal);
         List<AnimalVaccine> animalVaccines = new ArrayList<>();
         if (createAnimalDto.getVaccines() != null) {
             for (AnimalVaccineCreateDto animalVaccineCreateDto : createAnimalDto.vaccines) {
@@ -81,7 +81,7 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
             }
         }
         animal.setAnimalVaccines(animalVaccines);
-        animal = animalRepository.save(animal);             // save with animal vaccines
+        animal = animalRepository.save(animal);
         return AnimalMapper.toDto(animal);
     }
 
@@ -111,7 +111,7 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
             animalVaccine.setDateAdministered(vaccineDto.getDateAdministered());
 
             animalVaccineRepository.save(animalVaccine);
-            animalRepository.save(animal);                      // save the vaccines to animal
+            animalRepository.save(animal);
 
             AnimalVaccineInfoDto result = new AnimalVaccineInfoDto();
             result.setAnimalId(animalVaccine.getAnimal().getId());

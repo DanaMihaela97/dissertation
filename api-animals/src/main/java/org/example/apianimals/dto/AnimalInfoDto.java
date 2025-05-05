@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class AnimalInfoDto {
+    public Long id;
     public String animalName;
     public String birthdate;
     public String sex;
