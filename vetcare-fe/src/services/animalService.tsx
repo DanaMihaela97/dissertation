@@ -1,22 +1,33 @@
-import { CreateAnimalProfile } from '@/components/entities/createAnimalProfile';
-import { Vaccine } from '@/components/entities/vaccines';
-import axios from 'axios';
+import { CreateAnimalProfile } from "@/components/entities/createAnimalProfile";
+import { Vaccine } from "@/components/entities/vaccines";
+import axios from "axios";
 
 const URL = "http://localhost:8060";
 const getAuthHeaders = () => ({
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("jwt")}`
-  }
+    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+  },
 });
 
-export const createAnimal = async (animal: any): Promise<any> => {
-  const response = await axios.post(`${URL}/api/animals/`, animal, getAuthHeaders());
+export const createAnimal = async (animal: unknown): Promise<unknown> => {
+  const response = await axios.post(
+    `${URL}/api/animals/`,
+    animal,
+    getAuthHeaders()
+  );
   return response.data;
 };
 
-export const createAnimalVaccines = async (animalId: number, vaccines: any[]): Promise<any> => {
-  if (!vaccines || vaccines.length === 0) return; 
-  const response = await axios.post(`${URL}/api/animals/${animalId}/vaccines`, vaccines, getAuthHeaders());
+export const createAnimalVaccines = async (
+  animalId: number,
+  vaccines: unknown[]
+): Promise<unknown> => {
+  if (!vaccines || vaccines.length === 0) return;
+  const response = await axios.post(
+    `${URL}/api/animals/${animalId}/vaccines`,
+    vaccines,
+    getAuthHeaders()
+  );
   return response.data;
 };
 export const getAllAnimals = async (): Promise<CreateAnimalProfile[]> => {
@@ -25,16 +36,22 @@ export const getAllAnimals = async (): Promise<CreateAnimalProfile[]> => {
 };
 
 export const getDogBreeds = async (): Promise<string[]> => {
-  const response = await axios.get(`${URL}/api/animals/dog-breeds`, getAuthHeaders());
+  const response = await axios.get(
+    `${URL}/api/animals/dog-breeds`,
+    getAuthHeaders()
+  );
   return response.data;
 };
 
 export const getCatBreeds = async (): Promise<string[]> => {
-  const response = await axios.get(`${URL}/api/animals/cat-breeds`, getAuthHeaders());
+  const response = await axios.get(
+    `${URL}/api/animals/cat-breeds`,
+    getAuthHeaders()
+  );
   return response.data;
 };
 
 export const getVaccines = async (): Promise<Vaccine[]> => {
-    const response = await axios.get(`${URL}/api/vaccines/`, getAuthHeaders());
+  const response = await axios.get(`${URL}/api/vaccines/`, getAuthHeaders());
   return response.data;
-}
+};

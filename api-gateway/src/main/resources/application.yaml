@@ -18,19 +18,23 @@ spring:
               - PUT
               - TRACE
             allowedHeaders:
-              - "*"   # <-- foarte important să accepți toate headerele, altfel tot o să crape
-            allowCredentials: true # <-- dacă folosești cookie-uri/sesiuni
+              - "*"
+            allowCredentials: true
       default-filters:
         - TokenRelay=
       routes:
         - id: api-animals
-          uri: http://localhost:7003/api
+          uri: http://localhost:7003
           predicates:
-            - Path=/api/animals/**,/api/vaccines/**
+            - Path=/api/animals/**
         - id: api-chat
           uri: http://localhost:7004
           predicates:
             - Path=/api/chat/**
+        - id: api-anamnesis
+          uri: http://localhost:7005
+          predicates:
+            - Path=/api/anamnesis/**
   security.oauth2:
     resourceserver:
       jwt:
@@ -43,23 +47,23 @@ spring:
         keycloak:
           provider: keycloak
           client-id: gateway-client
-          client-secret: J5amjWWXmWQZ10fAxfiOFR0xVCwlOQD4
+          client-secret: KFKY61wexbJmQbOnXHyDtQ4tod8Uw33t
           authorization-grant-type: authorization_code
           scope: openid
 
   datasource:
     url: jdbc:mysql://localhost:3306/login
     username: root
-    password: root
+    password: dana
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 10
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate.dialect: org.hibernate.dialect.MySQLDialect
-    show-sql: true
+    jpa:
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate.dialect: org.hibernate.dialect.MySQLDialect
+      show-sql: true
 
 logging.level:
   org.springframework.cloud.gateway: DEBUG

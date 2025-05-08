@@ -10,11 +10,13 @@
         <module name="api-gateway" />
         <module name="api-chat" />
         <module name="api-animals" />
+        <module name="api-anamnesis" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-anamnesis" options="-parameters" />
       <module name="api-animals" options="-parameters" />
       <module name="api-chat" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
