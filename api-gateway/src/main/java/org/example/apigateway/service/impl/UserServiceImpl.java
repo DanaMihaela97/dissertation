@@ -1,14 +1,31 @@
 package org.example.apigateway.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.apigateway.dto.RegisterRequest;
 import org.example.apigateway.entity.User;
 import org.example.apigateway.repository.UserRepository;
 import org.example.apigateway.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RestTemplate restTemplate = new RestTemplate();
+
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -17,18 +34,97 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(String email) {
-        User existingUser = userRepository.findByEmail(email);
-        if (existingUser == null) {
-            User user = new User(email);
-            System.out.println("Saving new user with email: " + email);
-            return userRepository.save(user);
-        }
-        System.out.println("User with email " + email + " already exists.");
-        return existingUser;
+        User user = new User();
+        user.setEmail(email);
+        return userRepository.save(user);
     }
 
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public ResponseEntity<String> registerUser(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("email deja folosit");
+        }
+
+        try {
+            String token = getAdminToken();
+
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("username", request.getEmail());
+            payload.put("email", request.getEmail());
+            payload.put("enabled", true);
+
+            Map<String, Object> credentials = new HashMap<>();
+            credentials.put("type", "password");
+            credentials.put("value", request.getPassword());
+            credentials.put("temporary", false);
+            payload.put("credentials", List.of(credentials));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(token);
+
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
+
+            ResponseEntity<String> response = restTemplate.postForEntity(
+                    "http://localhost:8080/admin/realms/disertatie/users",
+                    entity,
+                    String.class
+            );
+
+            if (response.getStatusCode() == HttpStatus.CREATED) {
+                User user = new User();
+                user.setEmail(request.getEmail());
+                user.setPassword(request.getPassword());
+                userRepository.save(user);
+
+                return ResponseEntity.ok("user ul a fost creat");
+            } else {
+                return ResponseEntity.status(response.getStatusCode())
+                        .body("eroare: " + response.getBody());
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+
+    private String getAdminToken() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
+        data.add("grant_type", "password");
+        data.add("client_id", "admin-cli");
+        data.add("username", "admin");
+        data.add("password", "admin");
+
+        HttpEntity<?> request = new HttpEntity<>(data, headers);
+
+        ResponseEntity <String> response = restTemplate.postForEntity(
+                "http://localhost:8080/realms/master/protocol/openid-connect/token",
+                request,
+                String.class
+
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode root = null;
+            try {
+                root = objectMapper.readTree(String.valueOf(response.getBody()));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            String token = root.path("access_token").asText();
+            System.out.println(token);
+            return token;
+        }
+
+        throw new RuntimeException("eroare obtinere token");
     }
 }

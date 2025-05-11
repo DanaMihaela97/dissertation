@@ -47,6 +47,7 @@ spring:
           authorization-grant-type: authorization_code
           scope: openid
 
+
   datasource:
     url: jdbc:mysql://localhost:3306/login
     username: root
@@ -60,7 +61,13 @@ spring:
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
-
+keycloak:
+  url: http://localhost:8080
+  realm: disertatie
+  admin:
+    username: admin
+    password: admin
+    client-id: admin-cli
 logging.level:
   org.springframework.cloud.gateway: DEBUG
   org.springframework.security: DEBUG
