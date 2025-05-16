@@ -18,7 +18,7 @@ spring:
               - PUT
               - TRACE
             allowedHeaders:
-              - "*"   # <-- foarte important să accepți toate headerele, altfel tot o să crape
+              - "*"
             allowCredentials: true # <-- dacă folosești cookie-uri/sesiuni
       default-filters:
         - TokenRelay=

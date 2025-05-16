@@ -19,8 +19,11 @@ public class Vaccine {
     @Column(name = "age_weeks", nullable = false)
     private int ageWeeks;
 
-    @Column(name = "rapel", nullable = false)
-    private String rapel;
+    @Column(name = "rapel_days", nullable = false)
+    private String rapel_days;
+
+    @Column(name = "revaccination_interval", nullable = false)
+    private String revaccinationInterval;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "animal_type", nullable = false)

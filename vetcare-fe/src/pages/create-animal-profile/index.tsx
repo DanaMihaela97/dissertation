@@ -3,7 +3,7 @@ import { getDogBreeds, getCatBreeds, getVaccines, createAnimal, createAnimalVacc
 import { useRouter } from 'next/router';
 import { CreateAnimalProfile } from '@/components/entities/createAnimalProfile';
 import { Vaccine } from '@/components/entities/vaccines';
-import Navbar from '@/components/Navbar/Navbar';
+import Navbar from '@/components/Navbar';
 import styles from './animal.profile.module.css'; // Importă stilurile
 import { PawPrint, Syringe } from 'lucide-react';
 import Swal from 'sweetalert2';

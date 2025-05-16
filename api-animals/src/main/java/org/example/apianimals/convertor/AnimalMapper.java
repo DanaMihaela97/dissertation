@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class AnimalMapper {
 
-    public static Animal toEntity(AnimalCreateDto dto) {
+    public static Animal toEntity(AnimalCreateDto dto, String email) {
         Animal animal = new Animal();
         animal.setAnimalName(dto.animalName);
         animal.setBirthdate(LocalDate.parse(dto.birthdate));
@@ -19,6 +19,7 @@ public class AnimalMapper {
         animal.setWeight(dto.weight);
         animal.setType(dto.type);
         animal.setBreed(dto.breed);
+        animal.setEmail(email);
         return animal;
     }
 

@@ -1,0 +1,95 @@
+import React, { useState } from "react";
+import Swal from "sweetalert2";
+import Navbar from "@/components/Navbar";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { register } from "@/services/registerService";
+import styles from './Register.module.css';
+
+const RegisterPage = () => {
+    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError("");
+
+        if (!email || !password) {
+            setError("Email și parola sunt obligatorii!");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const account = { email, password };
+            const response = await register(account);
+            Swal.fire({
+                title: "Înregistrare reușită!",
+                text: "Te poți loga acum.",
+                icon: "success",
+                confirmButtonText: "OK",
+            }).then(() => {
+                router.push("/login");
+            });
+
+            setEmail("");
+            setPassword("");
+        } catch (err) {
+            Swal.fire({
+                title: "Eroare",
+                text: "A apărut o eroare la înregistrare. Încearcă din nou.",
+                icon: "error",
+                confirmButtonText: "OK",
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <>
+            <Navbar />
+            <div className={styles.registerContainer}>
+                <div className={styles.registerForm}>
+                    <h2 className={styles.registerHeading}>Înregistrare</h2>
+                    <form className={styles.form} onSubmit={handleSubmit}>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="email">Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="password">Parola</label>
+                            <input
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <button type="submit" disabled={loading} className={styles.submitButton}>
+                            Înregistrează-te
+                        </button>
+                    </form>
+
+                    {error && <p className={styles.error}>{error}</p>}
+                </div>
+            </div>
+        </>
+    );
+};
+
+export default RegisterPage;

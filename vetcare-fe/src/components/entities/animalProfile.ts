@@ -1,7 +1,7 @@
 import { AnimalVaccine } from "./animalVaccine";
 
-export interface CreateAnimalProfile {
-  id: number,
+export interface AnimalProfile {
+    id: number;
     animalName: string;
     birthdate: string;
     sex: string;
@@ -9,6 +9,5 @@ export interface CreateAnimalProfile {
     weight: string;
     type: string;
     breed: string;
-    vaccineDates: Record<string, string>; 
-    vaccines: AnimalVaccine[];
+    vaccines: AnimalVaccine[]
   }

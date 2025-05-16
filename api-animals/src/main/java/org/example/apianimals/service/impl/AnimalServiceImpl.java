@@ -1,5 +1,6 @@
 package org.example.apianimals.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.example.apianimals.convertor.AnimalMapper;
 import org.example.apianimals.dto.AnimalCreateDto;
@@ -66,9 +67,11 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     }
 
     @Override
-    public AnimalInfoDto createAnimal(AnimalCreateDto createAnimalDto) {
-        Animal animal = AnimalMapper.toEntity(createAnimalDto);
+    public AnimalInfoDto createAnimal(AnimalCreateDto createAnimalDto, String email) {
+        Animal animal = AnimalMapper.toEntity(createAnimalDto, email);
+        animal.setEmail(email);
         animal = animalRepository.save(animal);
+
         List<AnimalVaccine> animalVaccines = new ArrayList<>();
         if (createAnimalDto.getVaccines() != null) {
             for (AnimalVaccineCreateDto animalVaccineCreateDto : createAnimalDto.vaccines) {
@@ -80,19 +83,30 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
                 animalVaccines.add(animalVaccineRepository.save(animalVaccine));
             }
         }
+
         animal.setAnimalVaccines(animalVaccines);
         animal = animalRepository.save(animal);
+
         return AnimalMapper.toDto(animal);
     }
 
     @Override
-    public List<AnimalInfoDto> getAnimals() {
-        List<Animal> animals = animalRepository.findAll();
+    public List<AnimalInfoDto> getAnimals(String email) {
+        List<Animal> animals = animalRepository.findAnimalsByEmail(email);
 
         return animals.stream()
                 .map(AnimalMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public AnimalInfoDto getAnimalById(Long id) {
+        Animal animal = animalRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Animal not found with id: " + id));
+
+        return AnimalMapper.toDto(animal);
+    }
+
 
     @Override
     public List<AnimalVaccineInfoDto> createAnimalVaccine(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos) {

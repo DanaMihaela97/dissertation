@@ -6,14 +6,16 @@ CREATE TABLE animal (
                         age INT,
                         weight VARCHAR(255),
                         type VARCHAR(255),
-                        breed VARCHAR(255)
+                        breed VARCHAR(255),
+                        email VARCHAR(255)
 );
 
 CREATE TABLE vaccines (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         name VARCHAR(255) NOT NULL,
                         age_weeks INT NOT NULL,
-                        rapel VARCHAR(255) NOT NULL,
+                        rapel_days VARCHAR(255) NOT NULL,
+                        revaccination_interval VARCHAR(255) NOT NULL,
                         animal_type VARCHAR(255) NOT NULL
 );
 

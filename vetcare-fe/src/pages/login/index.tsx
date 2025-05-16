@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { ArrowRight, LogIn } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Navbar from '@/components/Navbar/Navbar';
+import Navbar from '@/components/Navbar';
 import { signIn, useSession } from 'next-auth/react';
+import axios from 'axios';
 
 const LoginPage = () => {
   const { data: session } = useSession();
+  useEffect(() => {
+    const setCookie = async () => {
+      if (session?.accessToken) {
+        await axios.get('/api/set-cookie');
+        console.log('JWT cookie set successfully');
+      }
+    };
 
+    setCookie();
+  }, [session]);
   if (session) {
     if (typeof window !== 'undefined') {
       localStorage.setItem("jwt", session.accessToken as string);
@@ -28,7 +38,7 @@ const LoginPage = () => {
 
           <motion.button onClick={() => signIn()} className="auth-btn">
             <Image src="/google-icon.svg" alt="Google icon" width={20} height={20} className="w-5 h-5" />
-            <span style={{ marginRight: "10px" }}>Autentifică-te cu Google</span>
+            <span style={{ marginRight: "10px" } }>Autentifică-te cu Google</span>
             <ArrowRight className="w-2 h-2 arrow" />
           </motion.button>
         </div>

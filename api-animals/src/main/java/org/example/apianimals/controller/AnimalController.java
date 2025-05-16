@@ -4,14 +4,18 @@ import org.example.apianimals.dto.AnimalCreateDto;
 import org.example.apianimals.dto.AnimalInfoDto;
 import org.example.apianimals.dto.AnimalVaccineCreateDto;
 import org.example.apianimals.dto.AnimalVaccineInfoDto;
-import org.example.apianimals.entity.Vaccine;
 import org.example.apianimals.service.AnimalService;
 import org.example.apianimals.service.AnimalVaccineService;
-import org.example.apianimals.service.VaccineService;
 import org.example.apianimals.service.impl.AnimalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,17 +33,33 @@ public class AnimalController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<AnimalInfoDto> createAnimal(@RequestBody AnimalCreateDto animalCreateDto) {
-        AnimalInfoDto animalInfoDto = animalService.createAnimal(animalCreateDto);
-        return ResponseEntity.ok(animalInfoDto);
+    public ResponseEntity<AnimalInfoDto> createAnimal(@RequestBody AnimalCreateDto createAnimalDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = null;
+        if (authentication != null && authentication.getCredentials() instanceof Jwt jwt) {
+            email = jwt.getClaimAsString("email");
+        }
+
+        AnimalInfoDto createdAnimal = animalService.createAnimal(createAnimalDto, email);
+        return ResponseEntity.ok(createdAnimal);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<AnimalInfoDto>> getAllAnimals() {
-        List<AnimalInfoDto> animals = animalService.getAnimals();
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        List<AnimalInfoDto> animals = new ArrayList<>();
+        if (authentication != null && authentication.getCredentials() instanceof Jwt jwt) {
+            String email = jwt.getClaimAsString("email");
+            animals = animalService.getAnimals(email);
+        }
         return ResponseEntity.ok(animals);
     }
 
+    @GetMapping("/{animalId}")
+    public ResponseEntity<AnimalInfoDto> getAnimalById(@PathVariable Long animalId) {
+        return ResponseEntity.ok(animalService.getAnimalById(animalId));
+    }
     @PostMapping("/{animalId}/vaccines")
     public ResponseEntity<List<AnimalVaccineInfoDto>> addVaccinesToAnimal(@PathVariable Long animalId,
                                                                           @RequestBody List<AnimalVaccineCreateDto> vaccineCreateDtos) {

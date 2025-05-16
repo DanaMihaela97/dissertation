@@ -6,7 +6,8 @@ import org.example.apianimals.dto.AnimalInfoDto;
 import java.util.List;
 
 public interface AnimalService {
-    AnimalInfoDto createAnimal(AnimalCreateDto createAnimalDto);
-    List<AnimalInfoDto> getAnimals();
+    AnimalInfoDto createAnimal(AnimalCreateDto createAnimalDto, String email);
+    List<AnimalInfoDto> getAnimals(String email);
+    AnimalInfoDto getAnimalById(Long id);
 
 }

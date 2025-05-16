@@ -1,7 +1,8 @@
 export interface Vaccine {
     id: number;
     name: string;
-    rapel:string,
+    rapel_days:number,
+    revaccination_interval: string,
     ageWeeks:string,
     
   }

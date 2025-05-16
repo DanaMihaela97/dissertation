@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useSession, signOut } from 'next-auth/react';  // Importă hook-ul useSession
+import { useSession, signOut, signIn } from 'next-auth/react';
+import styles from './Navbar.module.css';
+import { login } from '@/services/loginService';
 
 const Navbar = () => {
-    const { data: session } = useSession(); // Obține sesiunea
+    const { data: session } = useSession();
     const [isOpenAnimal, setIsOpenAnimal] = useState(false);
     const dropdownRef = useRef<HTMLLIElement | null>(null);
 
@@ -26,14 +28,14 @@ const Navbar = () => {
     }, []);
 
     const handleLogout = () => {
-        signOut({ callbackUrl: '/' }); // Deconectează utilizatorul și redirecționează-l la home
+        signOut({ callbackUrl: '/' });
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-md">
+        <nav className={`${styles.navbar} navbar navbar-expand-lg navbar-light shadow-md`}>
             <div className="container">
                 <Link href="/home" passHref>
-                    <div className="navbar-brand d-flex align-items-center">
+                    <div className={`${styles.navbarBrand} navbar-brand d-flex align-items-center`}>
                         <img src="veterinary.png" width="66" height="66" alt="PawCare" />
                         PawCare
                     </div>
@@ -42,22 +44,22 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link href="#echipa-medicala" className="nav-link">
+                            <Link href="#echipa-medicala" className={`${styles.navLink} nav-link`}>
                                 Echipa Medicală
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" href="/consultatii">
+                            <Link className={`${styles.navLink} nav-link`} href="/consultatii">
                                 Servicii
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" href="/contact">
+                            <Link className={`${styles.navLink} nav-link`} href="/contact">
                                 Contact
                             </Link>
                         </li>
                         <li className="nav-item dropdown" ref={dropdownRef}>
-                            {session ? ( 
+                            {session ? (
                                 <>
                                     <button
                                         onClick={toggleAnimalDropdown}
@@ -75,7 +77,10 @@ const Navbar = () => {
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link href="/profil-animal" className="dropdown-item">
+                                                {
+
+                                                }
+                                                <Link href="/animals" className="dropdown-item">
                                                     Profilurile mele
                                                 </Link>
                                             </li>
@@ -86,17 +91,31 @@ const Navbar = () => {
                         </li>
                     </ul>
 
-                    <ul className="navbar-nav ms-auto">
-                        {!session ? ( // Dacă nu există sesiune, arată butonul de login
-                            <li className="nav-item">
-                                <a className="nav-link btn btn-dark" href="/login">
-                                    Autentificare
-                                </a>
-                            </li>
+                    <ul className="navbar-nav ms-auto d-flex">
+                        {!session ? (
+                            <>
+                                <li className="nav-item">
+                                    <a className={`${styles.navLink} ${styles.btnDark} nav-link  ms-2`} href="/register">
+                                        Creare cont
+                                    </a>
+                                </li>
+
+                                <li className="nav-item">
+                                    <a
+                                        role="button"
+                                        className={`${styles.navLink} nav-link`}
+                                        style={{ cursor: "pointer" }}
+                                        href="/login"
+                                    >
+                                        Autentificare
+                                    </a>
+
+                                </li>
+                            </>
                         ) : (
                             <li className="nav-item">
                                 <button className="nav-link btn" onClick={handleLogout}>
-                                    Logout
+                                    Deconectează-te
                                 </button>
                             </li>
                         )}

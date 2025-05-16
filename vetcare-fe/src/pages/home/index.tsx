@@ -1,5 +1,5 @@
 import Login from "@/components/login-btn";
-import Navbar from "@/components/Navbar/Navbar";
+import Navbar from "@/components/Navbar";
 import { getVaccines } from "@/services/animalService";
 
 export default function Home() {

@@ -1,5 +1,6 @@
 server:
     port: 7004
+
 spring:
     application:
         name: api-chat
@@ -8,11 +9,22 @@ spring:
             resourceserver:
                 jwt:
                     jwk-set-uri: http://localhost:8080/realms/disertatie/protocol/openid-connect/certs
+    datasource:
+        url: jdbc:mysql://localhost:3306/consultation_api
+        username: root
+        password: root
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+        properties:
+            hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+        hibernate:
+            ddl-auto: update
 
 logging.level:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.security: DEBUG
     org.springframework.web.reactive.function.client: TRACE
+
 gemini:
     api:
         key: AIzaSyB92WxOG-KSTROLlfyeUqNbZRu18D8dbuk

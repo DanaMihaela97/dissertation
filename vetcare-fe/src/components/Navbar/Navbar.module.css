@@ -1,72 +1,59 @@
-
 .navbar {
-    background-color: #f8f9fa;
-    padding: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar-logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-  }
-  .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    float:inline-end;
-    margin-right:30px;
-  }
-  .navbar-brand img {
-    margin-right: 10px;
-  }
-  
-  .navbar-brand:hover {
-    color: #007bff;
-  }
-  
-  .navbar-nav .nav-link {
-    font-size: 1.1rem;
-    color: #333;
-    margin-right: 20px;
-  }
-  
-  .navbar-nav .nav-link:hover {
-    color: #007bff;
-  }
-  
-  .navbar-toggler {
-    border-color: #007bff;
-  }
-  
-  .navbar-toggler-icon {
-    background-color: #007bff;
-  }
-  
-  @media (max-width: 768px) {
-    .navbar-nav {
-      text-align: center;
-    }
-    .navbar-nav .nav-link {
-      margin-right: 0;
-      padding: 10px;
-    }
-  }
-  .dropdown-menu {
-    position: absolute;
-    display: none;
+  background-color: #f8f9fa;  
+  padding: 1rem;  
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.dropdown-menu.show {
-    display: block;
+.navbarBrand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
 }
 
-  .nav-item .nav-link.btn-dark {
-    background-color: #000;
-    color: #fff;
-  }
-  
-  .nav-item .nav-link.btn-dark:hover {
-    background-color: #333;
-    color: #fff;
-  }
-  
+.navbarBrand img {
+  margin-right: 10px;
+}
+
+.navbarNav {
+  font-size: 1.1rem;
+  color: #333;
+  margin-right: 20px;
+}
+
+.navLink {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #007bff; 
+}
+
+.dropdown-menu {
+  background-color: #fff;  
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 10px 15px;
+  font-size: 1rem;
+}
+
+.dropdown-item:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+.btnDark {
+  background-color: #000 !important; 
+  color: #fff !important; 
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btnDark:hover {
+  color: #007bff !important; 
+}

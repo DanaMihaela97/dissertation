@@ -26,6 +26,7 @@ public class Animal {
     private String weight;
     private String type;
     private String breed;
+    private String email;
 
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AnimalVaccine> animalVaccines = new ArrayList<>();
@@ -59,6 +60,7 @@ public class Animal {
                 ", weight='" + weight + '\'' +
                 ", type='" + type + '\'' +
                 ", breed='" + breed + '\'' +
+                ", email='" + email + '\'' +
                 ", animalVaccines=" + animalVaccines +
                 ", anamneses=" + anamneses +
                 '}';
