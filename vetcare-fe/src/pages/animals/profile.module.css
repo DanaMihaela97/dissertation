@@ -1,0 +1,146 @@
+.tabsWrapper {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  gap: 0; 
+}
+
+.tabButton {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  background-color: transparent;
+  color: black;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.tabButton:hover {
+  background-color: #f3f3f3;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
+.separator {
+  height: 1px;
+  background-color: #ccc;
+  margin-bottom: 1.5rem;
+}
+
+.contentWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.nameWithIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.animalName {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.breed {
+  font-style: italic;
+  color: #555;
+  margin-top: 0.25rem;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.4rem;
+}
+
+.detailLabel {
+  font-weight: 500;
+  color: #555;
+}
+.startConsultationButton {
+  background-color: #000;     
+  color: #fff;                
+  padding: 0.75rem 1.5rem;     
+  border-radius: 8px;          
+  font-weight: 600;             
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+  margin: 0 auto;              
+  display: block;              
+}
+
+.startConsultationButton:hover {
+  background-color: #4e4d4d;       
+}
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;      
+  gap: 20px;            
+  justify-content: center; 
+}
+
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;            
+  min-width: 250px;    
+  box-sizing: border-box;
+}
+
+.detailsLink {
+  margin-top: 10px;
+  text-align: center;
+  color: #2c7be5;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.detailsLink:hover {
+  text-decoration: underline;
+}

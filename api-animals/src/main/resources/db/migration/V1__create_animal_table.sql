@@ -14,7 +14,7 @@ CREATE TABLE vaccines (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         name VARCHAR(255) NOT NULL,
                         age_weeks INT NOT NULL,
-                        rapel_days VARCHAR(255) NOT NULL,
+                        rapel_days INT NOT NULL,
                         revaccination_interval VARCHAR(255) NOT NULL,
                         animal_type VARCHAR(255) NOT NULL
 );

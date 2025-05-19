@@ -19,7 +19,7 @@ spring:
               - TRACE
             allowedHeaders:
               - "*"
-            allowCredentials: true # <-- dacă folosești cookie-uri/sesiuni
+            allowCredentials: true
       default-filters:
         - TokenRelay=
       routes:
@@ -30,7 +30,7 @@ spring:
         - id: api-chat
           uri: http://localhost:7004
           predicates:
-            - Path=/api/chat/**
+            - Path=/api/chat/**, /api/reviews
   security.oauth2:
     resourceserver:
       jwt:

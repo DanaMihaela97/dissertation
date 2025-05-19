@@ -1,0 +1,27 @@
+import { Review } from "@/components/entities/review";
+import axios from "axios";
+
+const URL = "http://localhost:8060";
+
+const getAuthHeaders = () => {
+    if (typeof window !== 'undefined') {
+        const jwtToken = localStorage.getItem("jwt");
+        console.log("JWT Token from localStorage:", jwtToken);
+        return {
+            headers: {
+                Authorization: `Bearer ${jwtToken}`
+            }
+        };
+    }
+    return { headers: {} };
+};
+export const createReview = async (review: Omit<Review, "email" | "createdAt">): Promise<Review> => {
+  const response = await axios.post(`${URL}/api/reviews`, review, getAuthHeaders());
+  return response.data;
+};
+
+
+export const getReviews = async (): Promise<Review[]> => {
+  const response = await axios.get(`${URL}/api/reviews`, getAuthHeaders());
+  return response.data;
+};

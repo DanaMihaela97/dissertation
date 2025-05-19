@@ -61,7 +61,7 @@ const URL = "http://localhost:8060";
 const getAuthHeaders = () => {
   if (typeof window !== 'undefined') {
     const jwtToken = localStorage.getItem("jwt");
-    console.log("JWT Token from localStorage:", jwtToken); // Debugging log
+    console.log("JWT Token from localStorage:", jwtToken); 
     return {
       headers: {
         Authorization: `Bearer ${jwtToken}`
@@ -103,11 +103,11 @@ export const getCatBreeds = async (): Promise<string[]> => {
   const response = await axios.get(`${URL}/api/animals/cat-breeds`, getAuthHeaders());
   return response.data;
 };
-
 export const getVaccines = async (): Promise<Vaccine[]> => {
   const response = await axios.get(`${URL}/api/vaccines/`, getAuthHeaders());
-  return response.data;
-}
+  // Dacă API-ul răspunde cu { data: [...] }
+  return response.data.data || response.data;
+};
 
 export const getAnimalVaccines = async (id: number): Promise<AnimalVaccine[]> => {
   const response = await axios.get(`${URL}/api/animals/${id}/vaccines`, getAuthHeaders());

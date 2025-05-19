@@ -3,8 +3,7 @@ import Link from 'next/link';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSession, signOut, signIn } from 'next-auth/react';
 import styles from './Navbar.module.css';
-import { login } from '@/services/loginService';
-
+import Image from 'next/image'
 const Navbar = () => {
     const { data: session } = useSession();
     const [isOpenAnimal, setIsOpenAnimal] = useState(false);
@@ -34,18 +33,16 @@ const Navbar = () => {
     return (
         <nav className={`${styles.navbar} navbar navbar-expand-lg navbar-light shadow-md`}>
             <div className="container">
-                <Link href="/home" passHref>
                     <div className={`${styles.navbarBrand} navbar-brand d-flex align-items-center`}>
-                        <img src="veterinary.png" width="66" height="66" alt="PawCare" />
+                        <Image src="/veterinary.png" width="66" height="66" alt="PawCare" />
                         PawCare
                     </div>
-                </Link>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link href="#echipa-medicala" className={`${styles.navLink} nav-link`}>
-                                Echipa Medicală
+                            <Link href="/about" className={`${styles.navLink} nav-link`}>
+                                Despre
                             </Link>
                         </li>
                         <li className="nav-item">
@@ -54,8 +51,8 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`${styles.navLink} nav-link`} href="/contact">
-                                Contact
+                            <Link className={`${styles.navLink} nav-link`} href="/review">
+                                Review-uri
                             </Link>
                         </li>
                         <li className="nav-item dropdown" ref={dropdownRef}>
@@ -93,24 +90,26 @@ const Navbar = () => {
 
                     <ul className="navbar-nav ms-auto d-flex">
                         {!session ? (
-                            <>
-                                <li className="nav-item">
-                                    <a className={`${styles.navLink} ${styles.btnDark} nav-link  ms-2`} href="/register">
-                                        Creare cont
-                                    </a>
-                                </li>
-
-                                <li className="nav-item">
+                            <> 
+                            <li className="nav-item">
                                     <a
                                         role="button"
                                         className={`${styles.navLink} nav-link`}
                                         style={{ cursor: "pointer" }}
-                                        href="/login"
+                                        // href="/login"
+                                        onClick={() => signIn()}
                                     >
                                         Autentificare
                                     </a>
 
                                 </li>
+                                <li className="nav-item">
+                                    <a className={`${styles.navLink} ${styles.btnDark} nav-link  ms-2`} href="/register">
+                                        Inregistrare
+                                    </a>
+                                </li>
+
+                               
                             </>
                         ) : (
                             <li className="nav-item">

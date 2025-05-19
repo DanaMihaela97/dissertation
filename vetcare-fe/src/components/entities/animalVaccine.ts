@@ -3,5 +3,5 @@ export interface AnimalVaccine {
     vaccineName?: string;
     animalId: number;
     dateAdministered:string,
-    
+    nextDose: string,
   }

@@ -1,0 +1,127 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: 30px;
+  padding: 30px;
+}
+
+.card {
+  background-color: #f9faff; /* culoare foarte deschisa, aproape alb-albastruie */
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(44, 123, 229, 0.15); /* umbrelă albastră subtilă */
+  padding: 30px 25px;
+  width: calc((100% / 3) - 40px); 
+  max-width: 350px;
+  min-width: 300px;
+  border: 2px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: #2c7be5; /* albastru accent la border */
+  box-shadow: 0 10px 20px rgba(44, 123, 229, 0.35);
+  z-index: 5;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  width: 100%;
+  border-bottom: 2px solid #e1e6f9; /* separator subtil */
+  padding-bottom: 12px;
+}
+
+.title {
+  margin-left: 12px;
+  margin-bottom: 0;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1b223d; /* un albastru inchis */
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.breed {
+  font-size: 14.5px;
+  color: #4a5068;
+  margin: 10px 0 18px 0;
+  text-align: center;
+  width: 100%;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  color: #5a647d;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.infoItem p {
+  margin: 0 0 0 10px;
+  font-weight: 600;
+}
+
+.vaccinesSection {
+  margin-top: 28px;
+  width: 100%;
+  background-color: #e9f0ff;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: inset 0 0 8px rgba(44, 123, 229, 0.1);
+}
+
+.vaccinesSection h4 {
+  margin-bottom: 12px;
+  color: #2c3e50;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border-bottom: 1px solid #aac4ff;
+  padding-bottom: 6px;
+}
+
+.vaccineList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.vaccineItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #3a405a;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.vaccineItem svg {
+  margin-right: 12px;
+  color: #2c7be5;
+  flex-shrink: 0;
+}
+
+.noVaccines {
+  font-style: italic;
+  color: #9aa3b1;
+  text-align: center;
+  font-size: 14.5px;
+  padding: 10px 0;
+}
