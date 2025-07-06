@@ -60,7 +60,7 @@ const handleStartConsultation = async () => {
   try {
     const response = await startChat(animal); 
     console.log("Sesiune pornită:", response);
-    router.push(`/chat/${response.sessionId}`);
+    router.push(`/chat/${response.sessionId}?botMessage=${response.botResponse}`);
   } catch (error) {
     console.error("Eroare la începerea consultației:", error);
     alert("A apărut o eroare la începerea consultației.");

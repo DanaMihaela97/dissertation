@@ -9,5 +9,6 @@ public interface AnimalService {
     AnimalInfoDto createAnimal(AnimalCreateDto createAnimalDto, String email);
     List<AnimalInfoDto> getAnimals(String email);
     AnimalInfoDto getAnimalById(Long id);
+    int animalCount();
 
 }

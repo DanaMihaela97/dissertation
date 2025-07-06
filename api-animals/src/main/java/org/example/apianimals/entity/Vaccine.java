@@ -19,6 +19,7 @@ public class Vaccine {
     @Column(name = "age_weeks", nullable = false)
     private int ageWeeks;
 
+    //TODO: rapelDays ;)
     @Column(name = "rapel_days", nullable = false)
     private int rapel_days;
 

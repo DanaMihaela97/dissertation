@@ -105,7 +105,6 @@ export const getCatBreeds = async (): Promise<string[]> => {
 };
 export const getVaccines = async (): Promise<Vaccine[]> => {
   const response = await axios.get(`${URL}/api/vaccines/`, getAuthHeaders());
-  // Dacă API-ul răspunde cu { data: [...] }
   return response.data.data || response.data;
 };
 
@@ -114,7 +113,6 @@ export const getAnimalVaccines = async (id: number): Promise<AnimalVaccine[]> =>
   return response.data;
 }
 
-// Implement this function to fetch all animal IDs for getStaticPaths
 export const getAllAnimalIds = async (): Promise<number[]> => {
   try {
     const response = await axios.get<AnimalProfile[]>(`${URL}/api/animals`, getAuthHeaders());
@@ -125,3 +123,12 @@ export const getAllAnimalIds = async (): Promise<number[]> => {
     return [];
   }
 };
+export const getAnimalCount = async () => {
+  try {
+    const response = await axios.get(`${URL}/api/animals/count`, getAuthHeaders());
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching animal count:', error);
+    throw error;
+  }
+}

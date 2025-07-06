@@ -28,4 +28,19 @@ public class ReviewServiceImpl implements ReviewService {
     public List<Review> getReviews() {
         return reviewRepository.findAll();
     }
+
+    @Override
+    public float reviewMean() {
+        List<Review> allReviews = reviewRepository.findAll();
+        if (allReviews.isEmpty()) {
+            return 0;
+        }
+        float sum = 0;
+        for (Review review : allReviews) {
+            sum += review.getRating();
+        }
+        return sum / allReviews.size();
+    }
+
+
 }

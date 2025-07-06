@@ -25,3 +25,23 @@ export const getReviews = async (): Promise<Review[]> => {
   const response = await axios.get(`${URL}/api/reviews`, getAuthHeaders());
   return response.data;
 };
+
+export const getReviewMean = async () => {
+  try {
+    const response = await axios.get(`${URL}/api/reviews/mean`, getAuthHeaders());
+    return response.data; 
+  } catch (error) {
+    console.error('Error fetching review mean:', error);
+    throw error; 
+  }
+}
+
+export const getConsultationCount = async () => {
+  try {
+    const response = await axios.get(`${URL}/api/chat/count`, getAuthHeaders());
+    return response.data; 
+  } catch (error) {
+    console.error('Error fetching consultation count:', error);
+    throw error; 
+  }
+}

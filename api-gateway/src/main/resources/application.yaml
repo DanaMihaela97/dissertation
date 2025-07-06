@@ -24,13 +24,13 @@ spring:
         - TokenRelay=
       routes:
         - id: api-animals
-          uri: http://localhost:7003/api
+          uri: http://localhost:7003
           predicates:
             - Path=/api/animals/**,/api/vaccines/**
         - id: api-chat
           uri: http://localhost:7004
           predicates:
-            - Path=/api/chat/**, /api/reviews
+            - Path=/api/chat/**,/api/reviews/**
   security.oauth2:
     resourceserver:
       jwt:
@@ -43,7 +43,7 @@ spring:
         keycloak:
           provider: keycloak
           client-id: gateway-client
-          client-secret: J5amjWWXmWQZ10fAxfiOFR0xVCwlOQD4
+          client-secret: YWVh7husRP4jlJkWDM4C5LMMxzEHeI0t
           authorization-grant-type: authorization_code
           scope: openid
 

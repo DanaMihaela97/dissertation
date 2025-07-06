@@ -6,6 +6,7 @@ import { serialize } from 'cookie';
 const secret = process.env.NEXTAUTH_SECRET;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log("TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
   const token = await getToken({ req, secret });
 
   if (!token || !token.accessToken) {

@@ -52,7 +52,12 @@ public class ChatServiceImpl {
         session.setConversationHistory(fullPrompt);
         chatSessionRepository.save(session);
 
-        return Map.of("sessionId", session.getId().toString(), "message", opening);
+        return Map.of(
+                "sessionId", session.getId().toString(),
+                "message", "Consultația a fost inițiată cu succes.",
+                "botResponse", opening
+        );
+
     }
 
     private String buildAnimalMedicalContext(Animal animal) {
@@ -110,7 +115,7 @@ public class ChatServiceImpl {
         }
 
         String aiReply = callGeminiApi(prompt);
-        conversation += "AI: " + aiReply + "\n";
+        conversation +=  aiReply + "\n";
         session.setConversationHistory(conversation);
 
         boolean isFinal = aiReply.toLowerCase().contains("diagnostic") &&
@@ -185,5 +190,8 @@ public class ChatServiceImpl {
         Pattern pattern = Pattern.compile(keyword + "[:\\-\\s]*([^\\n]+(?:\\n[^\\n]+)*)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         return matcher.find() ? matcher.group(1).trim() : "";
+    }
+    public int consultationCount(){
+        return (int) consultationRepository.count();
     }
 }

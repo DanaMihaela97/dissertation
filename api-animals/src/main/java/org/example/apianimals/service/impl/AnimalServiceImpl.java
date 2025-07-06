@@ -17,11 +17,11 @@ import org.example.apianimals.service.AnimalService;
 import org.example.apianimals.service.AnimalVaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +49,11 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     }
 
     public List<String> getDogBreeds() {
-        String url = "https://api.thedogapi.com/v1/breeds?api_key=" + dogApiKey;
-        ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, null, List.class);
+        String url = "https://api.thedogapi.com/v1/breeds";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("x-api-key", dogApiKey);
+        HttpEntity entity = new HttpEntity(headers);
+        ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
 
         return ((List<Map<String, Object>>) response.getBody()).stream()
                 .map(breed -> (String) breed.get("name"))
@@ -58,8 +61,11 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     }
 
     public List<String> getCatBreeds() {
-        String url = "https://api.thecatapi.com/v1/breeds?api_key=" + catApiKey;
-        ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, null, List.class);
+        String url = "https://api.thecatapi.com/v1/breeds";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("x-api-key", catApiKey);
+        HttpEntity entity = new HttpEntity(headers);
+        ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
 
         return ((List<Map<String, Object>>) response.getBody()).stream()
                 .map(breed -> (String) breed.get("name"))
@@ -108,6 +114,7 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     }
 
 
+
     @Override
     public List<AnimalVaccineInfoDto> createAnimalVaccine(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos) {
         List<AnimalVaccineInfoDto> vaccineInfoDtos = new ArrayList<>();
@@ -151,5 +158,11 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int animalCount() {
+        int animalNo = (int) animalRepository.count();
+        return animalNo;
     }
 }

@@ -16,18 +16,23 @@ const getAuthHeaders = () => {
     return { headers: {} };
 };
 
-export const startChat = async (animal: AnimalProfile): Promise<{ message: string, sessionId: string }> => {
-    const response = await axios.post(`${URL}/start`, animal, getAuthHeaders());
-    return response.data;
+export const startChat = async (
+  animal: AnimalProfile
+): Promise<{ message: string; sessionId: string; botResponse: string }> => {
+  const response = await axios.post(`${URL}/start`, animal, getAuthHeaders());
+    console.log(response.data)
+  return response.data;
 };
+
 export const sendMessage = async (
     sessionId: number,
     userMessage: string
-): Promise<{ response: string, [key: string]: any }> => {
+): Promise<{ reply: string, finished: boolean}> => {
     const response = await axios.post(
         `${URL}/send/${sessionId}`,
         userMessage,
         getAuthHeaders()
     );
+    console.log(response.data)
     return response.data;
 };

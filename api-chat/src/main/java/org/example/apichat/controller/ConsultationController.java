@@ -2,6 +2,7 @@ package org.example.apichat.controller;
 
 import org.example.apichat.dto.Animal;
 import org.example.apichat.service.impl.ChatServiceImpl;
+import org.example.apichat.service.impl.ReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,12 @@ import java.util.Map;
 @RequestMapping("/api/chat")
 public class ConsultationController {
     private final ChatServiceImpl chatService;
+    private final ReviewServiceImpl reviewService;
 
     @Autowired
-    public ConsultationController(ChatServiceImpl chatService) {
+    public ConsultationController(ChatServiceImpl chatService, ReviewServiceImpl reviewService) {
         this.chatService = chatService;
+        this.reviewService = reviewService;
     }
 
     @PostMapping("/start")
@@ -48,4 +51,10 @@ public class ConsultationController {
         Map<String, Object> response = chatService.sendMessage(sessionId, userMessage, email);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/count")
+    public int getConsultationCount() {
+        return chatService.consultationCount();
+    }
+
 }

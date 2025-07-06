@@ -27,19 +27,40 @@ const Navbar = () => {
     }, []);
 
     const handleLogout = () => {
+        localStorage.clear();
         signOut({ callbackUrl: '/' });
+       
     };
 
     return (
         <nav className={`${styles.navbar} navbar navbar-expand-lg navbar-light shadow-md`}>
             <div className="container">
-                    <div className={`${styles.navbarBrand} navbar-brand d-flex align-items-center`}>
-                        <Image src="/veterinary.png" width="66" height="66" alt="PawCare" />
-                        PawCare
-                    </div>
+                <div className={`${styles.navbarBrand} navbar-brand d-flex align-items-center`}>
+                    <Image src="/veterinary.png" width="66" height="66" alt="PawCare" />
+                    PawCare
+                </div>
+
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                    onClick={() => {
+                        const el = document.getElementById('navbarNav');
+                        if (el) el.classList.toggle('show');
+                    }}
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav mx-auto">
+                        <li className="nav-item">
+                            <Link href="/home" className={`${styles.navLink} nav-link`}>
+                                Acasă
+                            </Link>
+                        </li>
                         <li className="nav-item">
                             <Link href="/about" className={`${styles.navLink} nav-link`}>
                                 Despre
@@ -87,29 +108,24 @@ const Navbar = () => {
                             ) : null}
                         </li>
                     </ul>
-
                     <ul className="navbar-nav ms-auto d-flex">
                         {!session ? (
-                            <> 
-                            <li className="nav-item">
+                            <>
+                                <li className="nav-item">
                                     <a
                                         role="button"
                                         className={`${styles.navLink} nav-link`}
                                         style={{ cursor: "pointer" }}
-                                        // href="/login"
-                                        onClick={() => signIn()}
+                                        href="/login"
                                     >
                                         Autentificare
                                     </a>
-
                                 </li>
                                 <li className="nav-item">
-                                    <a className={`${styles.navLink} ${styles.btnDark} nav-link  ms-2`} href="/register">
-                                        Inregistrare
+                                    <a className={`${styles.navLink} ${styles.btnDark} nav-link ms-2`} href="/register">
+                                        Înregistrare
                                     </a>
                                 </li>
-
-                               
                             </>
                         ) : (
                             <li className="nav-item">
@@ -122,6 +138,7 @@ const Navbar = () => {
                 </div>
             </div>
         </nav>
+
     );
 };
 

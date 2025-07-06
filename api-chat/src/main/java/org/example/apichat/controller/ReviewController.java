@@ -38,8 +38,8 @@ public class ReviewController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public List<Review> getReviews() {
-        return reviewService.getReviews();
+    @GetMapping("/mean")
+    public float getReviewMean() {
+        return reviewService.reviewMean();
     }
 }

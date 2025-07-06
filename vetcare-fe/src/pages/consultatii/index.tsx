@@ -44,7 +44,7 @@ export default function ConsultatiiVeterinare() {
         confirmButtonText: 'OK'
       });
     } else {
-      router.push('/anamneza'); 
+      router.push('/chat'); 
     }
   };
 
@@ -58,7 +58,7 @@ export default function ConsultatiiVeterinare() {
           Obține diagnostic și recomandări pentru animalul tău de companie direct de acasă, cu ajutorul inteligenței
           artificiale.
         </p>
-        <Link href="/anamneza" className="cta-button" onClick={handleConsultationClick}>
+        <Link href="/chat" className="cta-button" onClick={handleConsultationClick}>
             Începe o consultație
         </Link>
       </section>

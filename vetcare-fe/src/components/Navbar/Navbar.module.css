@@ -1,6 +1,6 @@
 .navbar {
-  background-color: #f8f9fa;  
-  padding: 1rem;  
+  background-color: #f8f9fa;
+  padding: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -19,7 +19,6 @@
 .navbarNav {
   font-size: 1.1rem;
   color: #333;
-  margin-right: 20px;
 }
 
 .navLink {
@@ -29,11 +28,11 @@
 }
 
 .navLink:hover {
-  color: #007bff; 
+  color: #007bff;
 }
 
 .dropdown-menu {
-  background-color: #fff;  
+  background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -47,13 +46,30 @@
   background-color: #007bff;
   color: #fff;
 }
+
 .btnDark {
-  background-color: #000 !important; 
-  color: #fff !important; 
+  background-color: #000 !important;
+  color: #fff !important;
   border-radius: 10px;
   transition: background-color 0.3s ease;
 }
 
 .btnDark:hover {
-  color: #007bff !important; 
+  color: #007bff !important;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 100%; 
+}
+
+.navbar-nav .nav-item {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.ms-auto {
+  margin-left: auto;
 }

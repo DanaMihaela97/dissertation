@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import styles from "./Review.module.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
 
 export default function ReviewPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -12,54 +13,57 @@ export default function ReviewPage() {
   const [feedback, setFeedback] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingReviews, setLoadingReviews] = useState<boolean>(false);
 
   useEffect(() => {
     fetchReviews();
   }, []);
 
- async function fetchReviews() {
-  try {
-    const data = await getReviews();
-    const sortedData = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-    setReviews(sortedData);
-  } catch (err) {
-    setError("Nu s-au putut încărca review-urile.");
-  }
-}
-
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (rating === 0) {
-    setError("Te rugăm să selectezi un rating.");
-    return;
-  }
-  if (feedback.trim().length === 0) {
-    setError("Te rugăm să lași un feedback.");
-    return;
+  async function fetchReviews() {
+    try {
+      setLoadingReviews(true);
+      const data = await getReviews();
+      const sortedData = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setReviews(sortedData);
+    } catch (err) {
+      setError("Nu s-au putut încărca review-urile.");
+    }
+    setLoadingReviews(false);
   }
 
-  setError(null);
-  setLoading(true);
-  try {
-    await createReview({ rating, feedback });
-    await fetchReviews();
-    setRating(0);
-    setFeedback("");
-    
-    Swal.fire({
-      icon: 'success',
-      title: 'Mulțumim!',
-      text: 'Review-ul tău a fost trimis cu succes.',
-      timer: 2500,
-      timerProgressBar: true,
-      showConfirmButton: false,
-    });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (rating === 0) {
+      setError("Te rugăm să selectezi un rating.");
+      return;
+    }
+    if (feedback.trim().length === 0) {
+      setError("Te rugăm să lași un feedback.");
+      return;
+    }
 
-  } catch (err) {
-    setError("Eroare la trimiterea review-ului.");
-  }
-  setLoading(false);
-};
+    setError(null);
+    setLoading(true);
+    try {
+      await createReview({ rating, feedback });
+      await fetchReviews();
+      setRating(0);
+      setFeedback("");
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Mulțumim!',
+        text: 'Review-ul tău a fost trimis cu succes.',
+        timer: 2500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+
+    } catch (err) {
+      setError("Eroare la trimiterea review-ului.");
+    }
+    setLoading(false);
+  };
 
 
   const renderStars = (selected: number, onSelect?: (val: number) => void) => {
@@ -118,32 +122,39 @@ export default function ReviewPage() {
 
           {error && <div className={styles.error}>{error}</div>}
 
-         <button
-  type="submit"
-  disabled={loading}
-  className="btn btn-success"
->
-  Trimite review
-</button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-success"
+          >
+            Trimite review
+          </button>
 
         </form>
 
         <hr className={styles.hr} />
 
+
         <h3>Review-uri primite</h3>
 
-        {reviews.length === 0 && <p>Nu există review-uri încă.</p>}
-
-        <ul className={styles.reviewList}>
-          {reviews.map(({ email, rating, feedback, createdAt }, index) => (
-            <li key={index} className={styles.reviewItem}>
-              <div className={styles.reviewEmail}>{email}</div>
-              <div>{renderStars(rating)}</div>
-              <p className={styles.reviewFeedback}>{feedback}</p>
-              <small className={styles.reviewDate}>{new Date(createdAt).toLocaleString()}</small>
-            </li>
-          ))}
-        </ul>
+        {loadingReviews ? (
+          <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
+            <ClipLoader color="#28a745" loading={loadingReviews} size={50} />
+          </div>
+        ) : reviews.length === 0 ? (
+          <p>Nu există review-uri încă.</p>
+        ) : (
+          <ul className={styles.reviewList}>
+            {reviews.map(({ email, rating, feedback, createdAt }, index) => (
+              <li key={index} className={styles.reviewItem}>
+                <div className={styles.reviewEmail}>{email}</div>
+                <div>{renderStars(rating)}</div>
+                <p className={styles.reviewFeedback}>{feedback}</p>
+                <small className={styles.reviewDate}>{new Date(createdAt).toLocaleString()}</small>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );
