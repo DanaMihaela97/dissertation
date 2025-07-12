@@ -26,15 +26,16 @@ export const getReviews = async (): Promise<Review[]> => {
   return response.data;
 };
 
-export const getReviewMean = async () => {
+export const getReviewMean = async (authToken?: string) => {
   try {
-    const response = await axios.get(`${URL}/api/reviews/mean`, getAuthHeaders());
-    return response.data; 
+    const headers = authToken ? { headers: { Authorization: `Bearer ${authToken}` } } : {};
+    const response = await axios.get(`${URL}/api/reviews/mean`, headers);
+    return response.data;
   } catch (error) {
     console.error('Error fetching review mean:', error);
-    throw error; 
+    throw error;
   }
-}
+};
 
 export const getConsultationCount = async () => {
   try {

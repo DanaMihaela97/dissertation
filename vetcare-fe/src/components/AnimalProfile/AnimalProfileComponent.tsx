@@ -2,6 +2,7 @@ import React from 'react';
 import { AnimalProfile } from '../entities/animalProfile';
 import { Cake, Cat, Dog, Syringe, Weight } from 'lucide-react';
 import styles from "./AnimalProfile.module.css";
+import { useRouter } from 'next/router';
 
 const AnimalProfileComponent = ({ animal }: { animal: AnimalProfile }) => {
   const animalIcon =
@@ -10,9 +11,13 @@ const AnimalProfileComponent = ({ animal }: { animal: AnimalProfile }) => {
     ) : (
       <Cat size={40} color="#2c7be5" />
     );
+ const router = useRouter();
 
+  const handleClick = () => {
+    router.push(`/animals/${animal.id}`);
+  };
   return (
-    <div className={styles.card}>
+    <div className={styles.card} onClick={handleClick} style={{ cursor: "pointer" }}>
       <div className={styles.header}>
         {animalIcon}
         <h3 className={styles.title}>{animal.animalName}</h3>

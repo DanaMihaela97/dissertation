@@ -29,14 +29,14 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.clear();
         signOut({ callbackUrl: '/' });
-       
+
     };
 
     return (
         <nav className={`${styles.navbar} navbar navbar-expand-lg navbar-light shadow-md`}>
             <div className="container">
                 <div className={`${styles.navbarBrand} navbar-brand d-flex align-items-center`}>
-                    <Image src="/veterinary.png" width="66" height="66" alt="PawCare" />
+                    <Image src="/sitting.png" width="66" height="66" alt="PawCare" />
                     PawCare
                 </div>
 
@@ -81,28 +81,39 @@ const Navbar = () => {
                                 <>
                                     <button
                                         onClick={toggleAnimalDropdown}
-                                        className="nav-link dropdown-toggle"
+                                        className={`${styles.navLink} nav-link d-flex align-items-center`}
                                         style={{ cursor: 'pointer' }}
                                     >
                                         Animăluțul tău
+                                        <svg
+                                            width="12"
+                                            height="12"
+                                            fill="none"
+                                            stroke="#1abc9c"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            className="ms-1"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
                                     </button>
 
                                     {isOpenAnimal && (
                                         <ul className="dropdown-menu show" style={{ display: 'block', position: 'absolute' }}>
                                             <li>
-                                                <Link href="/create-animal-profile" className="dropdown-item">
+                                                <Link href="/create-animal-profile" className={styles.dropdownItem}>
                                                     Creează profil pentru animăluțul tău
                                                 </Link>
                                             </li>
                                             <li>
-                                                {
-
-                                                }
-                                                <Link href="/animals" className="dropdown-item">
+                                                <Link href="/animals" className={styles.dropdownItem}>
                                                     Profilurile mele
                                                 </Link>
                                             </li>
                                         </ul>
+
                                     )}
                                 </>
                             ) : null}
@@ -129,9 +140,14 @@ const Navbar = () => {
                             </>
                         ) : (
                             <li className="nav-item">
-                                <button className="nav-link btn" onClick={handleLogout}>
+                                <button
+                                    onClick={handleLogout}
+                                    className={`${styles.navLink} btn-logout nav-link`}
+                                    style={{ border: 'none', background: 'transparent' }}
+                                >
                                     Deconectează-te
                                 </button>
+
                             </li>
                         )}
                     </ul>

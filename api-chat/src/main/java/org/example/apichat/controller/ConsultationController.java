@@ -1,6 +1,7 @@
 package org.example.apichat.controller;
 
 import org.example.apichat.dto.Animal;
+import org.example.apichat.entity.Consultation;
 import org.example.apichat.service.impl.ChatServiceImpl;
 import org.example.apichat.service.impl.ReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,18 +12,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/chat")
 public class ConsultationController {
     private final ChatServiceImpl chatService;
-    private final ReviewServiceImpl reviewService;
 
     @Autowired
-    public ConsultationController(ChatServiceImpl chatService, ReviewServiceImpl reviewService) {
+    public ConsultationController(ChatServiceImpl chatService) {
         this.chatService = chatService;
-        this.reviewService = reviewService;
     }
 
     @PostMapping("/start")
@@ -56,5 +56,8 @@ public class ConsultationController {
     public int getConsultationCount() {
         return chatService.consultationCount();
     }
-
+    @GetMapping("/{animalId}")
+    public List<Consultation> getConsultations(@PathVariable Long animalId) {
+        return chatService.getConsultationsByAnimalId(animalId);
+    }
 }

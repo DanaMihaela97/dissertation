@@ -7,6 +7,7 @@ import org.example.apichat.entity.ChatSession;
 import org.example.apichat.entity.Consultation;
 import org.example.apichat.repository.ChatSessionRepository;
 import org.example.apichat.repository.ConsultationRepository;
+import org.example.apichat.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -16,11 +17,12 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class ChatServiceImpl {
+public class ChatServiceImpl implements ChatService {
     @Value("${gemini.api.key}")
     private String apiKey;
 
@@ -93,7 +95,7 @@ public class ChatServiceImpl {
         ChatSession session = chatSessionRepository.findById(sessionId).orElseThrow();
         String conversation = session.getConversationHistory() + "User: " + userMessage + "\n";
 
-        int maxQuestions = 3;
+        int maxQuestions = 1;
         boolean shouldForceFinal = session.getAiQuestionsCount() >= maxQuestions;
 
         String prompt;
@@ -166,6 +168,11 @@ public class ChatServiceImpl {
         String treatment = extractSection(aiReply, "Tratament");
         String advice = extractSection(aiReply, "Sfaturi");
 
+        // Elimină toate aparițiile de `**`
+        diagnosis = diagnosis.replace("**", "").trim();
+        treatment = treatment.replace("**", "").trim();
+        advice = advice.replace("**", "").trim();
+
         Consultation consultation = new Consultation();
         consultation.setAnimalId(animalId);
         consultation.setDiagnosis(diagnosis);
@@ -193,5 +200,10 @@ public class ChatServiceImpl {
     }
     public int consultationCount(){
         return (int) consultationRepository.count();
+    }
+
+    @Override
+    public List<Consultation> getConsultationsByAnimalId(Long animalId) {
+        return consultationRepository.findAllByAnimalId(animalId);
     }
 }

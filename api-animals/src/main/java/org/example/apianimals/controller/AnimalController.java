@@ -85,6 +85,7 @@ public class AnimalController {
         List<String> catBreeds=animalServiceImpl.getCatBreeds();
         return ResponseEntity.ok(catBreeds);
     }
+
     @GetMapping("/count")
     public ResponseEntity<Integer> getAnimalCount() {
         return ResponseEntity.ok(animalService.animalCount());

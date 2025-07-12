@@ -36,3 +36,8 @@ export const sendMessage = async (
     console.log(response.data)
     return response.data;
 };
+
+export const getConsultationsByAnimalId = async (animalId: number) => {
+  const response = await axios.get(`${URL}/${animalId}`, getAuthHeaders());
+  return response.data;  
+};

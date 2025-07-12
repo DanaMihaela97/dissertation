@@ -19,7 +19,13 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .pathMatchers(HttpMethod.POST).permitAll()
                         .pathMatchers(HttpMethod.POST, "/signUp").permitAll()
-                        .anyExchange().authenticated())
+                        .pathMatchers(HttpMethod.GET, "/home").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/review").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/animals/count").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/reviews/mean").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/chat/count").permitAll()
+                        .anyExchange().authenticated()
+                )
 
                 .oauth2Login(withDefaults())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(withDefaults()));
