@@ -55,6 +55,7 @@ import { AnimalVaccine } from '@/components/entities/animalVaccine';
 import { CreateAnimalProfile } from '@/components/entities/createAnimalProfile';
 import { Vaccine } from '@/components/entities/vaccines';
 import axios from 'axios';
+import {Review} from "@/components/entities/review";
 
 const URL = "http://localhost:8060";
 
@@ -125,10 +126,11 @@ export const getAllAnimalIds = async (): Promise<number[]> => {
 };
 export const getAnimalCount = async () => {
   try {
-    const response = await axios.get(`${URL}/api/animals/count`, getAuthHeaders());
+    const response = await axios.get(`${URL}/api/animals/count`);
     return response.data;
   } catch (error) {
     console.error('Error fetching animal count:', error);
     throw error;
   }
 }
+

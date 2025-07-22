@@ -34,16 +34,16 @@ spring:
   security.oauth2:
     resourceserver:
       jwt:
-        jwk-set-uri: http://localhost:8080/realms/disertatie/protocol/openid-connect/certs
+        jwk-set-uri: http://localhost:8080/realms/vetcare/protocol/openid-connect/certs
     client:
       provider:
         keycloak:
-          issuer-uri: http://localhost:8080/realms/disertatie
+          issuer-uri: http://localhost:8080/realms/vetcare
       registration:
         keycloak:
           provider: keycloak
-          client-id: gateway-client
-          client-secret: YWVh7husRP4jlJkWDM4C5LMMxzEHeI0t
+          client-id: api-gateway-client
+          client-secret: bxSlVZ5gHeVRjT4iFujFNTuUygFTJzG4
           authorization-grant-type: authorization_code
           scope: openid
 
@@ -63,7 +63,7 @@ spring:
     show-sql: true
 keycloak:
   url: http://localhost:8080
-  realm: disertatie
+  realm: vetcare
   admin:
     username: admin
     password: admin

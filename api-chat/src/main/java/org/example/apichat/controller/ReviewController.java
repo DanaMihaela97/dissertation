@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {
@@ -34,6 +36,11 @@ public class ReviewController {
         review.setEmail(email);
         reviewService.saveReview(review);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/")
+    public List<Review> getReviews() {
+        return reviewService.getReviews();
     }
 
     @GetMapping("/mean")

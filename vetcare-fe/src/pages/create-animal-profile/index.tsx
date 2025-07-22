@@ -9,7 +9,7 @@ import { Calendar, CalendarIcon, ClockIcon, HeartIcon, PawPrint, SyringeIcon, We
 import Swal from 'sweetalert2';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { TailSpin } from 'react-loader-spinner';
+import { MoonLoader } from 'react-spinners';
 
 const CreateAnimalProfileComponent = () => {
   const [step, setStep] = useState(1);
@@ -28,7 +28,7 @@ const CreateAnimalProfileComponent = () => {
 
   const [breeds, setBreeds] = useState<string[]>([]);
   const [vaccines, setVaccines] = useState<Vaccine[]>([]);
-  const router = useRouter();
+
 
   const calculateAge = (birthDate: string) => {
     const birth = new Date(birthDate);
@@ -247,8 +247,10 @@ const CreateAnimalProfileComponent = () => {
                       id="birthdate"
                       ref={datePickerRef}
                       selected={stringToDate(formData.birthdate)}
-                      onChange={(date) => {
-                        if (date) setFieldValue("birthdate", dateToString(date));
+                      onChange={(date: Date) => {
+                        if (date) {
+                          setFieldValue("birthdate", dateToString(date));
+                        }
                       }}
                       onChangeRaw={(e) => {
                         if (!e) return;
@@ -318,7 +320,13 @@ const CreateAnimalProfileComponent = () => {
                       <span className={styles.requiredIcon}> *</span></label>
                     {loadingBreeds ? (
                       <div className="flex justify-center items-center h-[40px]">
-                        <TailSpin height={24} width={24} color="#2563eb" />
+                        {
+                          //https://github.com/davidhu2000/react-spinners
+                        }
+                        <MoonLoader
+                            color="#2563eb"
+                            size={24}
+                        />
                       </div>
                     ) : (
                       <select
