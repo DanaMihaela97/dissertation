@@ -1,0 +1,88 @@
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+    padding: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.loginCard {
+    background-color: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.loginHeading {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+}
+
+.loginText {
+    color: #444;
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+}
+
+.iconWrapper {
+    background: #f0f4ff;
+    color: #2563eb;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1.5rem auto;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+}
+
+.keycloakButton {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.85rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    box-shadow: 0 4px 10px rgb(37 99 235 / 0.4);
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.keycloakButton:hover {
+    background-color: #1e40af;
+    box-shadow: 0 6px 16px rgb(30 64 175 / 0.6);
+}
+
+.keycloakButton:focus {
+    outline: none;
+    box-shadow: 0 0 6px rgba(37, 99, 235, 0.6);
+}
+
+.arrow {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.5;
+    stroke: white;
+    transition: transform 0.3s ease;
+}
+
+.keycloakButton:hover .arrow {
+    transform: translateX(5px);
+}

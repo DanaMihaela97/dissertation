@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import Image from 'next/image';
 import { ArrowRight, LogIn } from 'lucide-react';
-import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
-import { signIn, useSession } from 'next-auth/react';
+import {signIn, useSession} from 'next-auth/react';
 import axios from 'axios';
+import styles from './Login.module.css';
+
 
 const LoginPage = () => {
   const { data: session } = useSession();
@@ -26,24 +26,26 @@ const LoginPage = () => {
   }
 
   return (
-    <>
-      <Navbar />
-      <div className="login-container">
-        <div className="login-card">
-          <div style={{ color: "#3336ff", background: "#fff", borderRadius: "50%" }}>
-            <LogIn className="w-6 h-6 text-gray-600" />
-          </div>
-          <h1>Bine ai venit!</h1>
-          <p>Conectează-te cu contul tău Google pentru a accesa aplicația.</p>
+      <>
+        <Navbar />
+        <div className={styles.loginContainer}>
+          <div className={styles.loginCard}>
+            <div className={styles.iconWrapper}>
+              <LogIn className="w-6 h-6" />
+            </div>
+            <h1 className={styles.loginHeading}>Bine ai venit!</h1>
+            <p className={styles.loginText}>Autentifică-te cu contul tău Keycloak pentru a accesa aplicația.</p>
 
-          <motion.button onClick={() => signIn()} className="auth-btn">
-            <Image src="/google-icon.svg" alt="Google icon" width={20} height={20} className="w-5 h-5" />
-            <span style={{ marginRight: "10px" } }>Autentifică-te cu Google</span>
-            <ArrowRight className="w-2 h-2 arrow" />
-          </motion.button>
+            <button
+                onClick={() => signIn()}
+                className={styles.keycloakButton}
+            >
+              <span>Autentifică-te cu Keycloak</span>
+              <ArrowRight className={styles.arrow} />
+            </button>
+          </div>
         </div>
-      </div>
-    </>
+      </>
   );
 };
 

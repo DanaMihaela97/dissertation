@@ -13,7 +13,6 @@ const RegisterPage = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -32,10 +31,13 @@ const RegisterPage = () => {
                 title: "Înregistrare reușită!",
                 text: "Te poți loga acum.",
                 icon: "success",
-                confirmButtonText: "OK",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
             }).then(() => {
                 router.push("/login");
             });
+
 
             setEmail("");
             setPassword("");
@@ -84,6 +86,15 @@ const RegisterPage = () => {
                             Înregistrează-te
                         </button>
                     </form>
+
+                    <button
+                        type="button"
+                        className={styles.alreadyAccountButton}
+                        onClick={() => router.push("/login")}
+                        disabled={loading}
+                    >
+                        Am deja cont
+                    </button>
 
                     {error && <p className={styles.error}>{error}</p>}
                 </div>

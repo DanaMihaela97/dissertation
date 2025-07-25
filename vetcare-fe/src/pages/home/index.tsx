@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { Stethoscope, Heart, PawPrint, Activity } from "lucide-react";
@@ -35,60 +36,62 @@ export default function Home() {
     return (
         <>
             <Navbar />
-            <div className="bg-gradient-to-br from-blue-50 to-green-50 homeBg">
+            <div className={`bg-gradient-to-br from-blue-50 to-green-50 ${styles.topDiv}`}>
                 <section className="py-12 px-4">
                     <div className="max-w-7xl mx-auto text-center">
-                        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-                            Sănătatea animalului tău, <span className="text-blue-600">prioritatea noastră</span>
+                        <h1 className={styles.headerText}>
+                            Sănătatea animalului tău, <span className={styles.text}>prioritatea <br />noastră</span>
                         </h1>
-                        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                            Consultații cu AI, profiluri personalizate, diagnostic rapid și sfaturi utile pentru animalutul tau.
+
+                        <p className={`text-xl text-gray-600 mb-8 max-w-3xl mx-auto ${styles.textParagraph}`}>
+                            Consultații cu AI, profiluri personalizate, diagnostic rapid și sfaturi <br />utile pentru animalutul tau.
                         </p>
-
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-                            <h2>Dashboard Sănătate Animale</h2>
-                            <div className="w-full sm:w-72 bg-white shadow-md rounded-lg">
-                                <div className="flex flex-row items-center justify-between pb-2 px-4 pt-4">
-                                    <h3 className="text-sm font-medium">Consultații Totale</h3>
-                                    <Activity className="h-4 w-4 text-muted-foreground" />
-                                </div>
-                                <div className="px-4 pb-4">
-                                    <div className="text-2xl font-bold">{consultationCount}</div>
-                                </div>
-                            </div>
-                            <div className="w-full sm:w-72 bg-white shadow-md rounded-lg">
-                                <div className="flex flex-row items-center justify-between pb-2 px-4 pt-4">
-                                    <h3 className="text-sm font-medium">Animale Înregistrate</h3>
-                                    <PawPrint className="h-4 w-4 text-muted-foreground" />
-                                </div>
-                                <div className="px-4 pb-4">
-                                    <div className="text-2xl font-bold">{animalCount}</div>
-                                </div>
-                            </div>
-                            <div className="w-full sm:w-72 bg-white shadow-md rounded-lg">
-                                <div className="flex flex-row items-center justify-between pb-2 px-4 pt-4">
-                                    <h3 className="text-sm font-medium">Satisfacție Clienți</h3>
-                                    <Heart className="h-4 w-4 text-muted-foreground" />
-                                </div>
-                                <div className="px-4 pb-4">
-                                    <div className="text-2xl font-bold">{reviewMean}</div>
-                                </div>
-                            </div>
-                        </div>
-
-
                         <div className={styles.buttonContainer}>
                             <a href="/consultatii" className={styles.button}>
                                 <Stethoscope className="h-5 w-5" />
-                                Consultație AI
+                                Afla mai multe despre serviciile noastre
                             </a>
-                            <a href="/create-animal-profile" className={styles.button2}>
-                                Creează Profil Animal
+                            <a href="/register" className={styles.button2}>
+                                Conecteaza-te pentru a incepe
                             </a>
                         </div>
 
+                        <div className={styles.dashboard}>
+                            <h2 className="text-2xl font-bold mb-6">Dashboard Sănătate Animale</h2>
+
+                            <div className={styles.cardContainer}>
+                                <div className={styles.card}>
+                                    <div className={styles.cardHeader}>
+                                        <h3 className={styles.cardTitle}>Consultații Totale</h3>
+                                        <Activity className={styles.cardIcon} style={{ color: '#3b82f6' }} />
+                                    </div>
+                                    <div className={styles.cardNumber}>{consultationCount}</div>
+                                </div>
+
+                                <div className={styles.card}>
+                                    <div className={styles.cardHeader}>
+                                        <h3 className={styles.cardTitle}>Animale Înregistrate</h3>
+                                        <PawPrint className={styles.cardIcon} style={{ color: '#10b981' }} />
+                                    </div>
+                                    <div className={styles.cardNumber}>{animalCount}</div>
+                                </div>
+
+                                <div className={styles.card}>
+                                    <div className={styles.cardHeader}>
+                                        <h3 className={styles.cardTitle}>Satisfacție Clienți</h3>
+                                        <Heart className={styles.cardIcon} style={{ color: '#ef4444' }} />
+                                    </div>
+                                    <div className={styles.cardNumber}>{reviewMean}</div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </section>
+                <div className={styles.darkBlueBanner}>
+                    <h2>Începe să îți îngrijești animalul mai bine astăzi</h2>
+                    <p>Alătură-te comunității PawCare și oferă animalului tău cea mai bună îngrijire medicală.</p>
+                </div>
             </div>
         </>
     );
