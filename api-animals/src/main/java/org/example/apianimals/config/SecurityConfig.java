@@ -18,6 +18,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(HttpMethod.GET, "/api/animals/count").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/websocket/updates").permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
