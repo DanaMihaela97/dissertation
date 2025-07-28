@@ -8,6 +8,7 @@ import org.example.apigateway.entity.User;
 import org.example.apigateway.repository.UserRepository;
 import org.example.apigateway.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,12 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate = new RestTemplate();
+
+    @Value("${realms_admin}")
+    private String realmsAdmin;
+
+    @Value("${realms_master}")
+    private String realmsMaster;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -70,7 +77,7 @@ public class UserServiceImpl implements UserService {
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
 
             ResponseEntity<String> response = restTemplate.postForEntity(
-                    "http://localhost:8080/admin/realms/disertatie/users",
+                    realmsAdmin + "/users",
                     entity,
                     String.class
             );
@@ -106,7 +113,7 @@ public class UserServiceImpl implements UserService {
         HttpEntity<?> request = new HttpEntity<>(data, headers);
 
         ResponseEntity <String> response = restTemplate.postForEntity(
-                "http://localhost:8080/realms/master/protocol/openid-connect/token",
+                realmsMaster,
                 request,
                 String.class
 

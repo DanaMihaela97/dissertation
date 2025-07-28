@@ -22,13 +22,13 @@ public class UserController {
 
     @GetMapping("/user")
     public ResponseEntity<User> getUser(@AuthenticationPrincipal OAuth2User principal) {
-        String email = principal.getAttribute("email");
+            String email = principal.getAttribute("email");
 
-        User user = userService.findByEmail(email);
+            User user = userService.findByEmail(email);
 
-        if (user == null) {
-            user = userService.saveUser(email);
-        }
+            if (user == null) {
+                user = userService.saveUser(email);
+            }
 
         return ResponseEntity.ok(user);
     }

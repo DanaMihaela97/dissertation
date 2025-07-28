@@ -25,4 +25,13 @@ public class AnimalVaccine {
 
     @Column(name = "date_administered")
     private LocalDate dateAdministered;
+
+
+    public LocalDate getNextVaccinationDate() {
+        if (vaccine == null || dateAdministered == null) {
+            return null;
+        }
+        return dateAdministered.plusDays(vaccine.getRapel_days());
+    }
+
 }

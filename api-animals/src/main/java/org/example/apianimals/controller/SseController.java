@@ -1,11 +1,11 @@
 package org.example.apianimals.controller;
-
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.example.apianimals.service.VaccineService;
 import org.springframework.http.codec.ServerSentEvent;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -20,16 +20,30 @@ public class SseController {
     public SseController(VaccineService vaccineService) {
         this.vaccineService = vaccineService;
     }
-
     @GetMapping("/updates")
     public Flux<ServerSentEvent<String>> streamEvents() {
-        AtomicInteger i = new AtomicInteger(0);
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        String email = null;
+
+        if (authentication != null && authentication.getCredentials() instanceof Jwt jwt) {
+            email = jwt.getClaimAsString("email");
+        }
+
+        if (email == null) {
+            return Flux.empty();
+        }
+
+        String finalEmail = email;
+
         return Flux.interval(Duration.ofSeconds(10))
-//        return vaccineService.getUpdates()
-              .map(productJson -> ServerSentEvent.<String>builder()
-              .id(String.valueOf(i.addAndGet(1)))
-              .event("vaccine-update")
-              .data("vaccine " + i)
-              .build());
+                .flatMap(tick -> vaccineService.getUpdates(finalEmail))
+                .filter(msg -> !msg.equals("No updates."))
+                .map(msg -> ServerSentEvent.<String>builder()
+                        .event("vaccine-update")
+                        .data(msg)
+                        .build());
     }
+
+
 }

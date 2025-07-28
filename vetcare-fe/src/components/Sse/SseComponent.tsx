@@ -1,35 +1,63 @@
 'use client'
 import { useEffect, useState } from 'react';
+import styles from './Sse.module.css';
+import {createEventSource} from "@/services/sseService";
 
-export default function SseComponent() {
+export default function SseBell() {
+    const [hasNotification, setHasNotification] = useState(false);
     const [latestUpdate, setLatestUpdate] = useState('');
-    const [isConnected, setIsConnected] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     useEffect(() => {
-        const eventSource = new EventSource('http://localhost:8060/websocket/updates');
+        const eventSource = createEventSource();
 
-        eventSource.onopen = () => {
-            console.log('SSE connection established.');
-            setIsConnected(true);
-        };
+        eventSource.onopen = () => console.log('SSE connected');
 
         eventSource.addEventListener('vaccine-update', (event) => {
-            console.log('Received newly added vaccine:', event.data);
+            setHasNotification(true);
             setLatestUpdate(event.data);
+            setShowPopup(true);
+
+            const audio = new Audio('/notification.mp3');
+            audio.play();
+
+            setTimeout(() => setShowPopup(false), 4000);
         });
 
         eventSource.onerror = (error) => {
-            console.error('EventSource failed:', error);
+            console.error('SSE error:', error);
             eventSource.close();
-            setIsConnected(false);
         };
 
-        // Cleanup function to close the connection when the component unmounts
-        return () => {
-            console.log('SSE connection closed.');
-            eventSource.close();
-        };
+        return () => eventSource.close();
     }, []);
 
-    return
+    const handleBellClick = () => {
+        setIsOpen(!isOpen);
+        setHasNotification(false);
+    };
+
+    return (
+        <div className={styles.notificationContainer}>
+            {showPopup && (
+                <div className={styles.popupMessage}>
+                    🔔 Ai primit o notificare
+                </div>
+            )}
+            {isOpen && (
+                <div className={styles.notificationDropdown}>
+                    {latestUpdate}
+                </div>
+            )}
+            <button
+                className={`${styles.bellButton} ${hasNotification ? styles.hasNotification : ''}`}
+                onClick={handleBellClick}
+            >
+                🔔
+                {hasNotification && <span className={styles.notificationDot}></span>}
+            </button>
+
+        </div>
+    );
 }

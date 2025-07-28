@@ -74,3 +74,7 @@ logging.level:
   org.springframework.web.reactive.function.client: TRACE
 server:
   port: 8060
+
+
+realms_master: http://localhost:8080/realms/master/protocol/openid-connect/token
+realms_admin: http://localhost:8080/admin/realms/vetcare

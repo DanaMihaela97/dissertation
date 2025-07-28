@@ -9,5 +9,5 @@ import java.util.List;
 public interface VaccineService {
     List<Vaccine> getVaccines();
 
-    Flux<Vaccine> getUpdates(); // fct de returnat vaccinuri din perioada urm
+    Flux<String> getUpdates(String email); // fct de returnat vaccinuri din perioada urm
 }
