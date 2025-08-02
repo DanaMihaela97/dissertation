@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useSession, signOut, signIn } from 'next-auth/react';
 import styles from './Navbar.module.css';
 import Image from 'next/image'
+
 const Navbar = () => {
     const { data: session } = useSession();
     const [isOpenAnimal, setIsOpenAnimal] = useState(false);
@@ -27,7 +28,7 @@ const Navbar = () => {
     }, []);
 
     const handleLogout = () => {
-        localStorage.clear();
+        document.cookie = `email=null`;
         signOut({ callbackUrl: '/' });
 
     };

@@ -1,15 +1,17 @@
 
-import AnimalProfileComponent from '@/components/AnimalProfile/AnimalProfileComponent';
+import AnimalProfileComponent from '@/components/AnimalProfile';
 import { AnimalProfile } from '@/components/entities/animalProfile';
 import { Vaccine } from '@/components/entities/vaccines';
-import Navbar from '@/components/Navbar';
 import { getAllAnimals, getVaccines } from '@/services/animalService';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import styles from './profile.module.css';
+import Layout from "@/components/Layout";
+import Authentication from "@/components/Authentication";
+import {useRouter} from "next/router";
 
 const Animals = () => {
   const [animals, setAnimals] = useState<AnimalProfile[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,23 +46,24 @@ const Animals = () => {
   }, []);
 
   return (
-    <>
-      <Navbar />
-      <div style={{ padding: '20px' }}>
-        <h2>Profiluri animale</h2>
-        <div className={styles.container} style={{ marginTop: '50px' }}>
-          {animals.map((animal) => (
-            <div key={animal.id} className={styles.cardWrapper}>
-              <AnimalProfileComponent animal={animal} />
-              <Link href={`/animals/${animal.id}`} className={styles.detailsLink}>
-                Vezi detalii
-              </Link>
+    <Layout>
+      <Authentication>
+        <div style={{ padding: '20px' }}>
+          <h2>Profiluri animale</h2>
+          <div className={styles.container} style={{ marginTop: '50px' }}>
+            {animals.map((animal) => (
+               <div key={animal.id} className={styles.cardWrapper}>
+                 <AnimalProfileComponent animal={animal} />
+                 <button className={styles.detailsLink} onClick={() => router.push(`/animals/${animal.id}`)}>
+                   Vezi detalii
+                 </button>
 
-            </div>
-          ))}
+               </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </>
+      </Authentication>
+    </Layout>
   );
 
 }

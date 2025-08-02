@@ -1,11 +1,11 @@
 import Navbar from "@/components/Navbar";
 import { PawPrintIcon as Paw, Calendar, MessageCircle, Star, MapPin, Shield } from "lucide-react"
 import styles from './About.module.css';
+import Layout from "@/components/Layout";
 const About = () => {
 
     return (
-        <>
-            <Navbar />
+        <Layout>
             <div className={styles.container}>
                 <div className={styles.titleSection}>
                     <h1>Despre PawCare</h1>
@@ -72,7 +72,7 @@ const About = () => {
 
                 </div>
             </div>
-        </>
+        </Layout>
     )
 }
 

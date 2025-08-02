@@ -1,7 +1,8 @@
 // import { AnimalVaccine } from '@/components/entities/animalVaccine';
 // import { CreateAnimalProfile } from '@/components/entities/createAnimalProfile';
 // import { Vaccine } from '@/components/entities/vaccines';
-// import axios from 'axios';
+// import axiosInstance from "@/utils/axiosInstance";
+
 
 // const URL = "http://localhost:8060";
 // const getAuthHeaders = () => ({
@@ -11,126 +12,116 @@
 // });
 
 // export const createAnimal = async (animal: any): Promise<any> => {
-//   const response = await axios.post(`${URL}/api/animals/`, animal, getAuthHeaders());
+//   const response = await axios.post(`/api/animals/`, animal);
 //   return response.data;
 // };
 
 // export const createAnimalVaccines = async (animalId: number, vaccines: any[]): Promise<any> => {
 //   if (!vaccines || vaccines.length === 0) return; 
-//   const response = await axios.post(`${URL}/api/animals/${animalId}/vaccines`, vaccines, getAuthHeaders());
+//   const response = await axios.post(`/api/animals/${animalId}/vaccines`, vaccines);
 //   return response.data;
 // };
 
 // export const getAllAnimals = async (): Promise<CreateAnimalProfile[]> => {
-//   const response = await axios.get(`${URL}/api/animals/`, getAuthHeaders());
+//   const response = await axios.get(`/api/animals/`);
 //   return response.data;
 // };
 
 // export const getAnimalById = async (animalId: number) : Promise<any> =>{
-//    const response = await axios.get(`${URL}/api/animals/${animalId}`, getAuthHeaders());
+//    const response = await axios.get(`/api/animals/${animalId}`);
 //   return response.data;
 // }
 
 // export const getDogBreeds = async (): Promise<string[]> => {
-//   const response = await axios.get(`${URL}/api/animals/dog-breeds`, getAuthHeaders());
+//   const response = await axios.get(`/api/animals/dog-breeds`);
 //   return response.data;
 // };
 
 // export const getCatBreeds = async (): Promise<string[]> => {
-//   const response = await axios.get(`${URL}/api/animals/cat-breeds`, getAuthHeaders());
+//   const response = await axios.get(`/api/animals/cat-breeds`);
 //   return response.data;
 // };
 
 // export const getVaccines = async (): Promise<Vaccine[]> => {
-//   const response = await axios.get(`${URL}/api/vaccines/`, getAuthHeaders());
+//   const response = await axios.get(`/api/vaccines/`);
 //   return response.data;
 // }
 
 // export const getAnimalVaccines = async (id: number): Promise<AnimalVaccine[]> => {
-//   const response = await axios.get(`${URL}/api/animals/${id}/vaccines`, getAuthHeaders());
+//   const response = await axios.get(`/api/animals/${id}/vaccines`);
 //   return response.data;
 // }
-import { AnimalProfile } from '@/components/entities/animalProfile';
-import { AnimalVaccine } from '@/components/entities/animalVaccine';
-import { CreateAnimalProfile } from '@/components/entities/createAnimalProfile';
-import { Vaccine } from '@/components/entities/vaccines';
-import axios from 'axios';
-import {Review} from "@/components/entities/review";
-
-const URL = "http://localhost:8060";
-
-const getAuthHeaders = () => {
-  if (typeof window !== 'undefined') {
-    const jwtToken = localStorage.getItem("jwt");
-    console.log("JWT Token from localStorage:", jwtToken); 
-    return {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`
-      }
-    };
-  }
-  return { headers: {} };
-};
+import {AnimalProfile} from '@/components/entities/animalProfile';
+import {AnimalVaccine} from '@/components/entities/animalVaccine';
+import {CreateAnimalProfile} from '@/components/entities/createAnimalProfile';
+import {Vaccine} from '@/components/entities/vaccines';
+import axiosInstance from "@/utils/axiosInstance";
 
 export const createAnimal = async (animal: any): Promise<any> => {
-  const response = await axios.post(`${URL}/api/animals/`, animal, getAuthHeaders());
-  return response.data;
+   const response = await axiosInstance.post(`/api/animals/`, animal);
+   return response.data;
 };
 
 export const createAnimalVaccines = async (animalId: number, vaccines: any[]): Promise<any> => {
-  if (!vaccines || vaccines.length === 0) return;
-  const response = await axios.post(`${URL}/api/animals/${animalId}/vaccines`, vaccines, getAuthHeaders());
-  return response.data;
+   if (!vaccines || vaccines.length === 0) return;
+   const response = await axiosInstance.post(`/api/animals/${animalId}/vaccines`, vaccines);
+   return response.data;
 };
 
 export const getAllAnimals = async (): Promise<CreateAnimalProfile[]> => {
-  const response = await axios.get(`${URL}/api/animals/`, getAuthHeaders());
-  return response.data;
+   const response = await axiosInstance.get(`/api/animals/`);
+   return response.data;
 };
 
-export const getAnimalById = async (animalId: number, token?: string): Promise<any> => {
-  const headers = { headers: { Authorization: `Bearer ${token}` } };
+export const getAnimalByIdWithToken = async (animalId: number, token?: string): Promise<AnimalProfile> => {
+   const headers = {headers: {Authorization: `Bearer ${token}`}};
 
-  const response = await axios.get(`${URL}/api/animals/${animalId}`, headers);
-  return response.data;
+   const response = await axiosInstance.get(`/api/animals/${animalId}`, headers);
+   return response.data;
+};
+
+export const getAnimalById = async (animalId: number): Promise<AnimalProfile> => {
+   const response = await axiosInstance.get(`/api/animals/${animalId}`);
+   return response.data;
 };
 
 export const getDogBreeds = async (): Promise<string[]> => {
-  const response = await axios.get(`${URL}/api/animals/dog-breeds`, getAuthHeaders());
-  return response.data;
+   const response = await axiosInstance.get(`/api/animals/dog-breeds`);
+   return response.data;
 };
 
 export const getCatBreeds = async (): Promise<string[]> => {
-  const response = await axios.get(`${URL}/api/animals/cat-breeds`, getAuthHeaders());
-  return response.data;
+   const response = await axiosInstance.get(`/api/animals/cat-breeds`);
+   return response.data;
 };
+
 export const getVaccines = async (): Promise<Vaccine[]> => {
-  const response = await axios.get(`${URL}/api/vaccines/`, getAuthHeaders());
-  return response.data.data || response.data;
+   const response = await axiosInstance.get(`/api/vaccines/`);
+   return response.data.data || response.data;
 };
 
 export const getAnimalVaccines = async (id: number): Promise<AnimalVaccine[]> => {
-  const response = await axios.get(`${URL}/api/animals/${id}/vaccines`, getAuthHeaders());
-  return response.data;
+   const response = await axiosInstance.get(`/api/animals/${id}/vaccines`);
+   return response.data;
 }
 
 export const getAllAnimalIds = async (): Promise<number[]> => {
-  try {
-    const response = await axios.get<AnimalProfile[]>(`${URL}/api/animals`, getAuthHeaders());
-    const animalIds = response.data.map((animal) => animal.id);
-    return animalIds;
-  } catch (error) {
-    console.error("Error fetching animal IDs:", error);
-    return [];
-  }
+   try {
+      const response = await axiosInstance.get<AnimalProfile[]>(`/api/animals`);
+      const animalIds = response.data.map((animal) => animal.id);
+      return animalIds;
+   } catch (error) {
+      console.error("Error fetching animal IDs:", error);
+      return [];
+   }
 };
 export const getAnimalCount = async () => {
-  try {
-    const response = await axios.get(`${URL}/api/animals/count`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching animal count:', error);
-    throw error;
-  }
+   try {
+      const response = await axiosInstance.get(`/api/animals/count`);
+      return response.data;
+   } catch (error) {
+      console.error('Error fetching animal count:', error);
+      throw error;
+   }
 }
 

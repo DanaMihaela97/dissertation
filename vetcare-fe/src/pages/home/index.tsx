@@ -1,10 +1,12 @@
 
+
 import React, { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
 import { Stethoscope, Heart, PawPrint, Activity } from "lucide-react";
 import { getAnimalCount } from "@/services/animalService";
 import styles from "./home.module.css";
 import { getConsultationCount, getReviewMean } from "@/services/reviewService";
+import Layout from "@/components/Layout";
+import { signIn, useSession } from "next-auth/react"
 
 export default function Home() {
     const [animalCount, setAnimalCount] = useState(null);
@@ -34,8 +36,7 @@ export default function Home() {
 
 
     return (
-        <>
-            <Navbar />
+        <Layout>
             <div className={`bg-gradient-to-br from-blue-50 to-green-50 ${styles.topDiv}`}>
                 <section className="py-12 px-4">
                     <div className="max-w-7xl mx-auto text-center">
@@ -93,6 +94,6 @@ export default function Home() {
                     <p>Alătură-te comunității PawCare și oferă animalului tău cea mai bună îngrijire medicală.</p>
                 </div>
             </div>
-        </>
+        </Layout>
     );
 }

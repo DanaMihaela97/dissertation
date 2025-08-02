@@ -13,11 +13,8 @@ const AnimalProfileComponent = ({ animal }: { animal: AnimalProfile }) => {
     );
  const router = useRouter();
 
-  const handleClick = () => {
-    router.push(`/animals/${animal.id}`);
-  };
   return (
-    <div className={styles.card} onClick={handleClick} style={{ cursor: "pointer" }}>
+    <div className={styles.card} onClick={() => router.push(`/animals/${animal.id}`)} style={{ cursor: "pointer" }}>
       <div className={styles.header}>
         {animalIcon}
         <h3 className={styles.title}>{animal.animalName}</h3>

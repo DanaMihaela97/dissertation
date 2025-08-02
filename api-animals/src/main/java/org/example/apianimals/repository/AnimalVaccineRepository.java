@@ -16,11 +16,14 @@ public interface AnimalVaccineRepository  extends JpaRepository<AnimalVaccine, L
 //    @NativeQuery(value="SELECT A.id A.animal_name V.vaccine_id V.date_administered " +
 //            "from Animal A INNER JOIN animal_vaccines V ON A.id = V.animal_id" +
 //            " WHERE A.email LIKE %?1")
-    @NativeQuery("SELECT A.id, A.animal_name, AV.vaccine_id, AV.date_administered, V.name" +
-            " from Animal A INNER JOIN animal_vaccines AV ON A.id = AV.animal_id, vaccines V" +
-            " WHERE A.email LIKE %?1" +
-            " AND AV.vaccine_id = V.id" +
-            " AND V.rapel_days != -1" +
-            " AND DATEDIFF(DATE_ADD(AV.date_administered, INTERVAL 14 DAY), CURDATE()) < 0")
-    List<AnimalVaccineJoinDto> findAnimals(String email);
+@NativeQuery(
+        "SELECT A.id, A.animal_name, AV.vaccine_id, AV.date_administered, V.name " +
+                "FROM Animal A " +
+                "INNER JOIN animal_vaccines AV ON A.id = AV.animal_id " +
+                "INNER JOIN vaccines V ON AV.vaccine_id = V.id " +
+                "WHERE A.email LIKE CONCAT('%', ?1) " +
+                "AND V.rapel_days != -1 " +
+                "AND DATEDIFF(DATE_ADD(AV.date_administered, INTERVAL 14 DAY), CURDATE()) < 0"
+)
+List<AnimalVaccineJoinDto> findAnimals(String email);
 }
