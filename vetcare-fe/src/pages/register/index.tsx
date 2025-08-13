@@ -34,9 +34,6 @@ const RegisterPage = () => {
             router.push("/login");
          });
 
-
-         setEmail("");
-         setPassword("");
       } catch (err) {
          console.error(err);
          Swal.fire({

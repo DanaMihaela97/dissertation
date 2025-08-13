@@ -4,7 +4,7 @@ import axiosInstance from "@/utils/axiosInstance";
 export const startChat = async (
   animal: AnimalProfile
 ): Promise<{ message: string; sessionId: string; botResponse: string }> => {
-  const response = await axiosInstance.post(`/start`, animal);
+  const response = await axiosInstance.post(`/api/chat/start`, animal);
     console.log(response.data)
   return response.data;
 };
@@ -14,7 +14,7 @@ export const sendMessage = async (
     userMessage: string
 ): Promise<{ reply: string, finished: boolean}> => {
     const response = await axiosInstance.post(
-        `/send/${sessionId}`,
+        `/api/chat/send/${sessionId}`,
         userMessage
     );
     console.log(response.data)
@@ -22,6 +22,6 @@ export const sendMessage = async (
 };
 
 export const getConsultationsByAnimalId = async (animalId: number) => {
-  const response = await axiosInstance.get(`/${animalId}`);
+  const response = await axiosInstance.get(`/api/chat/${animalId}`);
   return response.data;  
 };

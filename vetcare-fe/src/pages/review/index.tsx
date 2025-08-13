@@ -148,6 +148,7 @@ export default function ReviewPage() {
                   </label>
                   <textarea
                      id="feedback"
+                     disabled={!session}
                      value={feedback}
                      onChange={(e) => {
                         if (!session) {
@@ -169,7 +170,7 @@ export default function ReviewPage() {
 
                {error && <div className={styles.error}>{error}</div>}
 
-               <button type="submit" className="btn btn-success" disabled={loading}>
+               <button type="submit" className="btn btn-success" disabled={loading} >
                   Trimite recenzia
                </button>
             </form>

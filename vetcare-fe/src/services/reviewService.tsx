@@ -3,7 +3,7 @@ import axiosInstance from "@/utils/axiosInstance";
 
 
 export const createReview = async (review: Omit<Review, "email" | "createdAt">): Promise<Review> => {
-  const response = await axiosInstance.post(`/api/reviews/`, review);
+  const response = await axiosInstance.post(`/api/reviews`, review);
   return response.data;
 };
 

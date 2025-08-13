@@ -18,7 +18,6 @@ public class RegisterController {
         this.userService = userService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/signUp")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         return userService.registerUser(request);
