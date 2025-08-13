@@ -1,57 +1,52 @@
 import React from 'react';
 import { AnimalProfile } from '../entities/animalProfile';
-import { Cake, Cat, Dog, Syringe, Weight } from 'lucide-react';
+import { Cake, Cat, Dog, Weight } from 'lucide-react';
 import styles from "./AnimalProfile.module.css";
 import { useRouter } from 'next/router';
+import { getAgeString } from "@/utils/animalData";
 
 const AnimalProfileComponent = ({ animal }: { animal: AnimalProfile }) => {
-  const animalIcon =
-    animal.type === "Câine" ? (
-      <Dog size={40} color="#2c7be5" />
-    ) : (
-      <Cat size={40} color="#2c7be5" />
-    );
- const router = useRouter();
+   const router = useRouter();
 
-  return (
-    <div className={styles.card} onClick={() => router.push(`/animals/${animal.id}`)} style={{ cursor: "pointer" }}>
-      <div className={styles.header}>
-        {animalIcon}
-        <h3 className={styles.title}>{animal.animalName}</h3>
+   const isDog = animal.type === "Câine";
+   const typeColor = isDog ? "#2c7be5" : "#f97316";
+
+   return (
+      <div className={styles.card}>
+         <div className={styles.header}>
+            <div
+               className={styles.animalIcon}
+               style={{ backgroundColor: typeColor + "22" }}
+            >
+               {isDog ? <Dog size={30} color={typeColor} /> : <Cat size={30} color={typeColor} />}
+            </div>
+            <div className={styles.nameBreed}>
+               <h3 className={styles.title}>{animal.animalName}</h3>
+               <span
+                  className={styles.breedBadge}
+                  style={{ backgroundColor: typeColor + "22", color: typeColor }}
+               >
+            {animal.breed}
+          </span>
+            </div>
+         </div>
+
+         <div className={styles.infoCards}>
+            <div className={`${styles.infoCard} ${styles.age}`}>
+               <Cake size={20} color="#f97316" />
+               <span>{getAgeString(animal.birthdate)}</span>
+            </div>
+            <div className={`${styles.infoCard} ${styles.weight}`}>
+               <Weight size={20} color="#16a34a" />
+               <span>{animal.weight} kg</span>
+            </div>
+         </div>
+
+         <button className={styles.detailsButton} onClick={() => router.push(`/animals/${animal.id}`)}>
+            Vezi detalii complete
+         </button>
       </div>
-
-      <p className={styles.breed}>{animal.breed}</p>
-
-      <div className={styles.infoRow}>
-        <div className={styles.infoItem}>
-          <Cake size={20} />
-          <p>{animal.age} ani</p>
-        </div>
-
-        <div className={styles.infoItem}>
-          <Weight size={20} />
-          <p>{animal.weight} kg</p>
-        </div>
-      </div>
-
-      <div className={styles.vaccinesSection}>
-        <h4>Vaccinuri administrate:</h4>
-        {animal.vaccines.length > 0 ? (
-          <ul className={styles.vaccineList}>
-            {animal.vaccines.map((vaccine) => (
-              <li key={vaccine.vaccineId} className={styles.vaccineItem}>
-                <Syringe size={16} />
-                {vaccine.vaccineName || "Nume necunoscut"} -{" "}
-                {new Date(vaccine.dateAdministered).toLocaleDateString()}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className={styles.noVaccines}>Nu există vaccinuri înregistrate.</p>
-        )}
-      </div>
-    </div>
-  );
+   );
 };
 
 export default AnimalProfileComponent;

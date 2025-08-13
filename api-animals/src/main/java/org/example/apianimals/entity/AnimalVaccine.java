@@ -15,23 +15,16 @@ public class AnimalVaccine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "animal_id")
     private Animal animal;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vaccine_id")
+    @ManyToOne
+    @JoinColumn
     private Vaccine vaccine;
 
     @Column(name = "date_administered")
     private LocalDate dateAdministered;
 
-
-    public LocalDate getNextVaccinationDate() {
-        if (vaccine == null || dateAdministered == null) {
-            return null;
-        }
-        return dateAdministered.plusDays(vaccine.getRapel_days());
-    }
 
 }

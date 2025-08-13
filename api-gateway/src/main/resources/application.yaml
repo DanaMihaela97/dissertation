@@ -30,7 +30,7 @@ spring:
         - id: api-chat
           uri: http://localhost:7004
           predicates:
-            - Path=/api/chat/**,/api/reviews/**
+            - Path=/api/chat/**,/api/reviews/**,/api/locate/**
   security.oauth2:
     resourceserver:
       jwt:

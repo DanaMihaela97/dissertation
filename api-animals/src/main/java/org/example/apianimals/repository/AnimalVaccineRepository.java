@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AnimalVaccineRepository  extends JpaRepository<AnimalVaccine, Long> {
     List<AnimalVaccine> findByAnimalId(Long animalId);
@@ -26,4 +27,8 @@ public interface AnimalVaccineRepository  extends JpaRepository<AnimalVaccine, L
                 "AND DATEDIFF(DATE_ADD(AV.date_administered, INTERVAL 14 DAY), CURDATE()) < 0"
 )
 List<AnimalVaccineJoinDto> findAnimals(String email);
+
+    Optional<AnimalVaccine> findByAnimalIdAndVaccineId(Long animalId, Long vaccineId);
+    void deleteByAnimalIdAndVaccineId(Long animalId, Long vaccineId);
+
 }

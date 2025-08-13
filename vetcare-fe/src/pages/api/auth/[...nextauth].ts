@@ -1,9 +1,7 @@
-// pages/api/auth/[...nextauth].ts
 import NextAuth from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import Keycloak from "next-auth/providers/keycloak";
 
-// Helper function to refresh the access token
 async function refreshAccessToken(token: JWT) {
   try {
     const url = `${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/token`;

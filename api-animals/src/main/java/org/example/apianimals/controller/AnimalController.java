@@ -8,6 +8,7 @@ import org.example.apianimals.service.AnimalService;
 import org.example.apianimals.service.AnimalVaccineService;
 import org.example.apianimals.service.impl.AnimalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -90,4 +91,43 @@ public class AnimalController {
     public ResponseEntity<Integer> getAnimalCount() {
         return ResponseEntity.ok(animalService.animalCount());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> editAnimal(@PathVariable Long id, @RequestBody AnimalInfoDto animalInfoDto){
+        animalInfoDto.setId(id);
+        animalService.editAnimal(animalInfoDto);
+        return ResponseEntity.ok(animalInfoDto.toString());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAnimal(@PathVariable Long id) {
+        animalService.deleteAnimal(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{animalId}/vaccines")
+    public ResponseEntity<List<AnimalVaccineInfoDto>> updateAnimalVaccines(
+            @PathVariable Long animalId,
+            @RequestBody List<AnimalVaccineCreateDto> vaccineCreateDtos) {
+        try {
+            List<AnimalVaccineInfoDto> updatedVaccines = animalVaccineService.updateAnimalVaccines(animalId, vaccineCreateDtos);
+            return ResponseEntity.ok(updatedVaccines);
+        } catch (RuntimeException ex) {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @DeleteMapping("/{animalId}/vaccines/{vaccineId}")
+    public ResponseEntity<Void> deleteVaccineFromAnimal(
+            @PathVariable Long animalId,
+            @PathVariable Long vaccineId) {
+        try {
+            animalService.deleteVaccine(animalId, vaccineId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

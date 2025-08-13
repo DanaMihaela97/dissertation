@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useSession, signOut, signIn } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import styles from './Navbar.module.css';
 import Image from 'next/image'
 
@@ -68,13 +68,13 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`${styles.navLink} nav-link`} href="/consultatii">
+                            <Link className={`${styles.navLink} nav-link`} href="/services">
                                 Servicii
                             </Link>
                         </li>
                         <li className="nav-item">
                             <Link className={`${styles.navLink} nav-link`} href="/review">
-                                Review-uri
+                                Recenzii
                             </Link>
                         </li>
                         <li className="nav-item dropdown" ref={dropdownRef}>

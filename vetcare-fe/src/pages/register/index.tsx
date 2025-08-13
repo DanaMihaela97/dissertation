@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import Swal from "sweetalert2";
 import {useRouter} from "next/router";
-import {register} from "@/services/registerService";
 import styles from './Register.module.css';
 import Layout from "@/components/Layout";
 
@@ -24,7 +23,6 @@ const RegisterPage = () => {
       }
 
       try {
-         const account = {email, password};
          Swal.fire({
             title: "Înregistrare reușită!",
             text: "Te poți loga acum.",

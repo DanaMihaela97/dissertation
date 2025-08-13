@@ -10,5 +10,8 @@ public interface AnimalService {
     List<AnimalInfoDto> getAnimals(String email);
     AnimalInfoDto getAnimalById(Long id);
     int animalCount();
+    void editAnimal(AnimalInfoDto animalInfoDto);
+    void deleteAnimal(Long id);
+    void deleteVaccine(Long animalId, Long vaccineId);
 
 }

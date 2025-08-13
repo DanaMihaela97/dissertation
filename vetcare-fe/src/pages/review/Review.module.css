@@ -1,10 +1,17 @@
+
 .container {
   max-width: 600px;
   margin: 2rem auto;
   font-family: Arial, sans-serif;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
-.title {
+.formCard {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
   margin-bottom: 2rem;
 }
 
@@ -16,40 +23,52 @@
   font-weight: bold;
   display: block;
   margin-bottom: 5px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
 }
 
 .textarea {
   width: 100%;
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   resize: vertical;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .error {
   color: red;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+  font-size: 0.9rem;
 }
 
-.button {
-  margin-top: 1rem;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 6px;
+.starContainer {
+  display: flex;
+  gap: 5px;
+  margin-top: 6px;
+  user-select: none;
+}
+
+.star {
+  font-size: 26px;
+  color: #ffbf00;
+  line-height: 1;
   cursor: pointer;
-  transition: opacity 0.3s ease;
+  transition: transform 0.2s ease, color 0.3s ease;
 }
 
-.buttonDisabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.star.empty {
+  color: #ccc;
+}
+
+.star:hover {
+  transform: scale(1.2);
+  color: #fcd34d;
 }
 
 .hr {
-  margin: "2rem 0";
+  margin: 2rem 0;
   border: 0;
   border-top: 1px solid #ddd;
 }
@@ -57,11 +76,163 @@
 .reviewList {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.reviewItem {
-  border-bottom: 1px solid #ddd;
-  padding: 1rem 0;
+.reviewCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.reviewEmail {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+}
+
+.reviewFeedback {
+  margin-top: 5px;
+  white-space: pre-wrap;
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+}
+
+.reviewDate {
+  color: #777;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.notLoggedIn {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+  margin: 1rem 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 25px;
+  text-align: center;
+  margin-top:12px;
+}
+.subtitle2{
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 25px;
+  margin-top:12px;
+}
+.statsContainer {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.statCard {
+  flex: 0 1 250px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.statCard h3 {
+  font-size: 2rem;
+  color: #28a745;
+  margin-bottom: 5px;
+}
+
+.statCard p {
+  margin: 2px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.starContainer {
+  display: flex;
+  gap: 5px;
+}
+
+.star {
+  font-size: 1.5rem;
+  color: #ffc107;
+  cursor: pointer;
+}
+
+.empty {
+  color: #ddd;
+}
+
+.formCard {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.hr {
+  margin: 40px 0;
+  border: 0;
+  height: 1px;
+  background: #eee;
+}
+
+/* Review list */
+.reviewList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.reviewCard {
+  background-color: #f8f9fa;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .reviewEmail {
@@ -70,11 +241,40 @@
 }
 
 .reviewFeedback {
-  margin-top: 5px;
-  white-space: pre-wrap;
+  margin: 10px 0;
 }
 
 .reviewDate {
-  color: #555;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.iconWrapper {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 15px auto;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+
+.iconWrapper:hover {
+  transform: scale(1.1);
+}
+
+.starWrapper {
+  background: linear-gradient(135deg, #92ade3, #598aff);
+}
+
+.userWrapper {
+  background: linear-gradient(135deg, #c3ed91, #28a55b);
+}
+
+.starIcon, .userIcon {
+  width: 28px;
+  height: 28px;
+  color: white;
 }

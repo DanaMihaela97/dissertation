@@ -1,12 +1,11 @@
-
-
 import React, { useEffect, useState } from "react";
-import { Stethoscope, Heart, PawPrint, Activity } from "lucide-react";
+import {Stethoscope, PawPrint, Activity, ArrowBigDown} from "lucide-react";
 import { getAnimalCount } from "@/services/animalService";
-import styles from "./home.module.css";
+import styles from "./Home.module.css";
 import { getConsultationCount, getReviewMean } from "@/services/reviewService";
 import Layout from "@/components/Layout";
-import { signIn, useSession } from "next-auth/react"
+import StarRating from "@/components/StarRating";
+import CarouselDiseases from "@/components/Carousel";
 
 export default function Home() {
     const [animalCount, setAnimalCount] = useState(null);
@@ -38,60 +37,70 @@ export default function Home() {
     return (
         <Layout>
             <div className={`bg-gradient-to-br from-blue-50 to-green-50 ${styles.topDiv}`}>
-                <section className="py-12 px-4">
-                    <div className="max-w-7xl mx-auto text-center">
+                <section className={`relative flex flex-col items-center justify-center min-h-[85vh] w-full text-center px-4 ${styles.heroSection}`}>
+                    <div className="max-w-4xl mx-auto">
                         <h1 className={styles.headerText}>
                             Sănătatea animalului tău, <span className={styles.text}>prioritatea <br />noastră</span>
                         </h1>
 
-                        <p className={`text-xl text-gray-600 mb-8 max-w-3xl mx-auto ${styles.textParagraph}`}>
-                            Consultații cu AI, profiluri personalizate, diagnostic rapid și sfaturi <br />utile pentru animalutul tau.
+                        <p className={`text-xl text-gray-600 mt-6 mb-8 ${styles.textParagraph}`}>
+                            Consultații cu AI, profiluri personalizate, diagnostic rapid și sfaturi <br />utile pentru animaluțul tău.
                         </p>
+
                         <div className={styles.buttonContainer}>
-                            <a href="/consultatii" className={styles.button}>
+                            <a href="/services" className={styles.button}>
                                 <Stethoscope className="h-5 w-5" />
                                 Afla mai multe despre serviciile noastre
                             </a>
                             <a href="/register" className={styles.button2}>
-                                Conecteaza-te pentru a incepe
+                                Conectează-te pentru a începe
                             </a>
                         </div>
+                    </div>
+                    <div className={styles.scrollContainer}>
+                        <p className={styles.scrollTitle}>Apasa aici pentru a vedea cele mai comune boli, in functie de rasa</p>
+                        <a href="#next-section" className={styles.scrollArrow}>
+                            <ArrowBigDown size={48} strokeWidth={1.5} />
+                        </a>
+                    </div>
 
-                        <div className={styles.dashboard}>
-                            <h2 className="text-2xl font-bold mb-6">Dashboard Sănătate Animale</h2>
+                </section>
 
-                            <div className={styles.cardContainer}>
-                                <div className={styles.card}>
-                                    <div className={styles.cardHeader}>
-                                        <h3 className={styles.cardTitle}>Consultații Totale</h3>
-                                        <Activity className={styles.cardIcon} style={{ color: '#3b82f6' }} />
-                                    </div>
-                                    <div className={styles.cardNumber}>{consultationCount}</div>
+                <div id="next-section">
+                    <CarouselDiseases />
+
+                    <div className={styles.dashboard}>
+                        <h2 className={styles.h2monitoring}>Monitorizare Activitate - situație curentă</h2>
+                        <div className={styles.cardContainer}>
+                            <div className={styles.card}>
+                                <div className={styles.cardHeader}>
+                                    <h3 className={styles.cardTitle}>Consultații Totale</h3>
+                                    <Activity className={styles.cardIcon} style={{ color: '#3b82f6' }} />
                                 </div>
-
-                                <div className={styles.card}>
-                                    <div className={styles.cardHeader}>
-                                        <h3 className={styles.cardTitle}>Animale Înregistrate</h3>
-                                        <PawPrint className={styles.cardIcon} style={{ color: '#10b981' }} />
-                                    </div>
-                                    <div className={styles.cardNumber}>{animalCount}</div>
-                                </div>
-
-                                <div className={styles.card}>
-                                    <div className={styles.cardHeader}>
-                                        <h3 className={styles.cardTitle}>Satisfacție Clienți</h3>
-                                        <Heart className={styles.cardIcon} style={{ color: '#ef4444' }} />
-                                    </div>
-                                    <div className={styles.cardNumber}>{reviewMean}</div>
-                                </div>
+                                <div className={styles.cardNumber}>{consultationCount}</div>
                             </div>
-
+                            <div className={styles.card}>
+                                <div className={styles.cardHeader}>
+                                    <h3 className={styles.cardTitle}>Animale Înregistrate</h3>
+                                    <PawPrint className={styles.cardIcon} style={{ color: '#10b981' }} />
+                                </div>
+                                <div className={styles.cardNumber}>{animalCount}</div>
+                            </div>
                         </div>
                     </div>
-                </section>
-                <div className={styles.darkBlueBanner}>
-                    <h2>Începe să îți îngrijești animalul mai bine astăzi</h2>
-                    <p>Alătură-te comunității PawCare și oferă animalului tău cea mai bună îngrijire medicală.</p>
+
+                    <div className={styles.darkBlueBanner}>
+                        <h2>Începe să îți îngrijești animalul mai bine astăzi</h2>
+                        <p>Alătură-te comunității PawCare și oferă animalului tău cea mai bună îngrijire medicală.</p>
+                    </div>
+
+                    <div className={styles.customerSatisfactionBox}>
+                        <h3 className={styles.customerSatisfactionTitle}>Satisfacția Clienților</h3>
+                        <StarRating rating={reviewMean || 0} />
+                        <div className={styles.customerSatisfactionScore}>
+                            {reviewMean ? reviewMean.toFixed(1) : '0'}/5
+                        </div>
+                    </div>
                 </div>
             </div>
         </Layout>

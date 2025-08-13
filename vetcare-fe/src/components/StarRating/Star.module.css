@@ -1,0 +1,19 @@
+.starContainer {
+    display: flex;
+    gap: 3px;
+    margin-top: 6px;
+    user-select: none;
+}
+
+.star {
+    font-size: 16px;
+    color: #f59e0b;
+    line-height: 1;
+    cursor: default;
+    transition: color 0.2s ease;
+    margin-bottom:5px;
+}
+
+.star.empty {
+    color: #d1d5db;
+}

@@ -5,7 +5,6 @@ import org.example.apianimals.dto.AnimalVaccineJoinDto;
 import org.example.apianimals.entity.Animal;
 import org.example.apianimals.entity.AnimalVaccine;
 import org.example.apianimals.entity.Vaccine;
-import org.example.apianimals.repository.AnimalRepository;
 import org.example.apianimals.repository.AnimalVaccineRepository;
 import org.example.apianimals.repository.VaccineRepository;
 import org.example.apianimals.service.VaccineService;
@@ -13,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

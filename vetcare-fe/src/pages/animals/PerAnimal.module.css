@@ -1,0 +1,807 @@
+.tabsWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  background-color: transparent;
+}
+
+.tabButton {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  background-color: transparent;
+  color: #333;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.tabButton:hover {
+  color: #1e40af;
+  border-color: #1e40af;
+  background-color: #e0e7ff;
+}
+
+.active {
+  color: #1e40af;
+  border-bottom: 3px solid #1e40af;
+  background-color: transparent;
+}
+
+
+.separator {
+  height: 1px;
+  background-color: #ddd;
+  width: 60%;
+  margin: 0 auto 1.5rem;
+  border-radius: 1px;
+  opacity: 0.6;
+}
+
+
+.contentWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.animalIcon {
+  flex-shrink: 0;
+}
+
+  .title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+
+  .infoRow {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+  }
+
+
+.profilView {
+  background-color: #f9f9ff;
+  box-shadow: 0 4px 12px rgba(94, 21, 163, 0.2);
+}
+
+.profilView .animalName {
+  color: #18225c;
+  text-transform: uppercase;
+
+}
+
+.profilView .detailText {
+  color: #18225c;
+}
+
+.profilView .detailLabel {
+  color: #5f73a8;
+}
+
+.profilView .breed {
+  color: #4f5785;
+}
+
+.profilView .nameWithIcon>svg {
+  color: #2c7be5;
+
+}
+
+.consultationCard {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  padding: 16px;
+  border-left: 4px solid #3b82f6;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.cardTitle {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #000000;
+}
+
+.diagnosisIcon {
+  margin-right: 8px;
+  color: #2563eb;
+}
+
+.cardDate {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.diagnosisBox {
+  background-color: #f3f8fd;
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #1e3a8a;
+  font-size: 1rem;
+  white-space: pre-wrap;
+}
+
+.treatmentBox {
+  background-color: #edfdec;
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #024402;
+  font-size: 1rem;
+  white-space: pre-wrap;
+}
+
+.treatmentCard {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  padding: 16px;
+  border-left: 4px solid #40bb27;
+}
+
+.treatmentIcon {
+  margin-right: 8px;
+  color: #024402;
+}
+
+.adviceCard {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  padding: 16px;
+  border-left: 4px solid #ee7c31;
+}
+
+.startConsultationButton {
+  background-color: #c1c8f7; 
+  color: #14197b; 
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+
+}
+@media (min-width: 628px) {
+  .startConsultationButton {
+    margin-top: auto;
+    margin-bottom: 0;
+    width: 100%;
+  }
+}
+@media (min-width: 628px) {
+  .tabButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+.startConsultationButton:hover {
+  background-color: #14197b; 
+  color: white;
+}
+
+
+.adviceBox {
+  background-color: #fdf8ec;
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #a84415;
+  font-size: 1rem;
+  white-space: pre-wrap;
+}
+
+.adviceIcon {
+  margin-right: 8px;
+  color: #a84415;
+}
+
+.vaccinCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+  min-height: 200px;
+  padding: 16px;
+  margin: 8px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  box-sizing: border-box;
+}
+
+.mainCardVaccine {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.deleteButton {
+  align-self: flex-end;
+  margin-top: auto;
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+}
+
+.vaccinBox {
+  background-color: #faebff;
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #5e15a3;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  margin-bottom:15px;
+}
+
+.vaccinIcon {
+  margin-right: 8px;
+  color: #5e15a3;
+
+}
+
+.dateContainer {
+  display: flex;
+  align-items: center;
+  border: 1px solid #3b82f6;
+  border-radius: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.875rem;
+  color: #2563eb;
+  min-width: 100px;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dateWithIcon {
+  display: flex;
+  align-items: center;
+  border: 1px solid #5e15a3;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #5e15a3;
+  gap: 4px;
+}
+
+.calendarIcon {
+  color: #5e15a3;
+}
+
+.dateWithIconDiagnostic {
+  display: flex;
+  align-items: center;
+  border: 1px solid #2563eb;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #2563eb;
+  gap: 4px;
+}
+
+.calendarIconDiagnostic {
+  color: #2563eb;
+}
+
+.dateWithIconTreatment {
+  display: flex;
+  align-items: center;
+  border: 1px solid #024402;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #024402;
+  gap: 4px;
+}
+
+.calendarIconTreatment {
+  color: #024402;
+  ;
+}
+
+.dateWithIconAdvice {
+  display: flex;
+  align-items: center;
+  border: 1px solid #a84415;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #a84415;
+  gap: 4px;
+}
+
+.calendarIconAdvice {
+  color: #a84415;
+}
+
+.headerAndButton {
+  display: flex;
+  justify-content: space-evenly;
+}.vaccineHeader {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 20px;
+ }
+
+.vaccineTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.vaccineSubtitle {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.addVaccineButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editButtonVac{
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 0 15px;
+  box-sizing: border-box;
+}
+
+
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  box-sizing: border-box;
+  min-width: 250px;
+}
+
+
+@media (max-width: 1024px) {
+  .cardWrapper {
+    width: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .cardWrapper {
+    width: 100%;
+  }
+}
+
+.profileBtn {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.deleteButton:hover {
+  color: #b91c1c;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .nav {
+    width: 20%;
+  }
+}
+.nav {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.navDesktop {
+  flex-direction: column;
+  width: 200px;
+  padding: 20px 10px;
+  overflow-x: visible;
+  gap: 0;
+  height: 100%;
+}
+
+.navMobile {
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 8px 5px;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.tabButton {
+  border: none;
+  padding: 12px 20px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  font-weight: normal;
+  color: #333;
+
+}
+
+.tabButtonActive {
+  background-color: #14197b;
+  color: white;
+  font-weight: bold;
+}
+
+.startConsultationButton {
+  background-color: #c1c8f7;
+  color: #14197b;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 628px) {
+  .tabButton {
+    width: 100%;
+  }
+  .startConsultationButton {
+    margin-top: auto;
+    margin-bottom: 0;
+    width: 100%;
+  }
+}
+
+.tabButtonInactive {
+  background: transparent;
+  color: #333;
+  font-weight: normal;
+}
+.iconProfil,
+.iconVaccinuri,
+.iconDiagnostic,
+.iconTratament,
+.iconSfaturi {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.iconProfil {
+  color: #5a5a5a;
+}
+.iconVaccinuri {
+  color: #5e15a3;
+}
+.iconDiagnostic {
+  color: #004085;
+}
+.iconTratament {
+  color: #207f3e;
+}
+.iconSfaturi {
+  color: #d35400;
+}
+
+.iconWrapper {
+  border-radius: 50%;
+  padding: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.tabIcon {
+  border-radius: 50%;
+  padding: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.tabProfil {
+  background-color: #d8d8d8;
+}
+
+.tabVaccinuri {
+  background-color: #e6ccff;
+}
+
+.tabDiagnostic {
+  background-color: #cce5ff;
+}
+
+.tabTratament {
+  background-color: #d0f0c0;
+}
+
+.tabSfaturi {
+  background-color: #ffe5cc;
+}
+
+.vaccineSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+@media (min-width: 768px) {
+  .vaccineSection {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 767px) {
+  .vaccineSection > div {
+    flex: 1 1 100%;
+  }
+}
+
+.createPrf {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.noPrfMsg{
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 12px;
+  color: #374151;
+}
+
+.noAnimals {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nameWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.animalName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1b223d;
+}
+
+.breed {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.detailRow:hover {
+  background-color: #eef2ff;
+}
+
+.detailLabel {
+  font-weight: 600;
+  color: #374151;
+}
+
+.detailText {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.editButton {
+  margin-top: 16px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: none;
+  background: #2c7be5;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.editButton:hover {
+  background-color: #1a5bb8;
+  transform: scale(1.05);
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 16px;
+}
+
+.modalContent {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.modalContent h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1b223d;
+  text-align: center;
+}
+
+.modalInput, .modalSelect {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.modalInput:focus, .modalSelect:focus {
+  outline: none;
+  border-color: #2c7be5;
+  box-shadow: 0 0 0 2px rgba(44,123,229,0.2);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.saveButton {
+  background-color: #28a745;
+  color: white;
+  border-radius: 6px;
+  padding: 8px 16px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saveButton:hover {
+  background-color: #15803d;
+}
+
+.cancelButton {
+  background-color: #ccc;
+  color: #333;
+  border-radius: 6px;
+  padding: 8px 16px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton:hover {
+  background-color: #b3b3b3;
+}

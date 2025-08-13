@@ -1,5 +1,5 @@
-import Navbar from "@/components/Navbar";
-import { PawPrintIcon as Paw, Calendar, MessageCircle, Star, MapPin, Shield } from "lucide-react"
+
+import { PawPrintIcon as Paw, Calendar, MessageCircle, Star, MapPin } from "lucide-react"
 import styles from './About.module.css';
 import Layout from "@/components/Layout";
 const About = () => {
@@ -8,7 +8,7 @@ const About = () => {
         <Layout>
             <div className={styles.container}>
                 <div className={styles.titleSection}>
-                    <h1>Despre PawCare</h1>
+                    <h1 className="h1Title">Despre PawCare</h1>
                 </div>
 
                 <div className={styles.prose}>
@@ -24,35 +24,35 @@ const About = () => {
                     </p>
                 </div>
 
-                <h2 className="text-2xl font-bold text-teal-700 mb-8 text-center">Ce oferă PawCare?</h2>
+                <h2 className={styles.description}>Ce oferă PawCare?</h2>
 
                 <div className={styles.featureGrid}>
                     <FeatureCard
-                        icon={<Paw className="h-8 w-8" />}
-                        title="Profile pentru animăluțe"
-                        description="Creează profile personalizate pentru fiecare animal de companie, cu informații despre rasă, vârstă, greutate și altele."
+                       icon={<Paw className="h-8 w-8" />}
+                       title="Profile pentru animăluțe"
+                       description="Creează profile personalizate pentru fiecare animal de companie, cu informații despre rasă, vârstă, greutate și altele."
                     />
                     <FeatureCard
-                        icon={<Calendar className="h-8 w-8" />}
-                        title="Monitorizare vaccinuri"
-                        description="Primește notificări pentru următoarele vaccinuri."
+                       icon={<Calendar className="h-8 w-8" />}
+                       title="Monitorizare vaccinuri"
+                       description="Primește notificări pentru următoarele vaccinuri."
                     />
                     <FeatureCard
-                        icon={<MessageCircle className="h-8 w-8" />}
-                        title="Consultanță chat"
-                        description="Consultă-te cu AI-ul nostru specializat în medicină veterinară atunci când animalul tău are o problemă minoră sau ai nevoie de sfaturi."
+                       icon={<MessageCircle className="h-8 w-8" />}
+                       title="Consultanță chat"
+                       description="Consultă-te cu AI-ul nostru specializat în medicină veterinară atunci când animalul tău are o problemă minoră sau ai nevoie de sfaturi."
                     />
                     <FeatureCard
-                        icon={<Star className="h-8 w-8" />}
-                        title="Recenzii și feedback"
-                        description="Lasă recenzii pentru serviciile veterinare și oferă-ne feedback pentru a îmbunătăți constant aplicația."
+                       icon={<Star className="h-8 w-8" />}
+                       title="Recenzii și feedback"
+                       description="Lasă recenzii pentru serviciile veterinare și oferă-ne feedback pentru a îmbunătăți constant aplicația."
                     />
                     <FeatureCard
-                        icon={<MapPin className="h-8 w-8" />}
-                        title="Cabinete apropiate"
-                        description="Găsește rapid cele mai apropiate cabinete veterinare."
+                       icon={<MapPin className="h-8 w-8" />}
+                       title="Cabinete apropiate"
+                       description="Găsește rapid cele mai apropiate cabinete veterinare."
+                       className={styles.centeredFeature}
                     />
-                   
                 </div>
 
                 <div className={styles.missionContainer}>
@@ -75,7 +75,6 @@ const About = () => {
         </Layout>
     )
 }
-
 
 function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
     return (

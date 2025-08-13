@@ -1,0 +1,129 @@
+.vaccineGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .vaccineGrid {
+        grid-template-columns: repeat(1, 1fr) !important;
+        padding: 15px;
+    }
+}
+.vaccineCard {
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.vaccineCard.checked {
+    border-color: #3b82f6;
+    background-color: #dbeafe;
+    font-weight: 600;
+}
+
+
+.dateInput {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+.dateInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.infoRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #374151;
+    font-size: 0.875rem;
+}
+
+.infoRow svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: #3b82f6;
+}
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modalActions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.btnClose {
+    background: #ccc;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.saveButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.cancelButton {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.saveButton:hover {
+    background-color: #15803d;
+}
+.cancelButton:hover {
+    background-color: #b3b3b3;
+
+}.modalActions {
+     display: flex;
+     justify-content: flex-end;
+     gap: 10px;
+ }

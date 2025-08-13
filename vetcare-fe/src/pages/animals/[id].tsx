@@ -1,19 +1,24 @@
 import {AnimalProfile} from '@/components/entities/animalProfile';
-import Navbar from '@/components/Navbar';
-import {getAnimalById, getAnimalByIdWithToken, getVaccines} from '@/services/animalService';
+import {
+ deleteAnimalVaccine,
+   getAnimalById,
+   getCatBreeds, getDogBreeds,
+   getVaccines,
+   updateAnimal
+} from '@/services/animalService';
 import {Calendar, Cat, Dog, Lightbulb, PawPrint, Pill, Stethoscope, Syringe} from 'lucide-react';
-import {GetServerSideProps} from 'next';
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
-import styles from './profile.module.css';
+import styles from './PerAnimal.module.css';
 import {AnimalVaccine} from '@/components/entities/animalVaccine';
 import {Vaccine} from '@/components/entities/vaccines';
 import {getConsultationsByAnimalId, startChat} from '@/services/sessionService';
 import {Consultation} from '@/components/entities/consultation';
-import {getSession, useSession} from "next-auth/react";
-import {getServerSession} from "next-auth";
-import {authOptions} from "@/pages/api/auth/[...nextauth]";
 import Layout from "@/components/Layout";
+import {getAgeString} from "@/utils/animalData";
+import Swal from "sweetalert2";
+import {VaccinesModal} from "@/components/Vaccines/VaccinesModal";
+
 
 type Props = {
    animal: AnimalProfile | null;
@@ -57,45 +62,56 @@ export default function AnimalPage() {
    const [activeTab, setActiveTab] = useState("Profil");
    const [vaccinesMap, setVaccinesMap] = useState<Record<number, Vaccine>>({});
    const [consultations, setConsultations] = useState<Consultation[]>([]);
-   const [loading, setLoading] = useState(true);
 
-   // ✅ Fetch animal on mount
-   useEffect(() => {
-      if (id) {
-         getAnimalById(Number(id))
-         .then((data) => setAnimal(data))
-         .finally(() => setLoading(false));
-      }
-   }, [id]);
+   const [isEditOpen, setIsEditOpen] = useState(false);
+   const [formData, setFormData] = useState<AnimalProfile | null>(null);
+   const [breeds, setBreeds] = useState<string[]>([]);
 
-   // ✅ Fetch vaccines
-   useEffect(() => {
-      getVaccines()
-      .then((vaccinesList) => {
-         const map: Record<number, Vaccine> = {};
-         vaccinesList.forEach((v) => (map[v.id] = v));
-         setVaccinesMap(map);
-      })
-      .catch((err) => console.error("Eroare la încărcarea vaccinurilor:", err));
-   }, []);
+   const [isMobile, setIsMobile] = useState(false);
+   const [isOpen, setIsOpen] = useState(false);
+   const [isModalOpen, setIsModalOpen] = useState(false);
 
-   // ✅ Fetch consultations
-   useEffect(() => {
-      if (animal?.id) {
-         getConsultationsByAnimalId(animal.id)
-         .then((data) => setConsultations(Array.isArray(data) ? data : [data]))
-         .catch((err) => console.error("Eroare la încărcarea consultațiilor:", err));
-      }
-   }, [animal?.id]);
 
+
+   const handleAddVaccines = () => {
+      setIsModalOpen(true);
+   };
+
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!formData) return;
+      setFormData({
+         ...formData,
+         [e.target.name]: e.target.value
+      });
+   };
+
+   const handleSave = async () => {
+      if (!formData) return;
+
+      await updateAnimal(formData.id, formData);
+      setAnimal(formData);
+
+      Swal.fire({
+         icon: 'success',
+         title: 'Profilul a fost actualizat cu succes',
+         showConfirmButton: false,
+         timer: 1500
+      });
+
+      setIsEditOpen(false);
+   };
+
+   const handleTabClick = (tab) => {
+      setActiveTab(tab);
+      if (isMobile) setIsOpen(false);
+   };
    const handleStartConsultation = async () => {
       if (!animal) return;
       try {
          const response = await startChat(animal);
          router.push(`/chat/${response.sessionId}?botMessage=${response.botResponse}`);
       } catch (error) {
-         console.error("Eroare la începerea consultației:", error);
-         alert("A apărut o eroare la începerea consultației.");
+         console.error(error);
       }
    };
 
@@ -107,64 +123,147 @@ export default function AnimalPage() {
       return nextDose.toLocaleDateString();
    }
 
-   function getAgeString(birthdate: string): string {
-      const birth = new Date(birthdate);
-      const now = new Date();
-      let years = now.getFullYear() - birth.getFullYear();
-      let months = now.getMonth() - birth.getMonth();
-      if (now.getDate() < birth.getDate()) months--;
-      if (months < 0) {
-         years--;
-         months += 12;
+   useEffect(() => {
+      const loadBreeds = async () => {
+         try {
+            if (formData?.type === "Câine") {
+               const breeds = await getDogBreeds();
+               setBreeds(breeds);
+            } else if (formData?.type === "Pisică") {
+               const breeds = await getCatBreeds();
+               setBreeds(breeds);
+            } else {
+               setBreeds([]);
+            }
+         } catch (err) {
+            console.error(err);
+         }
+      };
+
+      const loadAnimal = async () => {
+         if (id) {
+            try {
+               const data = await getAnimalById(Number(id));
+               setAnimal(data);
+            } catch (err) {
+               console.error(err);
+            }
+         }
+      };
+
+      const loadVaccines = async () => {
+         try {
+            const vaccinesList = await getVaccines();
+            const map: Record<number, Vaccine> = {};
+            vaccinesList.forEach((v) => (map[v.id] = v));
+            setVaccinesMap(map);
+         } catch (err) {
+            console.error(err);
+         }
+      };
+
+      const loadConsultations = async () => {
+         if (animal?.id) {
+            try {
+               const data = await getConsultationsByAnimalId(animal.id);
+               setConsultations(Array.isArray(data) ? data : [data]);
+            } catch (err) {
+               console.error(err);
+            }
+         }
+      };
+
+      loadBreeds();
+      loadAnimal();
+      loadVaccines();
+      loadConsultations();
+   }, [formData?.type, id, animal?.id]);
+
+
+
+   const tabClass = {
+      Profil: styles.iconProfil,
+      Vaccinuri: styles.iconVaccinuri,
+      Diagnostic: styles.iconDiagnostic,
+      Tratament: styles.iconTratament,
+      Sfaturi: styles.iconSfaturi,
+   }[activeTab] || styles.iconDefault;
+
+   const handleDelete = async (vaccineId: number) => {
+      if (!animal?.id) return;
+
+      const result = await Swal.fire({
+         title: 'Ești sigur că dorești să ștergi acest vaccin?',
+         text: "Această acțiune este ireversibilă!",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#d33',
+         cancelButtonColor: '#3085d6',
+         confirmButtonText: 'Da, șterge!',
+         cancelButtonText: 'Anulează',
+      });
+
+      if (result.isConfirmed) {
+         try {
+            await deleteAnimalVaccine(animal.id, vaccineId);
+            const updatedAnimal = await getAnimalById(animal.id);
+            setAnimal(updatedAnimal);
+
+            Swal.fire({
+               icon: 'success',
+               title: 'Vaccin șters cu succes',
+               showConfirmButton: false,
+               timer: 1500,
+            });
+         } catch (error) {
+            console.error(error);
+            Swal.fire({
+               icon: 'error',
+               title: 'Eroare la ștergerea vaccinului',
+               text: 'Nu s-a putut șterge vaccinul.',
+            });
+         }
       }
-      return years >= 1 ? `${years} ${years === 1 ? "an" : "ani"}` : `${months} ${months === 1 ? "lună" : "luni"}`;
-   }
-
-   if (loading) return <div>Se încarcă...</div>;
-   if (!animal) return <div>Animalul nu a fost găsit.</div>;
-
-   const animalIcon = animal.type === "Câine" ? <Dog size={40}/> : <Cat size={40}/>;
+   };
 
    return (
       <Layout>
          <div>
-            <div style={{display: 'flex', minHeight: '100vh'}}>
-
-               <nav style={{
+            <div
+               style={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  width: '200px',
-                  borderRight: '1px solid #ddd',
-                  padding: '20px 10px',
-                  backgroundColor: '#fafafa',
-               }}>
-                  {TABS.map((tab) => (
-                     <button
-                        key={tab}
-                        onClick={() => setActiveTab(tab)}
-                        style={{
-                           background: activeTab === tab ? '#14197b' : 'transparent',
-                           color: activeTab === tab ? 'white' : '#333',
-                           border: 'none',
-                           padding: '12px 20px',
-                           textAlign: 'left',
-                           cursor: 'pointer',
-                           marginBottom: '8px',
-                           borderRadius: '4px',
-                           fontWeight: activeTab === tab ? 'bold' : 'normal',
-                           transition: 'background-color 0.3s',
-                        }}
-                     >
-                        {tab}
-                     </button>
-                  ))}
+                  minHeight: '100vh',
+                  flexDirection: isMobile && window.innerWidth <= 627 ? 'column' : 'row',
+               }}
+            >
+               <nav
+                  className={`${styles.nav} ${isMobile && window.innerWidth <= 627 ? styles.navMobile : styles.navDesktop}`}
+               >
 
+                  {(isOpen || !isMobile || (isMobile && window.innerWidth <= 627)) &&
+                     TABS.map((tab) => (
+                        <button
+                           key={tab}
+                           onClick={() => handleTabClick(tab)}
+                           className={`${styles.tabButton} ${
+                              activeTab === tab ? styles.tabButtonActive : styles.tabButtonInactive
+                           }`}
+                        >
+                           {tab}
+                        </button>
+
+                     ))}
                   <button
                      onClick={handleStartConsultation}
                      className={styles.startConsultationButton}
+                     style={{
+                        marginTop: isMobile && window.innerWidth <= 627 ? 0 : 'auto',
+                        marginLeft: isMobile && window.innerWidth <= 627 ? 'auto' : 0,
+                     }}
                   >
                      Începe o consultație
                   </button>
+
                </nav>
 
                <div
@@ -187,34 +286,17 @@ export default function AnimalPage() {
                      <h1 style={{margin: 0}}>
                         <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
                   <span
-                     style={{
-                        backgroundColor:
-                           activeTab === 'Profil' ? '#d8d8d8' :
-                              activeTab === 'Vaccinuri' ? '#e6ccff' :
-                                 activeTab === 'Diagnostic' ? '#cce5ff' :
-                                    activeTab === 'Tratament' ? '#d0f0c0' :
-                                       activeTab === 'Sfaturi' ? '#ffe5cc' :
-                                          'transparent',
-                        borderRadius: '50%',
-                        padding: '9px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '40px',
-                        height: '40px',
-                        flexShrink: 0,
-                     }}
+                     className={`${styles.tabIcon} 
+                         ${activeTab === 'Profil' ? styles.tabProfil : ''} 
+                         ${activeTab === 'Vaccinuri' ? styles.tabVaccinuri : ''} 
+                         ${activeTab === 'Diagnostic' ? styles.tabDiagnostic : ''} 
+                         ${activeTab === 'Tratament' ? styles.tabTratament : ''} 
+                         ${activeTab === 'Sfaturi' ? styles.tabSfaturi : styles.tabDefault}
+                           `}
                   >
-                    {React.cloneElement(TAB_DETAILS[activeTab as Tab].icon, {
-                       color:
-                          activeTab === 'Profil' ? '#5a5a5a' :
-                             activeTab === 'Vaccinuri' ? '#5e15a3' :
-                                activeTab === 'Diagnostic' ? '#004085' :
-                                   activeTab === 'Tratament' ? '#207f3e' :
-                                      activeTab === 'Sfaturi' ? '#d35400' :
-                                         '#000000',
-                       size: 25,
-                    })}
+                    <span className={`${styles.iconBase} ${tabClass}`}>
+                             {TAB_DETAILS[activeTab as Tab].icon}
+                           </span>
                   </span>
 
                            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
@@ -230,36 +312,39 @@ export default function AnimalPage() {
                   </div>
 
                   <div style={{flex: 1, overflowY: 'auto'}}>
-                     {activeTab === 'Profil' && (
+                     {activeTab === 'Profil' && animal != null && (
                         <div className={styles.container}
                              style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                            <div className={`${styles.card} ${activeTab === 'Profil' ? styles.profilView : ''}`}>
                               <div className={styles.header}>
                                  <div className={styles.nameWithIcon}>
-                                    {animalIcon}
+                                    {animal.type === "Câine" ? <Dog size={40}/> : <Cat size={40}/>}
                                     <h2 className={styles.animalName}>{animal.animalName}</h2>
                                  </div>
                                  <p className={styles.breed}>{animal.breed}</p>
                               </div>
                               <div className={styles.detailsList}>
+
                                  <div className={styles.detailRow}>
                                     <span className={styles.detailLabel}>Vârstă:</span>
                                     <span className={styles.detailText}>{getAgeString(animal.birthdate)}</span>
                                  </div>
 
-
                                  <div className={styles.detailRow}>
                                     <span className={styles.detailLabel}>Sex:</span>
                                     <span className={styles.detailText}>{animal.sex}</span>
                                  </div>
+
                                  <div className={styles.detailRow}>
                                     <span className={styles.detailLabel}>Greutate:</span>
                                     <span className={styles.detailText}>{animal.weight} kg</span>
                                  </div>
+
                                  <div className={styles.detailRow}>
                                     <span className={styles.detailLabel}>Tip:</span>
                                     <span className={styles.detailText}>{animal.type}</span>
                                  </div>
+
                                  {animal.birthdate && (
                                     <div className={styles.detailRow}>
                                        <span className={styles.detailLabel}>Data nașterii:</span>
@@ -268,13 +353,116 @@ export default function AnimalPage() {
                                     </div>
                                  )}
                               </div>
+                                 <button
+                                    className={styles.editButton}
+                                    onClick={() => {
+                                       setFormData(animal);
+                                       setIsEditOpen(true);
+                                    }}
+                                 >
+                                    Editează
+                                 </button>
+
+                              {isEditOpen && (
+                                 <div className={styles.modalOverlay}>
+                                    <div className={styles.modalContent}>
+                                       <h2>Editează profilul</h2>
+                                       {formData && (
+                                          <>
+                                             <b>
+                                             Nume</b>
+                                             <input
+                                                type="text"
+                                                name="animalName"
+                                                value={formData.animalName}
+                                                onChange={handleChange}
+                                                className={styles.modalInput}
+                                                placeholder="Nume animal"
+                                             />
+                                             <b>
+                                             Rasa</b>
+                                             <select
+                                                name="breed"
+                                                value={formData.breed}
+                                                onChange={handleChange}
+                                                className={styles.modalSelect}
+                                             >
+                                                <option value="">Selectează rasa</option>
+                                                {breeds.map((b) => (
+                                                   <option key={b} value={b}>
+                                                      {b}
+                                                   </option>
+                                                ))}
+                                             </select>
+
+                                             <b>Sex</b>
+                                             <select
+                                                name="sex"
+                                                value={formData.sex}
+                                                onChange={handleChange}
+                                                className={styles.modalSelect}
+                                             >
+                                                <option value="Mascul">Mascul</option>
+                                                <option value="Femelă">Femelă</option>
+                                             </select>
+
+                                            <b> Greutate</b>
+                                             <input
+                                                type="text"
+                                                name="weight"
+                                                value={formData.weight}
+                                                onChange={handleChange}
+                                                className={styles.modalInput}
+                                                placeholder="Greutate (kg)"
+                                             />
+
+                                             <b>Tip</b>
+                                             <select
+                                                name="type"
+                                                value={formData.type}
+                                                onChange={handleChange}
+                                                className={styles.modalSelect}
+                                             >
+                                                <option value="Câine">Câine</option>
+                                                <option value="Pisică">Pisică</option>
+                                             </select>
+                                             <b> Data de nastere</b>
+                                             <input
+                                                type="date"
+                                                name="birthdate"
+                                                value={formData.birthdate ? formData.birthdate.split("T")[0] : ""}
+                                                onChange={handleChange}
+                                                className={styles.modalInput}
+                                                max={new Date().toISOString().split("T")[0]}
+                                             />
+
+
+                                             <div className={styles.modalActions}>
+                                                <button className={styles.saveButton} onClick={handleSave}>
+                                                   Salvează
+                                                </button>
+                                                <button
+                                                   className={styles.cancelButton}
+                                                   onClick={() => setIsEditOpen(false)}
+                                                >
+                                                   Anulează
+                                                </button>
+                                             </div>
+                                          </>
+                                       )}
+                                    </div>
+                                 </div>
+                              )}
+
                            </div>
                         </div>
                      )}
-
-
                      {activeTab === 'Vaccinuri' && (
                         <div className={styles.mainCardVaccine}>
+                           <div >
+                              <button className={styles.editButtonVac} onClick={handleAddVaccines}>Adaugă vaccinuri</button>
+                           </div>
+                           <div className={styles.vaccineSection}>
                            {animal.vaccines && animal.vaccines.length > 0 ? (
                               animal.vaccines.map((animalVaccine) => {
                                  const vaccine = vaccinesMap[animalVaccine.vaccineId];
@@ -284,17 +472,18 @@ export default function AnimalPage() {
                                        <div className={styles.cardHeader}>
                                           <span className={styles.cardTitle}>{vaccine.name}</span>
                                           <div className={styles.dateWithIcon}>
-                                             <Calendar size={16} className={styles.calendarIcon}/>
+                                             <Calendar size={16} className={styles.calendarIcon} />
                                              <span>{new Date(animalVaccine.dateAdministered).toLocaleDateString()}</span>
                                           </div>
                                        </div>
                                        <div className={styles.vaccinBox}>
-                                          <Syringe size={20} className={styles.vaccinIcon}/>
+                                          <Syringe size={20} className={styles.vaccinIcon} />
                                           <strong>Administrat</strong>
                                           <p>{new Date(animalVaccine.dateAdministered).toLocaleDateString()}</p>
                                           <strong>Următoarea doză</strong>
                                           <p>{nextDoseDate || 'Nespecificat'}</p>
                                        </div>
+                                       <button className={styles.deleteButton} onClick={() => handleDelete(vaccine.id)}>Șterge</button>
                                     </div>
                                  );
                               })
@@ -302,6 +491,19 @@ export default function AnimalPage() {
                               <p>Nu există vaccinuri înregistrate.</p>
                            )}
                         </div>
+                        </div>
+                     )}
+                     {isModalOpen && (
+                        <VaccinesModal
+                           animalType={animal.type}
+                           animalId={animal.id}
+                           animalVaccines={animal.vaccines}
+                           onClose={() => setIsModalOpen(false)}
+                           onSave={(updatedVaccines) => {
+                              setAnimal(prev => prev ? { ...prev, vaccines: updatedVaccines } : prev);
+                           }}
+                        />
+
                      )}
 
                      {['Diagnostic', 'Tratament', 'Sfaturi'].includes(activeTab) && (

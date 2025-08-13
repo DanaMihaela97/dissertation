@@ -3,6 +3,7 @@ package org.example.apianimals.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.example.apianimals.convertor.AnimalMapper;
+import org.example.apianimals.convertor.VaccineMapper;
 import org.example.apianimals.dto.AnimalCreateDto;
 import org.example.apianimals.dto.AnimalInfoDto;
 import org.example.apianimals.dto.AnimalVaccineCreateDto;
@@ -22,9 +23,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -113,8 +117,6 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
         return AnimalMapper.toDto(animal);
     }
 
-
-
     @Override
     public List<AnimalVaccineInfoDto> createAnimalVaccine(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos) {
         List<AnimalVaccineInfoDto> vaccineInfoDtos = new ArrayList<>();
@@ -144,7 +146,6 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
         return vaccineInfoDtos;
     }
 
-
     @Override
     public List<AnimalVaccineInfoDto> getAnimalVaccine(Long animalId) {
         List<AnimalVaccine> animalVaccines = animalVaccineRepository.findByAnimalId(animalId);
@@ -161,8 +162,65 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     }
 
     @Override
+    public List<AnimalVaccineInfoDto> updateAnimalVaccines(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos) {
+        Animal animal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new RuntimeException("Animal not found"));
+
+        List<AnimalVaccine> savedVaccines = new ArrayList<>();
+
+        for (AnimalVaccineCreateDto dto : vaccineCreateDtos) {
+            Vaccine vaccine = vaccineRepository.findById(dto.getVaccineId())
+                    .orElseThrow(() -> new RuntimeException("Vaccine not found"));
+
+            Optional<AnimalVaccine> existingAnimalVaccine = animalVaccineRepository.findByAnimalIdAndVaccineId(animalId, dto.getVaccineId());
+
+            if (existingAnimalVaccine.isPresent()) {
+                AnimalVaccine animalVaccine = existingAnimalVaccine.get();
+                animalVaccine.setDateAdministered(dto.getDateAdministered());
+                savedVaccines.add(animalVaccineRepository.save(animalVaccine));
+            } else {
+                AnimalVaccine newAnimalVaccine = new AnimalVaccine();
+                newAnimalVaccine.setAnimal(animal);
+                newAnimalVaccine.setVaccine(vaccine);
+                newAnimalVaccine.setDateAdministered(dto.getDateAdministered());
+                savedVaccines.add(animalVaccineRepository.save(newAnimalVaccine));
+            }
+        }
+        return savedVaccines.stream()
+                .map(VaccineMapper::mapToInfoDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public int animalCount() {
         int animalNo = (int) animalRepository.count();
         return animalNo;
+    }
+
+    @Override
+    public void editAnimal(AnimalInfoDto animalInfoDto) {
+        Animal animal = animalRepository.findById(animalInfoDto.getId())
+                .orElseThrow(() -> new RuntimeException("Animalul nu a fost găsit"));
+
+        animal.setAnimalName(animalInfoDto.getAnimalName());
+        animal.setBirthdate(LocalDate.parse(animalInfoDto.getBirthdate()));
+        animal.setSex(animalInfoDto.getSex());
+        animal.setAge(animalInfoDto.getAge());
+        animal.setWeight(animalInfoDto.getWeight());
+        animal.setType(animalInfoDto.getType());
+        animal.setBreed(animalInfoDto.getBreed());
+
+        animalRepository.save(animal);
+    }
+
+    @Override
+    public void deleteAnimal(Long id) {
+        Animal animal = animalRepository.findById(id).get();
+        animalRepository.delete(animal);
+    }
+
+    @Override
+    public void deleteVaccine(Long animalId, Long vaccineId) {
+        animalVaccineRepository.deleteByAnimalIdAndVaccineId(animalId, vaccineId);
     }
 }
