@@ -26,14 +26,17 @@ public class ReviewController {
     public ResponseEntity<Void> addReview(@RequestBody Review review) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = null;
+        String name = null;
         if (authentication != null && authentication.getCredentials() instanceof Jwt jwt) {
             email = jwt.getClaimAsString("email");
+            name = jwt.getClaimAsString("name");
         }
         if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         review.setEmail(email);
+        review.setName(name);
         reviewService.saveReview(review);
         return ResponseEntity.ok().build();
     }

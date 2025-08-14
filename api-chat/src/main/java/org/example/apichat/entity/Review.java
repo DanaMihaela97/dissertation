@@ -18,4 +18,5 @@ public class Review {
     @Column(length=2000)
     private String feedback;
     private LocalDateTime createdAt = LocalDateTime.now();
+    private String name;
 }

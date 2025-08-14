@@ -26,6 +26,7 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate = new RestTemplate();
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${realms_admin}")
     private String realmsAdmin;
@@ -34,8 +35,9 @@ public class UserServiceImpl implements UserService {
     private String realmsMaster;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -85,7 +87,7 @@ public class UserServiceImpl implements UserService {
             if (response.getStatusCode() == HttpStatus.CREATED) {
                 User user = new User();
                 user.setEmail(request.getEmail());
-                user.setPassword(request.getPassword());
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
                 userRepository.save(user);
 
                 return ResponseEntity.ok("user ul a fost creat");

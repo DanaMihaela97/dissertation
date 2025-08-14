@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import {useRouter} from "next/router";
 import styles from './Register.module.css';
 import Layout from "@/components/Layout";
+import {register} from "@/services/registerService";
 
 const RegisterPage = () => {
    const router = useRouter();
@@ -23,6 +24,8 @@ const RegisterPage = () => {
       }
 
       try {
+         await register({ email, password });
+
          Swal.fire({
             title: "Înregistrare reușită!",
             text: "Te poți loga acum.",
@@ -34,11 +37,13 @@ const RegisterPage = () => {
             router.push("/login");
          });
 
-      } catch (err) {
+      } catch (err: any) {
          console.error(err);
+         // poți prelua mesajul din răspunsul backend dacă există
+         const message = err.response?.data?.message || "A apărut o eroare la înregistrare. Încearcă din nou.";
          Swal.fire({
             title: "Eroare",
-            text: "A apărut o eroare la înregistrare. Încearcă din nou.",
+            text: message,
             icon: "error",
             confirmButtonText: "OK",
          });

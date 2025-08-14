@@ -70,8 +70,10 @@ export default function ReviewPage() {
       setError(null);
       setLoading(true);
       try {
-         await createReview({rating, feedback});
-         await fetchReviews();
+         await createReview({ rating, feedback });
+         await fetchReviews();       // actualizează lista
+         await fetchMeanRating();    // actualizează media
+
          setRating(0);
          setFeedback("");
 
@@ -88,6 +90,7 @@ export default function ReviewPage() {
       }
       setLoading(false);
    };
+
    const renderStars = (selected: number, onSelect?: (val: number) => void) => {
       const stars = [];
       for (let i = 1; i <= 5; i++) {
@@ -190,9 +193,9 @@ export default function ReviewPage() {
                <p>Nu există recenzii încă. Fii primul care își împărtășește părerea!</p>
             ) : (
                <ul className={styles.reviewList}>
-                  {reviews.map(({email, rating, feedback, createdAt}, index) => (
+                  {reviews.map(({name, rating, feedback, createdAt }, index) => (
                      <li key={index} className={styles.reviewCard}>
-                        <div className={styles.reviewEmail}>{email}</div>
+                        <div className={styles.reviewName}>{name}</div>
                         {renderStars(rating)}
                         <p className={styles.reviewFeedback}>{feedback}</p>
                         <small className={styles.reviewDate}>

@@ -3,4 +3,5 @@ export interface Review {
     rating: number,
     feedback: string,
     createdAt: Date
+    name:string
 }
