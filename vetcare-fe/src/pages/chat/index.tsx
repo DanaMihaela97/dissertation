@@ -5,9 +5,9 @@ import Layout from "@/components/Layout";
 const Chat = () => {
     return (
         <Layout>
-            {/*<Authentication>*/}
+            <Authentication>
                <div>Trebuie sa pornesti un chat</div>
-            {/*</Authentication>*/}
+            </Authentication>
         </Layout>
     )
 }

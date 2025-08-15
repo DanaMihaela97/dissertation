@@ -1,4 +1,3 @@
-
 import AnimalProfileComponent from '@/components/AnimalProfile';
 import { AnimalProfile } from '@/components/entities/animalProfile';
 import { Vaccine } from '@/components/entities/vaccines';
@@ -7,14 +6,22 @@ import React, { useEffect, useState } from 'react';
 import styles from './PerAnimal.module.css';
 import Layout from "@/components/Layout";
 import Authentication from "@/components/Authentication";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import Swal from 'sweetalert2';
+import { useSession } from "next-auth/react";
 
 const Animals = () => {
   const [animals, setAnimals] = useState<AnimalProfile[]>([]);
   const router = useRouter();
+  const { status } = useSession(); // "loading" | "authenticated" | "unauthenticated"
 
   useEffect(() => {
+    if (status === 'unauthenticated')
+    {
+
+    }
+    if (status !== "authenticated") return;
+
     const fetchData = async () => {
       try {
         const [animalsResult, vaccinesResult] = await Promise.all([
@@ -44,8 +51,7 @@ const Animals = () => {
     };
 
     fetchData();
-  }, []);
-
+  }, [status]);
 
   const handleDelete = async (id: number) => {
     const result = await Swal.fire({
@@ -79,6 +85,14 @@ const Animals = () => {
     }
   };
 
+  if (status === "loading") {
+    return (
+       <Layout>
+         <p>Se verifică autentificarea...</p>
+       </Layout>
+    );
+  }
+
   return (
      <Layout>
        <Authentication>
@@ -96,12 +110,11 @@ const Animals = () => {
                 </button>
               </div>
            ) : (
-              <div className={styles.container} style={{marginTop: "50px"}}>
+              <div className={styles.container} style={{ marginTop: "50px" }}>
                 {animals.map((animal) => (
                    <div key={animal.id} className={styles.cardWrapper}>
-                     <AnimalProfileComponent animal={animal}/>
+                     <AnimalProfileComponent animal={animal} />
                      <div className={styles.profileBtn}>
-
                        <button
                           className={styles.deleteButton}
                           onClick={() => handleDelete(animal.id!)}
@@ -118,4 +131,4 @@ const Animals = () => {
      </Layout>
   );
 };
-  export default Animals;
+export default Animals;

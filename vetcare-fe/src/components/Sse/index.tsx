@@ -57,7 +57,7 @@ export default function Sse() {
     };
 
     return (
-       <Authentication>
+       <Authentication hideIfUnauthenticated={true}>
            <div className={styles.notificationContainer}>
                {showPopup && (
                   <div className={styles.popupMessage}>

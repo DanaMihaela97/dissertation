@@ -19,6 +19,8 @@ public class PlaceDetailsResponse {
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Result {
+        @JsonProperty("formatted_address")
+        private String formattedAddress;
 
         @JsonProperty("formatted_phone_number")
         private String formattedPhoneNumber;
@@ -26,6 +28,7 @@ public class PlaceDetailsResponse {
 
         @JsonProperty("opening_hours")
         private OpeningHours openingHours;
+
 
         @Setter
         @Getter

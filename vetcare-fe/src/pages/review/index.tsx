@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {createReview, getReviewMean, getReviews} from "@/services/reviewService";
-import { Review } from "@/components/entities/review";
+import {Review} from "@/components/entities/review";
 import Layout from "@/components/Layout";
 import Swal from "sweetalert2";
-import { ClipLoader } from "react-spinners";
+import {ClipLoader} from "react-spinners";
 import styles from "./Review.module.css";
 import {useSession} from "next-auth/react";
 import {Star, Users} from "lucide-react";
+import Authentication from "@/components/Authentication";
 
 export default function ReviewPage() {
    const [reviews, setReviews] = useState<Review[]>([]);
@@ -15,7 +16,6 @@ export default function ReviewPage() {
    const [error, setError] = useState<string | null>(null);
    const [loading, setLoading] = useState<boolean>(false);
    const [loadingReviews, setLoadingReviews] = useState<boolean>(false);
-   const {data: session} = useSession();
    const [meanRating, setMeanRating] = useState<number | null>(null);
 
    useEffect(() => {
@@ -31,6 +31,7 @@ export default function ReviewPage() {
          console.error("Eroare la preluarea ratingului mediu");
       }
    };
+
    async function fetchReviews() {
       try {
          setLoadingReviews(true);
@@ -48,16 +49,6 @@ export default function ReviewPage() {
    const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
 
-      if (!session) {
-         Swal.fire({
-            icon: "warning",
-            title: "Autentificare necesară",
-            text: "Trebuie să fii logat pentru a lăsa un review.",
-            confirmButtonText: "OK"
-         });
-         return;
-      }
-
       if (rating === 0) {
          setError("Te rugăm să selectezi un rating.");
          return;
@@ -70,7 +61,7 @@ export default function ReviewPage() {
       setError(null);
       setLoading(true);
       try {
-         await createReview({ rating, feedback });
+         await createReview({rating, feedback});
          await fetchReviews();       // actualizează lista
          await fetchMeanRating();    // actualizează media
 
@@ -121,7 +112,7 @@ export default function ReviewPage() {
             <div className={styles.statsContainer}>
                <div className={styles.statCard}>
                   <div className={`${styles.iconWrapper} ${styles.starWrapper}`}>
-                     <Star className={styles.starIcon} />
+                     <Star className={styles.starIcon}/>
                   </div>
                   <h3>{meanRating ? meanRating.toFixed(1) : "-"}</h3>
                   <p>Media recenziilor</p>
@@ -129,54 +120,46 @@ export default function ReviewPage() {
 
                <div className={styles.statCard}>
                   <div className={`${styles.iconWrapper} ${styles.userWrapper}`}>
-                     <Users className={styles.userIcon} />
+                     <Users className={styles.userIcon}/>
                   </div>
                   <h3>{reviews.length}</h3>
                   <p>Recenzii totale</p>
                </div>
             </div>
+            <Authentication response={"Nu poti lasa o recenzie"}>
+               <form onSubmit={handleSubmit} className={styles.formCard}>
+                  <div className={styles.formGroup}>
+                     <label htmlFor="rating" className={styles.label}>
 
-            <form onSubmit={handleSubmit} className={styles.formCard}>
-               <div className={styles.formGroup}>
-                  <label htmlFor="rating" className={styles.label}>
+                        Rating:
+                     </label>
+                     <div>{renderStars(rating, setRating)}</div>
+                  </div>
 
-                     Rating:
-                  </label>
-                  <div>{renderStars(rating, setRating)}</div>
-               </div>
+                  <div className={styles.formGroup}>
+                     <label htmlFor="feedback" className={styles.label}>
+                        Feedback:
+                     </label>
+                     <textarea
+                        id="feedback"
+                        value={feedback}
+                        onChange={(e) => {
+                           setFeedback(e.target.value);
+                        }}
+                        rows={4}
+                        className={styles.textarea}
+                        placeholder="Scrie aici ce părere ai despre aplicație..."
+                     />
+                  </div>
 
-               <div className={styles.formGroup}>
-                  <label htmlFor="feedback" className={styles.label}>
-                     Feedback:
-                  </label>
-                  <textarea
-                     id="feedback"
-                     disabled={!session}
-                     value={feedback}
-                     onChange={(e) => {
-                        if (!session) {
-                           Swal.fire({
-                              icon: "warning",
-                              title: "Autentificare necesară",
-                              text: "Trebuie să fii logat pentru a lăsa o recenzie.",
-                              confirmButtonText: "OK",
-                           });
-                           return;
-                        }
-                        setFeedback(e.target.value);
-                     }}
-                     rows={4}
-                     className={styles.textarea}
-                     placeholder="Scrie aici ce părere ai despre aplicație..."
-                  />
-               </div>
+                  {error && <div className={styles.error}>{error}</div>}
 
-               {error && <div className={styles.error}>{error}</div>}
 
-               <button type="submit" className="btn btn-success" disabled={loading} >
-                  Trimite recenzia
-               </button>
-            </form>
+                  <button type="submit" className="btn btn-success" disabled={loading}>
+                     Trimite recenzia
+                  </button>
+               </form>
+            </Authentication>
 
             <hr className={styles.hr}/>
 
@@ -193,7 +176,7 @@ export default function ReviewPage() {
                <p>Nu există recenzii încă. Fii primul care își împărtășește părerea!</p>
             ) : (
                <ul className={styles.reviewList}>
-                  {reviews.map(({name, rating, feedback, createdAt }, index) => (
+                  {reviews.map(({name, rating, feedback, createdAt}, index) => (
                      <li key={index} className={styles.reviewCard}>
                         <div className={styles.reviewName}>{name}</div>
                         {renderStars(rating)}

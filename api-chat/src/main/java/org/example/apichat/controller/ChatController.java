@@ -14,50 +14,61 @@ public class ChatController {
 
     @PostMapping("/locateVeterinaryOffices")
     public ResponseEntity<List<Map<String, Object>>> locateVeterinaryOffices(@RequestBody Map<String, String> location) {
-
-        String address=location.get("address");
-        System.out.println("Adresa primita: " + address);
-
-        double[] coordinates = geocodeAddress(address);
+        double[] coordinates = geocodeAddress(location);
         if (coordinates == null) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
+        //[47.1648795, 27.5882272]
+        //[45.943161, 24.96676]
+        //
 
         List<Map<String, Object>> closestOffices = findClosestVeterinaryOffices(coordinates[0], coordinates[1]);
         return ResponseEntity.ok(closestOffices);
     }
-    private double[] geocodeAddress(String address) {
+
+    private double[] geocodeAddress(Map<String, String> place) {
+        String address = place.get("address");
+        String city = place.get("city");
         String googleGeocodeApiKey = "AIzaSyBi_pbMjgl7WW04y_U3Pvyg4wV8V3d-Xkw";
-        address = address.trim().replaceAll("\\s+", " ");
-        String url = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/geocode/json")
-                .queryParam("address", address)
+        String fullAddress = String.format("%s+%s",
+                address.trim().replaceAll("\\s+", "+"),
+                city);
+
+        String url = UriComponentsBuilder
+                .fromHttpUrl("https://maps.googleapis.com/maps/api/geocode/json")
+                .queryParam("address", fullAddress)
                 .queryParam("components", "country:RO")
                 .queryParam("key", googleGeocodeApiKey)
+                .encode()
                 .toUriString();
+
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<GoogleGeocodeResponse> response = restTemplate.exchange(
                 url, HttpMethod.GET, null, GoogleGeocodeResponse.class);
 
         GoogleGeocodeResponse rsp = response.getBody();
-        ResponseEntity<String> res = restTemplate.exchange(
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+        headers.set("Accept-Language", "ro-RO,ro;q=0.9,en-US;q=0.8,en;q=0.7");
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> rawResponse = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
-                null,
+                entity,
                 String.class
         );
-
-        System.out.println(res.getBody());
-
+        System.out.println(rawResponse.getBody());
         if (rsp == null || rsp.getResults() == null || rsp.getResults().isEmpty()) {
             System.out.println("Adresă invalidă!");
             return null;
         }
 
         GoogleGeocodeResponse.Geometry.Location location = rsp.getResults().get(0).getGeometry().getLocation();
-        return new double[]{location.getLat(), location.getLng()};
+        return new double[]{ location.getLat(), location.getLng() };
     }
-
 
     private List<Map<String, Object>> findClosestVeterinaryOffices(double latitude, double longitude) {
         String googlePlacesApiKey = "AIzaSyBi_pbMjgl7WW04y_U3Pvyg4wV8V3d-Xkw";
@@ -96,7 +107,8 @@ public class ChatController {
 
             Map<String, Object> officeData = new HashMap<>();
             officeData.put("name", place.getName());
-            officeData.put("address", place.getVicinity());
+            officeData.put("address", placeDetails.get("formatted_address"));
+            officeData.put("coordinates", String.format("%s,%s", placeLat, placeLon));
             officeData.put("distance", String.format("%.2f km", distance));
             officeData.put("phone", phoneNumber);
 
@@ -138,11 +150,17 @@ public class ChatController {
 
         String detailsUrl = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/details/json")
                 .queryParam("place_id", placeId)
-                .queryParam("fields", "formatted_phone_number,opening_hours")
+                .queryParam("fields", "formatted_phone_number,opening_hours,formatted_address")
                 .queryParam("key", googlePlacesApiKey)
                 .toUriString();
 
         RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> rawResponse = restTemplate.exchange(
+                detailsUrl,
+                HttpMethod.GET,
+                null,
+                String.class
+        );
         ResponseEntity<PlaceDetailsResponse> response = restTemplate.exchange(
                 detailsUrl, HttpMethod.GET, null, PlaceDetailsResponse.class);
 
@@ -152,6 +170,7 @@ public class ChatController {
         if (detailsResponse != null && detailsResponse.getResult() != null) {
             detailsMap.put("phone", detailsResponse.getResult().getFormattedPhoneNumber());
             detailsMap.put("hours", detailsResponse.getResult().getOpeningHours());
+            detailsMap.put("formatted_address", detailsResponse.getResult().getFormattedAddress());
         }
         return detailsMap;
     }

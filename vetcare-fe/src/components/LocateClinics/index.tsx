@@ -13,6 +13,13 @@ export default function LocateClinics() {
    const [streetType, setStreetType] = useState("Strada");
    const [streetName, setStreetName] = useState("");
 
+   function getAddress() {
+      return `${streetType}+${streetName}+${number}`;
+   }
+
+   function getFullAddress() {
+      return `${streetType}+${streetName}+${number}+${city}`;
+   }
    async function handleLocate(e: React.FormEvent) {
       e.preventDefault();
 
@@ -22,13 +29,12 @@ export default function LocateClinics() {
          return;
       }
 
-      const fullAddress = `${streetType} ${streetName}, numar ${number}, ${city}`;
 
       setLoading(true);
       setError(null);
 
       try {
-         const data = await locateVetClinics(fullAddress);
+         const data = await locateVetClinics(getAddress(), city);
          setClinics(data);
          setShowModal(true);
       } catch (err) {
@@ -132,7 +138,9 @@ export default function LocateClinics() {
                   <button className={styles.closeButton} onClick={() => setShowModal(false)}>X</button>
                   <h3><MapPin size={28} style={{ marginRight: '8px' }} color="#28a745"  />Clinici Veterinare din Zona Ta</h3>
                   {clinics.map((clinic, i) => {
-                     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.address)}`;
+                     const mapsUrl = `https://www.google.com/maps/dir/?api=1` +
+                        `&origin=${getFullAddress()}` +
+                        `&destination=${encodeURIComponent(clinic.coordinates)}`;
                      return (
                         <div key={i} className={styles.card}>
                            <div className={styles.cardHeader}>
@@ -163,7 +171,7 @@ export default function LocateClinics() {
 
                            <div className={styles.cardActions}>
                               <a href={`tel:${clinic.phone}`} className={styles.callButton}>Sună</a>
-                              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.detailsButton}>Vezi Detalii</a>
+                              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.detailsButton}>Vezi pe harta</a>
                            </div>
                         </div>
                      );
