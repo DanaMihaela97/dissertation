@@ -31,9 +31,6 @@ public class Animal {
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AnimalVaccine> animalVaccines = new ArrayList<>();
 
-    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
-    private List<Anamnesis> anamneses = new ArrayList<>();
-
     private int calculateAge(String birthDate) {
         if (birthDate == null || birthDate.isEmpty()) {
             return 0;
@@ -62,7 +59,6 @@ public class Animal {
                 ", breed='" + breed + '\'' +
                 ", email='" + email + '\'' +
                 ", animalVaccines=" + animalVaccines +
-                ", anamneses=" + anamneses +
                 '}';
     }
 }

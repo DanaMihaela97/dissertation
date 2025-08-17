@@ -18,7 +18,7 @@ const LoginPage = () => {
                <p className={styles.loginText}>Autentifică-te cu contul tău Keycloak pentru a accesa aplicația.</p>
 
                <button
-                  onClick={() => signIn("keycloak")}
+                  onClick={() => signIn("keycloak", { callbackUrl: "/home" })}
                   className={styles.keycloakButton}
                >
                   <span>Autentifică-te cu Keycloak</span>

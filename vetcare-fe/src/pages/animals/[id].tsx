@@ -19,14 +19,15 @@ import {getAgeString} from "@/utils/animalData";
 import Swal from "sweetalert2";
 import {VaccinesModal} from "@/components/Vaccines/VaccinesModal";
 import Authentication from "@/components/Authentication";
+import Index from "@/components/EditProfile";
 
 
 type Props = {
    animal: AnimalProfile | null;
 };
-type Tab = 'Profil' | 'Vaccinuri' | 'Diagnostic' | 'Tratament' | 'Sfaturi';
+type Tab = 'Profil' | 'Vaccinuri' | 'Diagnostic' | 'Tratament' | 'Recomandari';
 
-const TABS: Tab[] = ['Profil', 'Vaccinuri', 'Diagnostic', 'Tratament', 'Sfaturi'];
+const TABS: Tab[] = ['Profil', 'Vaccinuri', 'Diagnostic', 'Tratament', 'Recomandari'];
 const TAB_DETAILS: Record<Tab, { title: string; subtitle: string; icon: React.ReactElement }> = {
    Profil: {
       title: 'Profilul Animalului',
@@ -48,7 +49,7 @@ const TAB_DETAILS: Record<Tab, { title: string; subtitle: string; icon: React.Re
       subtitle: 'Planurile de tratament recomandate',
       icon: <Pill size={24}/>,
    },
-   Sfaturi: {
+   Recomandari: {
       title: 'Recomandări',
       subtitle: 'Recomandări și sfaturi pentru îngrijire',
       icon: <Lightbulb size={24}/>,
@@ -77,7 +78,7 @@ export default function AnimalPage() {
       setIsModalOpen(true);
    };
 
-   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       if (!formData) return;
       setFormData({
          ...formData,
@@ -111,7 +112,7 @@ export default function AnimalPage() {
          const response = await startChat(animal);
          sessionStorage.setItem("greeting", response.botResponse);
          console.log("Set the greeting", response.botResponse);
-         router.push(`/chat/${response.sessionId}`, undefined, { shallow: true });
+         router.push(`/chat/${response.sessionId}`, undefined, {shallow: true});
       } catch (error) {
          console.error(error);
       }
@@ -194,8 +195,7 @@ export default function AnimalPage() {
       if (!animal?.id) return;
 
       const result = await Swal.fire({
-         title: 'Ești sigur că dorești să ștergi acest vaccin?',
-         text: "Această acțiune este ireversibilă!",
+         title: 'Ești sigur/ă că dorești să ștergi acest vaccin?',
          icon: 'warning',
          showCancelButton: true,
          confirmButtonColor: '#d33',
@@ -269,45 +269,30 @@ export default function AnimalPage() {
                   </nav>
 
                   <div
-                     style={{
-                        padding: '20px 30px',
-                        ...(activeTab !== 'Vaccinuri' && {
-                           flex: 1,
-                           display: 'flex',
-                           flexDirection: 'column',
-                        }),
-                     }}
-                  >
+                     className={`${styles.containerPadding} ${activeTab !== 'Vaccinuri' ? styles.containerFlex : ''}`}>
 
-                     <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: '24px'
-                     }}>
-                        <h1 style={{margin: 0}}>
-                           <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
-                  <span
-                     className={`${styles.tabIcon} 
+                     <div className={styles.headerRow}>
+                        <h1 className={styles.headerTitle}>
+                           <div className={styles.titleWrapper}>
+        <span className={`${styles.tabIcon} 
                          ${activeTab === 'Profil' ? styles.tabProfil : ''} 
                          ${activeTab === 'Vaccinuri' ? styles.tabVaccinuri : ''} 
                          ${activeTab === 'Diagnostic' ? styles.tabDiagnostic : ''} 
                          ${activeTab === 'Tratament' ? styles.tabTratament : ''} 
-                         ${activeTab === 'Sfaturi' ? styles.tabSfaturi : styles.tabDefault}
-                           `}
-                  >
-                    <span className={`${styles.iconBase} ${tabClass}`}>
-                             {TAB_DETAILS[activeTab as Tab].icon}
-                           </span>
-                  </span>
+                         ${activeTab === 'Recomandari' ? styles.tabSfaturi : styles.tabDefault}`}
+        >
+          <span className={`${styles.iconBase} ${tabClass}`}>
+            {TAB_DETAILS[activeTab as Tab].icon}
+          </span>
+        </span>
 
-                              <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                    <span style={{fontWeight: 'bold', fontSize: '1.7rem', lineHeight: 1.2}}>
-                      {TAB_DETAILS[activeTab as Tab].title}
-                    </span>
-                                 <span style={{fontSize: '1.2rem', color: '#666', marginTop: '2px'}}>
-                      {TAB_DETAILS[activeTab as Tab].subtitle}
-                    </span>
+                              <div className={styles.textWrapper}>
+          <span className={styles.mainTitle}>
+            {TAB_DETAILS[activeTab as Tab].title}
+          </span>
+                                 <span className={styles.subTitle}>
+            {TAB_DETAILS[activeTab as Tab].subtitle}
+          </span>
                               </div>
                            </div>
                         </h1>
@@ -365,95 +350,15 @@ export default function AnimalPage() {
                                     Editează
                                  </button>
 
-                                 {isEditOpen && (
-                                    <div className={styles.modalOverlay}>
-                                       <div className={styles.modalContent}>
-                                          <h2>Editează profilul</h2>
-                                          {formData && (
-                                             <>
-                                                <b>
-                                                   Nume</b>
-                                                <input
-                                                   type="text"
-                                                   name="animalName"
-                                                   value={formData.animalName}
-                                                   onChange={handleChange}
-                                                   className={styles.modalInput}
-                                                   placeholder="Nume animal"
-                                                />
-                                                <b>
-                                                   Rasa</b>
-                                                <select
-                                                   name="breed"
-                                                   value={formData.breed}
-                                                   onChange={handleChange}
-                                                   className={styles.modalSelect}
-                                                >
-                                                   <option value="">Selectează rasa</option>
-                                                   {breeds.map((b) => (
-                                                      <option key={b} value={b}>
-                                                         {b}
-                                                      </option>
-                                                   ))}
-                                                </select>
-
-                                                <b>Sex</b>
-                                                <select
-                                                   name="sex"
-                                                   value={formData.sex}
-                                                   onChange={handleChange}
-                                                   className={styles.modalSelect}
-                                                >
-                                                   <option value="Mascul">Mascul</option>
-                                                   <option value="Femelă">Femelă</option>
-                                                </select>
-
-                                                <b> Greutate</b>
-                                                <input
-                                                   type="text"
-                                                   name="weight"
-                                                   value={formData.weight}
-                                                   onChange={handleChange}
-                                                   className={styles.modalInput}
-                                                   placeholder="Greutate (kg)"
-                                                />
-
-                                                <b>Tip</b>
-                                                <select
-                                                   name="type"
-                                                   value={formData.type}
-                                                   onChange={handleChange}
-                                                   className={styles.modalSelect}
-                                                >
-                                                   <option value="Câine">Câine</option>
-                                                   <option value="Pisică">Pisică</option>
-                                                </select>
-                                                <b> Data de nastere</b>
-                                                <input
-                                                   type="date"
-                                                   name="birthdate"
-                                                   value={formData.birthdate ? formData.birthdate.split("T")[0] : ""}
-                                                   onChange={handleChange}
-                                                   className={styles.modalInput}
-                                                   max={new Date().toISOString().split("T")[0]}
-                                                />
-
-
-                                                <div className={styles.modalActions}>
-                                                   <button className={styles.saveButton} onClick={handleSave}>
-                                                      Salvează
-                                                   </button>
-                                                   <button
-                                                      className={styles.cancelButton}
-                                                      onClick={() => setIsEditOpen(false)}
-                                                   >
-                                                      Anulează
-                                                   </button>
-                                                </div>
-                                             </>
-                                          )}
-                                       </div>
-                                    </div>
+                                 {isEditOpen && formData && (
+                                    <Index
+                                       isOpen={isEditOpen}
+                                       formData={formData}
+                                       breeds={breeds}
+                                       onChange={handleChange}
+                                       onSave={handleSave}
+                                       onClose={() => setIsEditOpen(false)}
+                                    />
                                  )}
 
                               </div>
@@ -511,10 +416,12 @@ export default function AnimalPage() {
 
                         )}
 
-                        {['Diagnostic', 'Tratament', 'Sfaturi'].includes(activeTab) && (
+                        {['Diagnostic', 'Tratament', 'Recomandari'].includes(activeTab) && (
                            <div className="space-y-4">
                               {consultations.length > 0 ? (
-                                 consultations.map((c) => (
+                                 [...consultations]
+                                 .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                                 .map((c) => (
                                     <div
                                        key={c.id}
                                        className="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500"
@@ -558,7 +465,7 @@ export default function AnimalPage() {
                                           </div>
                                        )}
 
-                                       {activeTab === 'Sfaturi' && (
+                                       {activeTab === 'Recomandari' && (
                                           <div className={styles.adviceCard}>
                                              <div className={styles.cardHeader}>
                                                 <span className={styles.cardTitle}>Consultație Medicală</span>

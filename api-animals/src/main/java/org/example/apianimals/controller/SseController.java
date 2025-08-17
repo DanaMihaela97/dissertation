@@ -1,25 +1,20 @@
 package org.example.apianimals.controller;
-import org.example.apianimals.service.VaccineService;
+
+import org.example.apianimals.repository.AnimalVaccineRepository;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.JwtException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.Cookie;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 @RestController
 @RequestMapping("/websocket")
 public class SseController {
-
-    private final VaccineService vaccineService;
-
-    public SseController(VaccineService vaccineService) {
-        this.vaccineService = vaccineService;
+    private final AnimalVaccineRepository animalVaccineRepository;
+    public SseController(AnimalVaccineRepository animalVaccineRepository) {
+        this.animalVaccineRepository = animalVaccineRepository;
     }
 
     @GetMapping("/updates")
@@ -28,23 +23,32 @@ public class SseController {
             return Flux.empty();
         }
 
-        String finalEmail = email;
-
-        Flux<ServerSentEvent<String>> initialNotification = vaccineService.getUpdates(finalEmail)
-                .filter(msg -> !msg.equals("No updates."))
+        Flux<String> notificationFlux = Mono.fromCallable(() -> animalVaccineRepository.findAnimalsByEmail(email))
+                .subscribeOn(Schedulers.boundedElastic())
+                .flatMapMany(list -> {
+                    if (list.isEmpty()) {
+                        return Flux.empty();
+                    }
+                    return Flux.fromIterable(list)
+                            .map(animal -> animal.getAnimalName() +
+                                    " trebuie sa-si faca rapel la vaccinul " +
+                                    animal.getVaccineName() +
+                                    " pe data de " +
+                                    animal.getDateAdministered().plusDays(animal.getRapelDays()));
+                });
+        Flux<ServerSentEvent<String>> immediate = notificationFlux
                 .map(msg -> ServerSentEvent.<String>builder()
                         .event("vaccine-update")
                         .data(msg)
                         .build());
 
-        Flux<ServerSentEvent<String>> periodicNotifications = Flux.interval(Duration.ofMinutes(1))
-                .flatMap(tick -> vaccineService.getUpdates(finalEmail))
-                .filter(msg -> !msg.equals("No updates."))
+        Flux<ServerSentEvent<String>> interval = Flux.interval(Duration.ofMinutes(1))
+                .flatMap(tick -> notificationFlux)
                 .map(msg -> ServerSentEvent.<String>builder()
                         .event("vaccine-update")
                         .data(msg)
                         .build());
 
-        return Flux.merge(initialNotification, periodicNotifications);
+        return Flux.concat(immediate, interval);
     }
 }

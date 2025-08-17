@@ -62,13 +62,13 @@ export default function ReviewPage() {
       setLoading(true);
       try {
          await createReview({rating, feedback});
-         await fetchReviews();       // actualizează lista
-         await fetchMeanRating();    // actualizează media
+         await fetchReviews();
+         await fetchMeanRating();
 
          setRating(0);
          setFeedback("");
 
-         Swal.fire({
+         await Swal.fire({
             icon: "success",
             title: "Mulțumim!",
             text: "Review-ul tău a fost trimis cu succes.",

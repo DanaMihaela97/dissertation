@@ -75,6 +75,7 @@ public class AnimalController {
         List<AnimalVaccineInfoDto> vaccineDtos = animalVaccineService.getAnimalVaccine(animalId);
         return ResponseEntity.ok(vaccineDtos);
     }
+
     @GetMapping("/dog-breeds")
     public ResponseEntity<List<String>> getDogBreeds() {
         List<String> dogBreeds=animalServiceImpl.getDogBreeds();

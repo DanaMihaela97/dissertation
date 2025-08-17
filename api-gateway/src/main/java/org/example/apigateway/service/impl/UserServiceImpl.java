@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     @Override
     public User saveUser(String email) {
         User user = new User();
@@ -65,6 +64,9 @@ public class UserServiceImpl implements UserService {
             payload.put("username", request.getEmail());
             payload.put("email", request.getEmail());
             payload.put("enabled", true);
+
+            payload.put("firstName", request.getFirstName());
+            payload.put("lastName", request.getLastName());
 
             Map<String, Object> credentials = new HashMap<>();
             credentials.put("type", "password");

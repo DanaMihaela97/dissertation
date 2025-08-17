@@ -11,10 +11,11 @@ export default function ChatPage() {
    const router = useRouter();
    const {sessionId} = router.query;
 
-   const [chatLog, setChatLog] = useState<string[]>([]);
+   const [chatLog, setChatLog] = useState<any[]>([]);
    const [message, setMessage] = useState("");
    const [greeting, setGreeting] = useState("");
    const [loading, setLoading] = useState(false);
+   const [finished, setFinished] = useState(false);
 
    useEffect(() => {
       const message = sessionStorage.getItem("greeting");
@@ -26,26 +27,50 @@ export default function ChatPage() {
 
    useEffect(() => {
       if (greeting) {
-         setChatLog([`Gemini: ${greeting}`]);
+         setChatLog([{sender: 'Gemini', text: greeting}]);
       }
    }, [greeting]);
 
    const handleSend = async () => {
-      if (!sessionId || !message.trim() || loading) return;
+      if (!sessionId || !message.trim() || loading || finished) return;
 
       setLoading(true);
-      setChatLog((prev) => [...prev, `Tu: ${message}`]);
+      setChatLog((prev) => [...prev, {sender: 'Tu', text: message}]);
 
       try {
          const res = await sendMessage(Number(sessionId), message);
-         setChatLog((prev) => [...prev, `Gemini: ${res.reply}`]);
+
+         const formattedReply = formatAIReply(res.reply);
+         setChatLog((prev) => [...prev, {sender: 'Gemini', text: formattedReply}]);
          setMessage("");
+
+         if (res.finished) {
+            setFinished(true);
+         }
+
       } catch (err) {
          console.error(err);
       } finally {
          setLoading(false);
       }
    };
+
+   const formatAIReply = (reply: string) => {
+      const sections = reply.split(/(?=Diagnostic:|Tratament:|Recomandări:)/i);
+      return sections.map((section, idx) => {
+
+         if (section.includes('*')) {
+            const parts = section.split('*').map((part, i) => {
+               const trimmed = part.trim();
+               if (!trimmed) return null;
+               return <li key={i}>{trimmed}</li>;
+            });
+            return <div key={idx}><strong>{section.match(/^(.*?):/)?.[1]}:</strong><ul>{parts}</ul></div>;
+         }
+         return <p key={idx}>{section.trim()}</p>;
+      });
+   };
+
 
    return (
       <Layout>
@@ -68,18 +93,14 @@ export default function ChatPage() {
                   </div>
 
                   <div className={styles.chatLog}>
-                     {chatLog.map((msg, i) => {
-                        const isUser = msg.startsWith('Tu:');
-                        const text = msg.replace(/^(Tu: |Gemini: )/, '');
-                        return (
-                           <p
-                              key={i}
-                              className={isUser ? styles.userMessage : styles.botMessage}
-                           >
-                              {text}
-                           </p>
-                        );
-                     })}
+                     {chatLog.map((msg, i) => (
+                        <div
+                           key={i}
+                           className={msg.sender === 'Tu' ? styles.userMessage : styles.botMessage}
+                        >
+                           {msg.text}
+                        </div>
+                     ))}
                   </div>
 
                   <div className={styles.inputArea}>
@@ -88,19 +109,22 @@ export default function ChatPage() {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Scrie mesajul tău..."
-                        onKeyDown={(e) => {
-                           if (e.key === 'Enter') handleSend();
-                        }}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
+                        disabled={finished}
                      />
-                     <button onClick={handleSend} disabled={loading}>
-                        {loading ? 'Se trimite...' : 'Trimite'}
+                     <button onClick={handleSend} disabled={loading || finished}>
+                        {loading ? 'Se trimite...' : finished ? 'Sesiune încheiată' : 'Trimite'}
                      </button>
                   </div>
+
+                  {finished && (
+                     <p className={styles.finishedNotice}>
+                        Consultatia s-a încheiat. Pentru o altă evaluare, începe o nouă sesiune.
+                     </p>
+                  )}
                </div>
 
                <div className={styles.locateSection}>
-
-
                   <LocateClinics/>
                </div>
             </div>

@@ -9,6 +9,9 @@ const RegisterPage = () => {
    const router = useRouter();
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
+   const [firstName, setFirstName] = useState("");
+   const [lastName, setLastName] = useState("");
+
    const [error, setError] = useState("");
    const [loading, setLoading] = useState(false);
 
@@ -24,8 +27,7 @@ const RegisterPage = () => {
       }
 
       try {
-         await register({ email, password });
-
+         await register({ email, password, firstName, lastName });
          Swal.fire({
             title: "Înregistrare reușită!",
             text: "Te poți loga acum.",
@@ -39,7 +41,6 @@ const RegisterPage = () => {
 
       } catch (err: any) {
          console.error(err);
-         // poți prelua mesajul din răspunsul backend dacă există
          const message = err.response?.data?.message || "A apărut o eroare la înregistrare. Încearcă din nou.";
          Swal.fire({
             title: "Eroare",
@@ -58,6 +59,28 @@ const RegisterPage = () => {
             <div className={styles.registerForm}>
                <h2 className={styles.registerHeading}>Înregistrare</h2>
                <form className={styles.form} onSubmit={handleSubmit}>
+                  <div className={styles.formGroup}>
+                     <label htmlFor="firstName">Prenume</label>
+                     <input
+                        type="text"
+                        id="firstName"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                     />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                     <label htmlFor="lastName">Nume</label>
+                     <input
+                        type="text"
+                        id="lastName"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                     />
+                  </div>
+
                   <div className={styles.formGroup}>
                      <label htmlFor="email">Email</label>
                      <input
@@ -80,7 +103,11 @@ const RegisterPage = () => {
                      />
                   </div>
 
-                  <button type="submit" disabled={loading} className={styles.submitButton}>
+                  <button
+                     type="submit"
+                     disabled={loading}
+                     className={styles.submitButton}
+                  >
                      Înregistrează-te
                   </button>
                </form>
@@ -100,5 +127,6 @@ const RegisterPage = () => {
       </Layout>
    );
 };
+
 
 export default RegisterPage;

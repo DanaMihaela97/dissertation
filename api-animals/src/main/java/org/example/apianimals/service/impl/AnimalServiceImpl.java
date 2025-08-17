@@ -1,38 +1,29 @@
 package org.example.apianimals.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.example.apianimals.convertor.AnimalMapper;
-import org.example.apianimals.convertor.VaccineMapper;
 import org.example.apianimals.dto.AnimalCreateDto;
 import org.example.apianimals.dto.AnimalInfoDto;
-import org.example.apianimals.dto.AnimalVaccineCreateDto;
-import org.example.apianimals.dto.AnimalVaccineInfoDto;
 import org.example.apianimals.entity.Animal;
 import org.example.apianimals.entity.AnimalVaccine;
-import org.example.apianimals.entity.Vaccine;
 import org.example.apianimals.repository.AnimalRepository;
 import org.example.apianimals.repository.AnimalVaccineRepository;
 import org.example.apianimals.repository.VaccineRepository;
 import org.example.apianimals.service.AnimalService;
-import org.example.apianimals.service.AnimalVaccineService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
+public class AnimalServiceImpl implements AnimalService {
 
     private final AnimalRepository animalRepository;
     private final RestTemplate restTemplate;
@@ -46,8 +37,10 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
     private String catApiKey;
 
     @Autowired
-    public AnimalServiceImpl(AnimalRepository animalRepository, RestTemplate restTemplate,
-                             VaccineRepository vaccineRepository, AnimalVaccineRepository animalVaccineRepository) {
+    public AnimalServiceImpl(RestTemplate restTemplate,
+                             AnimalRepository animalRepository,
+                             VaccineRepository vaccineRepository,
+                             AnimalVaccineRepository animalVaccineRepository) {
         this.animalRepository = animalRepository;
         this.restTemplate = restTemplate;
         this.vaccineRepository = vaccineRepository;
@@ -121,65 +114,6 @@ public class AnimalServiceImpl implements AnimalService, AnimalVaccineService {
         }
 
         return AnimalMapper.toDto(animalRepository.save(finalAnimal));
-    }
-
-    @Override
-    @Transactional
-    public List<AnimalVaccineInfoDto> createAnimalVaccine(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos) {
-        Animal animal = animalRepository.findById(animalId)
-                .orElseThrow(() -> new RuntimeException("Animal not found"));
-
-        List<AnimalVaccine> newVaccines = vaccineCreateDtos.stream().map(dto -> {
-            Vaccine vaccine = vaccineRepository.findById(dto.getVaccineId())
-                    .orElseThrow(() -> new RuntimeException("Vaccine not found"));
-            AnimalVaccine av = new AnimalVaccine();
-            av.setAnimal(animal);
-            av.setVaccine(vaccine);
-            av.setDateAdministered(dto.getDateAdministered());
-            return av;
-        }).toList();
-
-        animalVaccineRepository.saveAll(newVaccines);
-
-        return newVaccines.stream().map(VaccineMapper::mapToInfoDto).toList();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<AnimalVaccineInfoDto> getAnimalVaccine(Long animalId) {
-        List<AnimalVaccine> animalVaccines = animalVaccineRepository.findByAnimalId(animalId);
-        return animalVaccines.stream().map(VaccineMapper::mapToInfoDto).toList();
-    }
-
-    @Override
-    @Transactional
-    public List<AnimalVaccineInfoDto> updateAnimalVaccines(Long animalId, List<AnimalVaccineCreateDto> vaccineCreateDtos) {
-        Animal animal = animalRepository.findById(animalId)
-                .orElseThrow(() -> new RuntimeException("Animal not found"));
-
-        List<AnimalVaccine> savedVaccines = new ArrayList<>();
-
-        for (AnimalVaccineCreateDto dto : vaccineCreateDtos) {
-            Vaccine vaccine = vaccineRepository.findById(dto.getVaccineId())
-                    .orElseThrow(() -> new RuntimeException("Vaccine not found"));
-
-            Optional<AnimalVaccine> existing = animalVaccineRepository.findByAnimalIdAndVaccineId(animalId, dto.getVaccineId());
-
-            if (existing.isPresent()) {
-                AnimalVaccine av = existing.get();
-                av.setDateAdministered(dto.getDateAdministered());
-                savedVaccines.add(av);
-            } else {
-                AnimalVaccine av = new AnimalVaccine();
-                av.setAnimal(animal);
-                av.setVaccine(vaccine);
-                av.setDateAdministered(dto.getDateAdministered());
-                savedVaccines.add(av);
-            }
-        }
-
-        animalVaccineRepository.saveAll(savedVaccines);
-        return savedVaccines.stream().map(VaccineMapper::mapToInfoDto).toList();
     }
 
     @Override

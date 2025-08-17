@@ -718,90 +718,54 @@
   transform: scale(1.05);
 }
 
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  padding: 16px;
+.containerPadding {
+  padding: 20px 30px;
 }
 
-.modalContent {
-  background-color: #fff;
-  border-radius: 20px;
-  padding: 24px;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+.containerFlex {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  position: relative;
 }
 
-.modalContent h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1b223d;
-  text-align: center;
-}
-
-.modalInput, .modalSelect {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid #d1d5db;
-  margin-bottom: 12px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-}
-
-.modalInput:focus, .modalSelect:focus {
-  outline: none;
-  border-color: #2c7be5;
-  box-shadow: 0 0 0 2px rgba(44,123,229,0.2);
-}
-
-.modalActions {
+.headerRow {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.headerTitle {
+  margin: 0;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
   gap: 12px;
-  margin-top: 12px;
 }
 
-.saveButton {
-  background-color: #28a745;
-  color: white;
-  border-radius: 6px;
-  padding: 8px 16px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.iconWrapper {
+  /* aici poți muta stilurile pentru icon, similar cu tabIcon și tabClass */
 }
 
-.saveButton:hover {
-  background-color: #15803d;
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.cancelButton {
-  background-color: #ccc;
-  color: #333;
-  border-radius: 6px;
-  padding: 8px 16px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.mainTitle {
+  font-weight: bold;
+  font-size: 1.7rem;
+  line-height: 1.2;
 }
 
-.cancelButton:hover {
-  background-color: #b3b3b3;
+.subTitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 2px;
 }
+
+
+

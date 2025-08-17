@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -95,7 +96,7 @@ public class ChatServiceImpl implements ChatService {
         ChatSession session = chatSessionRepository.findById(sessionId).orElseThrow();
         String conversation = session.getConversationHistory() + "User: " + userMessage + "\n";
 
-        int maxQuestions = 1;
+        int maxQuestions = 4;
         boolean shouldForceFinal = session.getAiQuestionsCount() >= maxQuestions;
 
         String prompt;
@@ -104,7 +105,9 @@ public class ChatServiceImpl implements ChatService {
                     + "Oferă un răspuns clar și concis, limitat la maxim 7 rânduri, structurat astfel:\n"
                     + "1. Diagnostic (scurt, 1-2 fraze)\n"
                     + "2. Tratament (esențial, fără detalii inutile)\n"
-                    + "3. Sfaturi (maxim 2-3 puncte scurte)\n\n"
+                    + "3. Recomandări (maxim 2-3 puncte scurte)\n\n"
+                    + "Dacă situația necesită consult fizic la cabinet, menționează clar acest lucru în recomandări.\n"
+                    + "Dacă este cazul, recomandă și un tip de hrană potrivită pentru animal.\n\n"
                     + "Nu adăuga explicații medicale complexe sau redundante.\n\n"
                     + "Context conversație:\n" + conversation;
         } else {
@@ -112,7 +115,9 @@ public class ChatServiceImpl implements ChatService {
                     "\nPune o singură întrebare clară și relevantă pentru a aduna informații suplimentare. " +
                     "Nu oferi diagnostic sau tratament până nu ai suficiente informații. " +
                     "După cel mult " + maxQuestions + " întrebări, oferă un răspuns clar și structurat astfel:\n" +
-                    "1. Diagnostic\n2. Tratament\n3. Sfaturi\n" +
+                    "1. Diagnostic\n2. Tratament\n3. Recomandări\n" +
+                    "Dacă situația necesită consult fizic la cabinet, menționează clar acest lucru la recomandări.\n" +
+                    "Dacă este cazul, recomandă și un tip de hrană potrivită pentru animal.\n" +
                     "Limitează răspunsul final la maxim 7 rânduri.";
         }
 
@@ -142,7 +147,7 @@ public class ChatServiceImpl implements ChatService {
         Map<String, Object> content = Map.of("parts", List.of(part));
         Map<String, Object> payload = Map.of("contents", List.of(content));
 
-        String requestBody = new Gson().toJson(payload); // 🔥 corect escapat
+        String requestBody = new Gson().toJson(payload);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -164,24 +169,29 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private void saveFinalConsultation(String aiReply, Long animalId, String userEmail) {
-        String diagnosis = extractSection(aiReply, "Diagnostic");
-        String treatment = extractSection(aiReply, "Tratament");
-        String advice = extractSection(aiReply, "Sfaturi");
-
-        // Elimină toate aparițiile de `**`
-        diagnosis = diagnosis.replace("**", "").trim();
-        treatment = treatment.replace("**", "").trim();
-        advice = advice.replace("**", "").trim();
+        Map<String, String> sections = parseSections(aiReply);
 
         Consultation consultation = new Consultation();
         consultation.setAnimalId(animalId);
-        consultation.setDiagnosis(diagnosis);
-        consultation.setTreatment(treatment);
-        consultation.setAdvice(advice);
+        consultation.setDiagnosis(sections.getOrDefault("Diagnostic", "").replace("**", "").trim());
+        consultation.setTreatment(sections.getOrDefault("Tratament", "").replace("**", "").trim());
+        consultation.setAdvice(sections.getOrDefault("Recomandări", sections.getOrDefault("Sfaturi", "")).replace("**", "").trim());
         consultation.setCreatedAt(LocalDateTime.now());
         consultation.setUserEmail(userEmail);
 
         consultationRepository.save(consultation);
+    }
+
+    private Map<String, String> parseSections(String text) {
+        Map<String, String> sections = new HashMap<>();
+        Pattern pattern = Pattern.compile("(Diagnostic|Tratament|Sfaturi|Recomandări):\\s*([\\s\\S]*?)(?=Diagnostic:|Tratament:|Sfaturi:|Recomandări:|$)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            String key = matcher.group(1).trim();
+            String value = matcher.group(2).trim();
+            sections.put(key, value);
+        }
+        return sections;
     }
 
     private String extractAiResponse(Map<String, Object> responseBody) {

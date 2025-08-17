@@ -32,7 +32,5 @@ public class UserController {
 
         return ResponseEntity.ok(user);
     }
-    //obtinem token ul pt a face cererea
-    //fac cererea, primesc statusul si verific, daca statusu e 201 => il salvez in DB, daca e alt status => nu l salvez.
 
 }
