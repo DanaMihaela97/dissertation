@@ -2,13 +2,18 @@
 
 import React, { useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
+import { Session } from "next-auth";
 import styles from "./Authentication.module.css"
+
+interface SessionWithError extends Session {
+   error?: "RefreshTokenError";
+}
 
 const Authentication
    = ({ children,
          hideIfUnauthenticated = false,
          response = "Nu ai acces la această pagină"}) => {
-   const { data: session, status } = useSession();
+   const { data: session, status } = useSession() as { data: SessionWithError | null; status: string };
 
    useEffect(() => {
       if (session?.error === "RefreshTokenError") {

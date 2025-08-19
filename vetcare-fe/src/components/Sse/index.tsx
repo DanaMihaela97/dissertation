@@ -20,9 +20,14 @@ export default function Sse() {
     useEffect(() => {
         const saved = localStorage.getItem('notifications');
         if (saved) {
-            setNotifications(JSON.parse(saved));
+            const parsed: Notification[] = JSON.parse(saved).map((n: Notification) => ({
+                ...n,
+                receivedAt: new Date(n.receivedAt),
+            }));
+            setNotifications(parsed);
         }
     }, []);
+
 
     useEffect(() => {
         if (session?.user?.email) {
