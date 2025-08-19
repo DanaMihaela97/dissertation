@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./EditProfileModal.module.css";
+import {AnimalProfile} from '@/components/entities/animalProfile';
 
 type EditProfileModalProps = {
    isOpen: boolean;
