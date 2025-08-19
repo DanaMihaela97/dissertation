@@ -1,6 +1,6 @@
 import axiosInstance from "@/utils/axiosInstance";
-
-export const register = async (acc: any) => {
+import { Register } from "@/components/entities/register";
+export const register = async (acc: Register) => {
   try {
     return await axiosInstance.post(`/signUp`, acc);
   } catch (error) {

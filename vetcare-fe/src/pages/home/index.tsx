@@ -20,10 +20,11 @@ export default function Home() {
             const consultationData = await getConsultationCount();
             const reviewData = await getReviewMean();
 
-            console.log(animalCount);
             setAnimalCount(animalData);
             setConsultationCount(consultationData);
             setReviewMean(reviewData);
+
+            console.log(animalData);
          } catch (error) {
             console.error("eroare la incarcarea datelor:", error);
          }
@@ -31,6 +32,7 @@ export default function Home() {
 
       fetchData();
    }, []);
+
 
 
    return (

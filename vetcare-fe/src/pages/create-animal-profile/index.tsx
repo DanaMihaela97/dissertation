@@ -23,6 +23,7 @@ import {
 } from "@/utils/animalData";
 import {Step1} from "@/components/Steps/Step1";
 import Step2 from "@/components/Steps/Step2";
+import DatePicker from "react-datepicker";
 
 const CreateAnimalProfileComponent = () => {
     const { status } = useSession();
@@ -44,7 +45,7 @@ const CreateAnimalProfileComponent = () => {
     const [breeds, setBreeds] = useState<string[]>([]);
     const [vaccines, setVaccines] = useState<Vaccine[]>([]);
     const [loadingBreeds, setLoadingBreeds] = useState(false);
-    const datePickerRef = useRef<any>(null);
+    const datePickerRef = useRef<DatePicker>(null);
 
     const router = useRouter();
 
@@ -109,20 +110,20 @@ const CreateAnimalProfileComponent = () => {
     const handleSubmit = async () => {
         try {
 
-            const animalPayload = buildAnimalPayload(formData);
-            const createdAnimal = await createAnimal(animalPayload);
+            const createdAnimal = await createAnimal(formData);
             const animalId = createdAnimal.id;
 
             const selectedVaccines = Object.entries(formData.vaccineDates)
-                .filter(([_, date]) => date !== "")
-                .map(([vaccineName, date]) => {
-                    const vaccine = vaccines.find((v) => v.name === vaccineName);
-                    return {
-                        animalId,
-                        vaccineId: vaccine?.id,
-                        dateAdministered: date,
-                    };
-                });
+            .filter(([date]) => date !== "")
+            .map(([vaccineName, date]) => {
+                const vaccine = vaccines.find((v) => v.name === vaccineName);
+                return {
+                    animalId,
+                    vaccineId: vaccine?.id,
+                    dateAdministered: date,
+                    nextDose: ""
+                };
+            });
 
             if (selectedVaccines.length > 0) {
                 await createAnimalVaccines(animalId, selectedVaccines);

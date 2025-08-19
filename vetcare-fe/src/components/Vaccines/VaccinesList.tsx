@@ -1,7 +1,6 @@
 import { Vaccine } from "@/components/entities/vaccines";
 import styles from "./Vaccines.module.css";
 import { CalendarIcon, ClockIcon } from "lucide-react";
-import { AnimalProfile } from "../entities/animalProfile";
 import {CreateAnimalProfile} from "@/components/entities/createAnimalProfile";
 
 interface Props {
