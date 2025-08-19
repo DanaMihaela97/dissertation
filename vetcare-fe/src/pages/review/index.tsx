@@ -126,7 +126,7 @@ export default function ReviewPage() {
                   <p>Recenzii totale</p>
                </div>
             </div>
-            <Authentication response={"Nu poti lasa o recenzie"}>
+            <Authentication response={"Trebuie să fii autentificat pentru a putea lăsa o recenzie"}>
                <form onSubmit={handleSubmit} className={styles.formCard}>
                   <div className={styles.formGroup}>
                      <label htmlFor="rating" className={styles.label}>

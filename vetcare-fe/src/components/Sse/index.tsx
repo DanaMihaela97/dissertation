@@ -3,6 +3,7 @@ import styles from './Sse.module.css';
 import { getEventSourcePath } from "@/services/sseService";
 import Authentication from "@/components/Authentication";
 import { useSession } from "next-auth/react";
+import {Bell} from "lucide-react";
 
 type Notification = {
     message: string;
@@ -17,9 +18,17 @@ export default function Sse() {
     const { data: session } = useSession();
 
     useEffect(() => {
+        const saved = localStorage.getItem('notifications');
+        if (saved) {
+            setNotifications(JSON.parse(saved));
+        }
+    }, []);
+
+    useEffect(() => {
         if (session?.user?.email) {
             document.cookie = `email=${encodeURIComponent(session.user.email)}; path=/; SameSite=Lax`;
         }
+
         const eventSource = new EventSource(getEventSourcePath(), { withCredentials: true });
 
         eventSource.onopen = () => console.log('SSE connected');
@@ -29,13 +38,16 @@ export default function Sse() {
                 message: event.data,
                 receivedAt: new Date(),
             };
+
             setHasNotification(true);
-            setNotifications((prev) => [newNotification, ...prev]);
+            setNotifications((prev) => {
+                const updated = [newNotification, ...prev];
+                localStorage.setItem('notifications', JSON.stringify(updated));
+                return updated;
+            });
+
             setShowPopup(true);
-
-            const audio = new Audio('/notification.mp3');
-            audio.play();
-
+            new Audio('/notification.mp3').play();
             setTimeout(() => setShowPopup(false), 4000);
         });
 
@@ -61,14 +73,18 @@ export default function Sse() {
            <div className={styles.notificationContainer}>
                {showPopup && (
                   <div className={styles.popupMessage}>
-                      🔔 Ai primit o notificare
+                      <Bell className={styles.bellIconPopup} />
+                      Ai primit o notificare
                   </div>
                )}
                {isOpen && (
                   <div className={styles.notificationDropdown}>
                       {notifications.length === 0 && <div>Nu ai notificări</div>}
                       {notifications.map((notif, index) => (
-                         <div key={index} className={styles.notificationItem}>
+                         <div
+                            key={index}
+                            className={`${styles.notificationItem} ${index === 0 ? styles.latestNotification : ''}`}
+                         >
                              <div>{notif.message}</div>
                              <small>{formatDateTime(notif.receivedAt)}</small>
                          </div>
@@ -76,11 +92,12 @@ export default function Sse() {
                   </div>
                )}
 
+
                <button
                   className={`${styles.bellButton} ${hasNotification ? styles.hasNotification : ''}`}
                   onClick={handleBellClick}
                >
-                   🔔
+                   <Bell className={styles.bellIconButton} />
                    {hasNotification && <span className={styles.notificationDot}></span>}
                </button>
            </div>

@@ -70,28 +70,13 @@ export const getVaccines = async (): Promise<Vaccine[]> => {
    return response.data.data || response.data;
 };
 
-export const getAnimalVaccines = async (id: number): Promise<AnimalVaccine[]> => {
-   const response = await axiosInstance.get(`/api/animals/${id}/vaccines`);
-   return response.data;
-}
-
-export const getAllAnimalIds = async (): Promise<number[]> => {
-   try {
-      const response = await axiosInstance.get<AnimalProfile[]>(`/api/animals`);
-      const animalIds = response.data.map((animal) => animal.id);
-      return animalIds;
-   } catch (error) {
-      console.error("Error fetching animal IDs:", error);
-      return [];
-   }
-};
 
 export const getAnimalCount = async () => {
    try {
       const response = await axiosInstance.get(`/api/animals/count`);
       return response.data;
    } catch (error) {
-      console.error('Error fetching animal count:', error);
+      console.error(error);
       throw error;
    }
 }
