@@ -10,7 +10,7 @@ export const createAnimal = async (animal: CreateAnimalProfile): Promise<AnimalP
    return response.data;
 };
 
-export const updateAnimal = async (id: number, animal: CreateAnimalProfile): Promise<AnimalProfile> => {
+export const updateAnimal = async (id: number, animal: AnimalProfile): Promise<AnimalProfile> => {
    const response = await axiosInstance.put(`/api/animals/${id}`, animal);
    return response.data;
 };

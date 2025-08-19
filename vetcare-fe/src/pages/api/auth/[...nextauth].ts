@@ -1,4 +1,5 @@
-import NextAuth from "next-auth";
+import NextAuth from "next-auth/next";
+
 import type { JWT } from "next-auth/jwt";
 import Keycloak from "next-auth/providers/keycloak";
 
@@ -77,11 +78,10 @@ export default NextAuth(authOptions);
 
 declare module "next-auth" {
   interface Session {
-    accessToken: string;
+    accessToken?: string;
     error?: "RefreshTokenError";
   }
 }
-
 declare module "next-auth/jwt" {
   interface JWT {
     access_token: string;
