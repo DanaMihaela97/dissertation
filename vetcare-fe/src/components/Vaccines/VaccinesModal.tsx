@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Vaccine } from "@/components/entities/vaccines";
+import {CreateAnimalProfile} from "@/components/entities/createAnimalProfile";
 import { getVaccines, updateAnimalVaccines} from "@/services/animalService";
 import styles from "./Vaccines.module.css";
 import { VaccinesList } from "@/components/Vaccines/VaccinesList";
@@ -89,6 +90,18 @@ export const VaccinesModal: React.FC<Props> = ({
          });
       }
    };
+   const animalProfile: CreateAnimalProfile = {
+      id: animalId,
+      animalName: "",
+      birthdate: "",
+      sex: "",
+      age: 0,
+      weight: "",
+      type: animalType,
+      breed: "",
+      vaccines: animalVaccines,
+      vaccineDates: formData.vaccineDates,
+   };
 
    return (
       <div className={styles.modalOverlay}>
@@ -97,7 +110,7 @@ export const VaccinesModal: React.FC<Props> = ({
             <VaccinesList
                vaccines={vaccines}
                animalType={animalType}
-               formData={formData}
+               formData={animalProfile}
                handleVaccineCheck={handleVaccineCheckWrapper}
                handleVaccineDateChange={handleVaccineDateChangeWrapper}
             />
