@@ -51,7 +51,6 @@ const About = () => {
                        icon={<MapPin className="h-8 w-8" />}
                        title="Cabinete apropiate"
                        description="Găsește rapid cele mai apropiate cabinete veterinare."
-                       className={styles.centeredFeature}
                     />
                 </div>
 
