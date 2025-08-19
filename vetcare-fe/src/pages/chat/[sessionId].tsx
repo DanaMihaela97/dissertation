@@ -9,7 +9,7 @@ import Authentication from "@/components/Authentication";
 
 type ChatMessage = {
    sender: 'Tu' | 'Gemini';
-   text: string  | JSX.Element;
+   text: string;
 };
 
 export default function ChatPage() {
@@ -51,7 +51,7 @@ export default function ChatPage() {
       try {
          const res = await sendMessage(Number(sessionId), message);
 
-         const formattedReply = formatAIReply(res.reply);
+         const formattedReply: string = formatAIReply(res.reply).toString();
          setChatLog((prev) => [...prev, {sender: 'Gemini', text: formattedReply}]);
          setMessage("");
 
