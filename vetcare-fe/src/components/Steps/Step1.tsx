@@ -11,11 +11,11 @@ type Step1Props = {
    setFieldValue: (name: string, value: string) => void;
    stringToDate: (dateStr: string) => Date | null;
    dateToString: (date: Date) => string;
-   datePickerRef: React.RefObject<any>;
+   datePickerRef: React.RefObject<DatePicker>;
    breeds: string[];
    loadingBreeds: boolean;
    setStep: (step: number) => void;
-   isStep1Valid: (formData: any) => boolean;
+   isStep1Valid: (formData: CreateAnimalProfile) => boolean;
 };
 
 export const Step1: React.FC<Step1Props> = ({

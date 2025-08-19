@@ -5,7 +5,6 @@ import Layout from "@/components/Layout";
 import Swal from "sweetalert2";
 import {ClipLoader} from "react-spinners";
 import styles from "./Review.module.css";
-import {useSession} from "next-auth/react";
 import {Star, Users} from "lucide-react";
 import Authentication from "@/components/Authentication";
 
@@ -61,7 +60,10 @@ export default function ReviewPage() {
       setError(null);
       setLoading(true);
       try {
-         await createReview({rating, feedback});
+         await createReview({
+            rating, feedback,
+            name: ""
+         });
          await fetchReviews();
          await fetchMeanRating();
 

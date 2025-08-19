@@ -1,9 +1,11 @@
+import { CreateAnimalProfile } from "@/components/entities/createAnimalProfile";
+
 export const handleVaccineCheck = (
-   setFormData: React.Dispatch<React.SetStateAction<any>>,
+   setFormData: React.Dispatch<React.SetStateAction<CreateAnimalProfile>>,
    vaccineName: string,
    checked: boolean
 ) => {
-   setFormData((prev: any) => {
+   setFormData((prev) => {
       const newDates = { ...prev.vaccineDates };
       if (!checked) {
          delete newDates[vaccineName];
@@ -15,11 +17,11 @@ export const handleVaccineCheck = (
 };
 
 export const handleVaccineDateChange = (
-   setFormData: React.Dispatch<React.SetStateAction<any>>,
+   setFormData: React.Dispatch<React.SetStateAction<CreateAnimalProfile>>,
    vaccineName: string,
    date: string
 ) => {
-   setFormData((prev: any) => ({
+   setFormData((prev) => ({
       ...prev,
       vaccineDates: {
          ...prev.vaccineDates,

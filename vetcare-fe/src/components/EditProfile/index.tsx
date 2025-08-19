@@ -3,7 +3,7 @@ import styles from "./EditProfileModal.module.css";
 
 type EditProfileModalProps = {
    isOpen: boolean;
-   formData: any;
+   formData: AnimalProfile;
    breeds: string[];
    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
    onSave: () => void;

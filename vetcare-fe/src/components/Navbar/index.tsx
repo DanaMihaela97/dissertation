@@ -132,19 +132,14 @@ const Navbar = () => {
                   {!session ? (
                      <>
                         <li className="nav-item">
-                           <a
-                              role="button"
-                              className={`${styles.navLink} nav-link`}
-                              style={{cursor: "pointer"}}
-                              href="/login"
-                           >
+                           <Link href="/login" className={`${styles.navLink} nav-link`} role="button">
                               Autentificare
-                           </a>
+                           </Link>
                         </li>
                         <li className="nav-item">
-                           <a className={`${styles.navLink} ${styles.btnDark} nav-link ms-2`} href="/register">
+                           <Link href="/register" className={`${styles.navLink} ${styles.btnDark} nav-link ms-2`}>
                               Înregistrare
-                           </a>
+                           </Link>
                         </li>
                      </>
                   ) : (

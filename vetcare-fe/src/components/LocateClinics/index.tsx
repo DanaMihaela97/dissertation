@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styles from './LocateClinics.module.css';
 import {locateVetClinics} from "@/services/locateVetClinics";
 import {Clinic} from "@/components/entities/clinic";
@@ -20,6 +20,7 @@ export default function LocateClinics() {
    function getFullAddress() {
       return `${streetType}+${streetName}+${number}+${city}`;
    }
+
    async function handleLocate(e: React.FormEvent) {
       e.preventDefault();
 
@@ -38,13 +39,13 @@ export default function LocateClinics() {
          setClinics(data);
          setShowModal(true);
       } catch (err) {
+         console.error(err);
          setError('Adresă invalidă sau eroare la căutare.');
          setClinics([]);
          setShowModal(false);
-      } finally {
-         setLoading(false);
       }
    }
+
    const isFormValid = streetName.trim() !== '' && number.trim() !== '' && city.trim() !== '';
    const [showModal, setShowModal] = useState(false);
 
@@ -133,10 +134,19 @@ export default function LocateClinics() {
 
 
          {showModal && (
-            <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
+            <div className={styles.modalOverlay} onClick={() => {
+               setShowModal(false);
+               setLoading(false);
+               setError(null);
+            }}>
                <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                  <button className={styles.closeButton} onClick={() => setShowModal(false)}>X</button>
-                  <h3><MapPin size={28} style={{ marginRight: '8px' }} color="#28a745"  />Clinici Veterinare din Zona Ta</h3>
+                  <button className={styles.closeButton} onClick={() => {
+                     setShowModal(false);
+                     setLoading(false);
+                     setError(null);
+                  }}>X</button>
+                  <h3><MapPin size={28} style={{marginRight: '8px'}} color="#28a745"/>Clinici Veterinare din Zona Ta
+                  </h3>
                   {clinics.map((clinic, i) => {
                      const mapsUrl = `https://www.google.com/maps/dir/?api=1` +
                         `&origin=${getFullAddress()}` +
@@ -152,14 +162,14 @@ export default function LocateClinics() {
 
                            <div className={styles.cardFooter}>
                             <span className={styles.phone}>
-                                    <Phone size={16} />
+                                    <Phone size={16}/>
                                {clinic.phone ? clinic.phone : "Număr de telefon indisponibil"}
                                  </span>
 
                               <div className={styles.schedule}>
                                  {clinic.hours && clinic.hours.length > 0 ? (
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                       <Clock size={16} />
+                                    <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}>
+                                       <Clock size={16}/>
                                        <span>{clinic.hours.join(', ')}</span>
                                     </div>
                                  ) : (
@@ -171,7 +181,8 @@ export default function LocateClinics() {
 
                            <div className={styles.cardActions}>
                               <a href={`tel:${clinic.phone}`} className={styles.callButton}>Sună</a>
-                              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className={styles.detailsButton}>Vezi pe harta</a>
+                              <a href={mapsUrl} target="_blank" rel="noopener noreferrer"
+                                 className={styles.detailsButton}>Vezi pe harta</a>
                            </div>
                         </div>
                      );

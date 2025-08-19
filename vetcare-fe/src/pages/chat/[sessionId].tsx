@@ -1,21 +1,27 @@
 import {sendMessage} from "@/services/sessionService";
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import Layout from "@/components/Layout";
 import styles from './Chat.module.css';
 import {ArrowLeft} from 'lucide-react';
 import LocateClinics from "@/components/LocateClinics";
 import Authentication from "@/components/Authentication";
 
+type ChatMessage = {
+   sender: 'Tu' | 'Gemini';
+   text: string  | JSX.Element;
+};
+
 export default function ChatPage() {
    const router = useRouter();
    const {sessionId} = router.query;
 
-   const [chatLog, setChatLog] = useState<any[]>([]);
+   const [chatLog, setChatLog] = useState<ChatMessage[]>([]);
    const [message, setMessage] = useState("");
    const [greeting, setGreeting] = useState("");
    const [loading, setLoading] = useState(false);
    const [finished, setFinished] = useState(false);
+   const chatLogRef = useRef<HTMLDivElement>(null);
 
    useEffect(() => {
       const message = sessionStorage.getItem("greeting");
@@ -30,6 +36,11 @@ export default function ChatPage() {
          setChatLog([{sender: 'Gemini', text: greeting}]);
       }
    }, [greeting]);
+   useEffect(() => {
+      if (chatLogRef.current) {
+         chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
+      }
+   }, [chatLog]);
 
    const handleSend = async () => {
       if (!sessionId || !message.trim() || loading || finished) return;
@@ -92,8 +103,8 @@ export default function ChatPage() {
                      <h2 className={styles.header}>Consultatie Live</h2>
                   </div>
 
-                  <div className={styles.chatLog}>
-                     {chatLog.map((msg, i) => (
+                  <div className={styles.chatLog} ref={chatLogRef}>                     {
+                     chatLog.map((msg, i) => (
                         <div
                            key={i}
                            className={msg.sender === 'Tu' ? styles.userMessage : styles.botMessage}

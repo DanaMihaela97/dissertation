@@ -1,11 +1,13 @@
 import { Vaccine } from "@/components/entities/vaccines";
 import styles from "./Vaccines.module.css";
 import { CalendarIcon, ClockIcon } from "lucide-react";
+import { AnimalProfile } from "../entities/animalProfile";
+import {CreateAnimalProfile} from "@/components/entities/createAnimalProfile";
 
 interface Props {
    vaccines: Vaccine[];
    animalType: string;
-   formData: any;
+   formData: CreateAnimalProfile;
    handleVaccineCheck: (name: string, checked: boolean) => void;
    handleVaccineDateChange: (name: string, date: string) => void;
 }

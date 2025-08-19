@@ -39,7 +39,7 @@ const RegisterPage = () => {
             router.push("/login");
          });
 
-      } catch (err: any) {
+      } catch (err) {
          console.error(err);
          const message = err.response?.data?.message || "A apărut o eroare la înregistrare. Încearcă din nou.";
          Swal.fire({

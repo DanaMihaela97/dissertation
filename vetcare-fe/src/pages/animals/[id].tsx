@@ -21,13 +21,9 @@ import {VaccinesModal} from "@/components/Vaccines/VaccinesModal";
 import Authentication from "@/components/Authentication";
 import Index from "@/components/EditProfile";
 
+type Tab = 'Profil' | 'Vaccinuri' | 'Diagnostic' | 'Tratament' | 'Recomandări';
 
-type Props = {
-   animal: AnimalProfile | null;
-};
-type Tab = 'Profil' | 'Vaccinuri' | 'Diagnostic' | 'Tratament' | 'Recomandari';
-
-const TABS: Tab[] = ['Profil', 'Vaccinuri', 'Diagnostic', 'Tratament', 'Recomandari'];
+const TABS: Tab[] = ['Profil', 'Vaccinuri', 'Diagnostic', 'Tratament', 'Recomandări'];
 const TAB_DETAILS: Record<Tab, { title: string; subtitle: string; icon: React.ReactElement }> = {
    Profil: {
       title: 'Profilul Animalului',
@@ -49,7 +45,7 @@ const TAB_DETAILS: Record<Tab, { title: string; subtitle: string; icon: React.Re
       subtitle: 'Planurile de tratament recomandate',
       icon: <Pill size={24}/>,
    },
-   Recomandari: {
+   Recomandări: {
       title: 'Recomandări',
       subtitle: 'Recomandări și sfaturi pentru îngrijire',
       icon: <Lightbulb size={24}/>,
@@ -69,7 +65,7 @@ export default function AnimalPage() {
    const [formData, setFormData] = useState<AnimalProfile | null>(null);
    const [breeds, setBreeds] = useState<string[]>([]);
 
-   const [isMobile, setIsMobile] = useState(false);
+   const [isMobile] = useState(false);
    const [isOpen, setIsOpen] = useState(false);
    const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -279,7 +275,7 @@ export default function AnimalPage() {
                          ${activeTab === 'Vaccinuri' ? styles.tabVaccinuri : ''} 
                          ${activeTab === 'Diagnostic' ? styles.tabDiagnostic : ''} 
                          ${activeTab === 'Tratament' ? styles.tabTratament : ''} 
-                         ${activeTab === 'Recomandari' ? styles.tabSfaturi : styles.tabDefault}`}
+                         ${activeTab === 'Recomandări' ? styles.tabSfaturi : styles.tabDefault}`}
         >
           <span className={`${styles.iconBase} ${tabClass}`}>
             {TAB_DETAILS[activeTab as Tab].icon}
@@ -416,7 +412,7 @@ export default function AnimalPage() {
 
                         )}
 
-                        {['Diagnostic', 'Tratament', 'Recomandari'].includes(activeTab) && (
+                        {['Diagnostic', 'Tratament', 'Recomandări'].includes(activeTab) && (
                            <div className="space-y-4">
                               {consultations.length > 0 ? (
                                  [...consultations]
@@ -465,7 +461,7 @@ export default function AnimalPage() {
                                           </div>
                                        )}
 
-                                       {activeTab === 'Recomandari' && (
+                                       {activeTab === 'Recomandări' && (
                                           <div className={styles.adviceCard}>
                                              <div className={styles.cardHeader}>
                                                 <span className={styles.cardTitle}>Consultație Medicală</span>
@@ -476,7 +472,7 @@ export default function AnimalPage() {
                                              </div>
                                              <div className={styles.adviceBox}>
                                                 <Lightbulb size={20} className={styles.adviceIcon}/>
-                                                <strong>Recomandari</strong>
+                                                <strong>Recomandări</strong>
                                                 <p>{c.advice || 'Nicio informație disponibilă.'}</p>
                                              </div>
                                           </div>

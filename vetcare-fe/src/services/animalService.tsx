@@ -5,12 +5,12 @@ import {CreateAnimalProfile} from '@/components/entities/createAnimalProfile';
 import {Vaccine} from '@/components/entities/vaccines';
 import axiosInstance from "@/utils/axiosInstance";
 
-export const createAnimal = async (animal: any): Promise<any> => {
+export const createAnimal = async (animal: CreateAnimalProfile): Promise<AnimalProfile> => {
    const response = await axiosInstance.post(`/api/animals/`, animal);
    return response.data;
 };
 
-export const updateAnimal = async (id: number, animal: any): Promise<any> => {
+export const updateAnimal = async (id: number, animal: CreateAnimalProfile): Promise<AnimalProfile> => {
    const response = await axiosInstance.put(`/api/animals/${id}`, animal);
    return response.data;
 };
@@ -23,7 +23,7 @@ export const updateAnimalVaccines = async (
    return response.data;
 };
 
-export const createAnimalVaccines = async (animalId: number, vaccines: any[]): Promise<any> => {
+export const createAnimalVaccines = async (animalId: number, vaccines: AnimalVaccine[]): Promise<AnimalVaccine> => {
    if (!vaccines || vaccines.length === 0) return;
    const response = await axiosInstance.post(`/api/animals/${animalId}/vaccines`, vaccines);
    return response.data;

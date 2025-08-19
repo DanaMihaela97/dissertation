@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Carousel.module.css";
 import {ArrowLeft, ArrowRight} from "lucide-react";
+import Image from "next/image";
 
 const diseases = [
    {
@@ -47,7 +48,8 @@ const diseases = [
          "Teste genetice pentru HCM",
          "Controale periodice pentru articulații și dinți"
       ],
-      image: "/maine coon.jpg"
+      image: "/maine%20coon.jpg"
+
    },
    {
       animal: "Câini",
@@ -154,7 +156,13 @@ const CarouselDiseases = () => {
             </div>
 
             <div className={styles.imageSection}>
-               <img src={image} alt={`${name} - ${animal}`} />
+               <Image
+                  src={image}
+                  alt={`${name} - ${animal}`}
+                  width={400}      // ajustează după nevoie
+                  height={300}     // ajustează după nevoie
+                  style={{ objectFit: "cover" }} // opțional
+               />
             </div>
 
             <button

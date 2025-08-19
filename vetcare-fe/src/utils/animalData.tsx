@@ -8,7 +8,7 @@ export function getAgeString(birthdate: string): string {
 
    let years = now.getFullYear() - birth.getFullYear();
    let months = now.getMonth() - birth.getMonth();
-   let days = now.getDate() - birth.getDate();
+   const days = now.getDate() - birth.getDate();
 
    if (days < 0) {
       months--;
