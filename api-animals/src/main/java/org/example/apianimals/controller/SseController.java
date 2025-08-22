@@ -36,11 +36,11 @@ public class SseController {
                                     " pe data de " +
                                     animal.getDateAdministered().plusDays(animal.getRapelDays()));
                 });
-        Flux<ServerSentEvent<String>> immediate = notificationFlux
-                .map(msg -> ServerSentEvent.<String>builder()
-                        .event("vaccine-update")
-                        .data(msg)
-                        .build());
+//        Flux<ServerSentEvent<String>> immediate = notificationFlux
+//                .map(msg -> ServerSentEvent.<String>builder()
+//                        .event("vaccine-update")
+//                        .data(msg)
+//                        .build());
 
         Flux<ServerSentEvent<String>> interval = Flux.interval(Duration.ofMinutes(1))
                 .flatMap(tick -> notificationFlux)
@@ -49,6 +49,6 @@ public class SseController {
                         .data(msg)
                         .build());
 
-        return Flux.concat(immediate, interval);
+        return Flux.concat(interval);
     }
 }

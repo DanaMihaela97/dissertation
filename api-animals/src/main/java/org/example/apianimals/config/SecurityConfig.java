@@ -12,17 +12,23 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers(HttpMethod.GET, "/api/animals/count").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/websocket/updates").permitAll()
-                                .anyRequest().authenticated())
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+
+                        .requestMatchers(HttpMethod.GET, "/api/animals/count").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/websocket/updates").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/notifications/subscribe").permitAll()
+
+                        .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+
         return http.build();
     }
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

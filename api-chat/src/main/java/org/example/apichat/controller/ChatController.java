@@ -18,9 +18,6 @@ public class ChatController {
         if (coordinates == null) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
-        //[47.1648795, 27.5882272]
-        //[45.943161, 24.96676]
-        //
 
         List<Map<String, Object>> closestOffices = findClosestVeterinaryOffices(coordinates[0], coordinates[1]);
         return ResponseEntity.ok(closestOffices);
@@ -41,7 +38,6 @@ public class ChatController {
                 .queryParam("key", googleGeocodeApiKey)
                 .encode()
                 .toUriString();
-
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<GoogleGeocodeResponse> response = restTemplate.exchange(

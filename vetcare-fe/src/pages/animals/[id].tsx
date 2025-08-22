@@ -6,7 +6,7 @@ import {
    getVaccines,
    updateAnimal
 } from '@/services/animalService';
-import {Calendar, Cat, Dog, Lightbulb, PawPrint, Pill, Stethoscope, Syringe} from 'lucide-react';
+import {Calendar, Cat, Dog, Lightbulb, Pill, Stethoscope, Syringe} from 'lucide-react';
 import {useRouter} from 'next/router';
 import React, {useEffect, useState} from 'react';
 import styles from './PerAnimal.module.css';
@@ -20,37 +20,7 @@ import Swal from "sweetalert2";
 import {VaccinesModal} from "@/components/Vaccines/VaccinesModal";
 import Authentication from "@/components/Authentication";
 import Index from "@/components/EditProfile";
-
-type Tab = 'Profil' | 'Vaccinuri' | 'Diagnostic' | 'Tratament' | 'Recomandări';
-
-const TABS: Tab[] = ['Profil', 'Vaccinuri', 'Diagnostic', 'Tratament', 'Recomandări'];
-const TAB_DETAILS: Record<Tab, { title: string; subtitle: string; icon: React.ReactElement }> = {
-   Profil: {
-      title: 'Profilul Animalului',
-      subtitle: 'Informații despre pacientul veterinar',
-      icon: <PawPrint size={24}/>,
-   },
-   Vaccinuri: {
-      title: 'Istoric Vaccinuri',
-      subtitle: 'Programul de vaccinare și istoricul vaccinurilor',
-      icon: <Syringe size={24}/>,
-   },
-   Diagnostic: {
-      title: 'Diagnostic',
-      subtitle: 'Istoricul diagnosticelor veterinare',
-      icon: <Stethoscope size={24}/>,
-   },
-   Tratament: {
-      title: 'Tratament',
-      subtitle: 'Planurile de tratament recomandate',
-      icon: <Pill size={24}/>,
-   },
-   Recomandări: {
-      title: 'Recomandări',
-      subtitle: 'Recomandări și sfaturi pentru îngrijire',
-      icon: <Lightbulb size={24}/>,
-   },
-};
+import {TABS, TAB_DETAILS, Tab} from "@/constants/tabs";
 
 export default function AnimalPage() {
    const router = useRouter();
@@ -60,15 +30,12 @@ export default function AnimalPage() {
    const [activeTab, setActiveTab] = useState("Profil");
    const [vaccinesMap, setVaccinesMap] = useState<Record<number, Vaccine>>({});
    const [consultations, setConsultations] = useState<Consultation[]>([]);
-
    const [isEditOpen, setIsEditOpen] = useState(false);
    const [formData, setFormData] = useState<AnimalProfile | null>(null);
    const [breeds, setBreeds] = useState<string[]>([]);
-
    const [isMobile] = useState(false);
    const [isOpen, setIsOpen] = useState(false);
    const [isModalOpen, setIsModalOpen] = useState(false);
-
 
    const handleAddVaccines = () => {
       setIsModalOpen(true);
@@ -227,18 +194,12 @@ export default function AnimalPage() {
       <Layout>
          <Authentication>
             <div>
-               <div
-                  style={{
-                     display: 'flex',
-                     minHeight: '100vh',
-                     flexDirection: isMobile && window.innerWidth <= 627 ? 'column' : 'row',
-                  }}
-               >
+               <div className={styles.pageWrapper}>
                   <nav
-                     className={`${styles.nav} ${isMobile && window.innerWidth <= 627 ? styles.navMobile : styles.navDesktop}`}
+                     className={`${styles.nav} ${isMobile && window.innerWidth <= 684 ? styles.navMobile : styles.navDesktop}`}
                   >
 
-                     {(isOpen || !isMobile || (isMobile && window.innerWidth <= 627)) &&
+                     {(isOpen || !isMobile || (isMobile && window.innerWidth <= 684 )) &&
                         TABS.map((tab) => (
                            <button
                               key={tab}
@@ -255,15 +216,13 @@ export default function AnimalPage() {
                         onClick={handleStartConsultation}
                         className={styles.startConsultationButton}
                         style={{
-                           marginTop: isMobile && window.innerWidth <= 627 ? 0 : 'auto',
-                           marginLeft: isMobile && window.innerWidth <= 627 ? 'auto' : 0,
+                           marginTop: isMobile && window.innerWidth <= 684 ? 0 : 'auto',
+                           marginLeft: isMobile && window.innerWidth <= 684 ? 'auto' : 0,
                         }}
                      >
                         Începe o consultație
                      </button>
-
                   </nav>
-
                   <div
                      className={`${styles.containerPadding} ${activeTab !== 'Vaccinuri' ? styles.containerFlex : ''}`}>
 
@@ -363,7 +322,7 @@ export default function AnimalPage() {
                         {activeTab === 'Vaccinuri' && (
                            <div className={styles.mainCardVaccine}>
                               <div>
-                                 <button className={styles.editButtonVac} onClick={handleAddVaccines}>Adaugă vaccinuri
+                                 <button className={styles.editButtonVac} onClick={handleAddVaccines}>Adaugă / Editează vaccinuri
                                  </button>
                               </div>
                               <div className={styles.vaccineSection}>
@@ -484,7 +443,6 @@ export default function AnimalPage() {
                               )}
                            </div>
                         )}
-
                      </div>
                   </div>
                </div>

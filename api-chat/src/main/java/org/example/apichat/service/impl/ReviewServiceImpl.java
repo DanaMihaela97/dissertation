@@ -42,5 +42,4 @@ public class ReviewServiceImpl implements ReviewService {
         return sum / allReviews.size();
     }
 
-
 }

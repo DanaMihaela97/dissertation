@@ -3,7 +3,6 @@ package org.example.apichat.controller;
 import org.example.apichat.dto.Animal;
 import org.example.apichat.entity.Consultation;
 import org.example.apichat.service.impl.ChatServiceImpl;
-import org.example.apichat.service.impl.ReviewServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +55,7 @@ public class ConsultationController {
     public int getConsultationCount() {
         return chatService.consultationCount();
     }
+
     @GetMapping("/{animalId}")
     public List<Consultation> getConsultations(@PathVariable Long animalId) {
         return chatService.getConsultationsByAnimalId(animalId);

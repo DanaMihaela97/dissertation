@@ -16,9 +16,10 @@ export default function Sse() {
     const [isOpen, setIsOpen] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const { data: session } = useSession();
-
     useEffect(() => {
-        const saved = localStorage.getItem('notifications');
+        if (!session?.user?.email) return;
+
+        const saved = localStorage.getItem(`notifications_${session.user.email}`);
         if (saved) {
             const parsed: Notification[] = JSON.parse(saved).map((n: Notification) => ({
                 ...n,
@@ -26,7 +27,8 @@ export default function Sse() {
             }));
             setNotifications(parsed);
         }
-    }, []);
+    }, [session?.user?.email]);
+
 
 
     useEffect(() => {
@@ -47,7 +49,7 @@ export default function Sse() {
             setHasNotification(true);
             setNotifications((prev) => {
                 const updated = [newNotification, ...prev];
-                localStorage.setItem('notifications', JSON.stringify(updated));
+                localStorage.setItem(`notifications_${session.user.email}`, JSON.stringify(updated));
                 return updated;
             });
 

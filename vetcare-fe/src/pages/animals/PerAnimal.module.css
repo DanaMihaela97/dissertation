@@ -510,16 +510,6 @@
   margin-bottom: 8px;
 }
 
-@media (min-width: 628px) {
-  .tabButton {
-    width: 100%;
-  }
-  .startConsultationButton {
-    margin-top: auto;
-    margin-bottom: 0;
-    width: 100%;
-  }
-}
 
 .tabButtonInactive {
   background: transparent;
@@ -745,9 +735,6 @@
   gap: 12px;
 }
 
-.iconWrapper {
-  /* aici poți muta stilurile pentru icon, similar cu tabIcon și tabClass */
-}
 
 .textWrapper {
   display: flex;
@@ -766,6 +753,42 @@
   color: #666;
   margin-top: 2px;
 }
+.pageWrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+}
 
+@media (max-width: 684px) {
+  .pageWrapper {
+    flex-direction: column;
+  }
 
+  .navDesktop {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+  }
 
+  .tabButton,
+  .startConsultationButton {
+    background: none !important;
+    color: #14197b !important;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 12px;
+    flex: 1 1 auto;
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .tabButtonActive {
+    background-color: #14197b !important;
+    color: #fff !important;
+  }
+}

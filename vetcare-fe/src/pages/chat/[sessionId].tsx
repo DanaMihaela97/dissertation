@@ -9,8 +9,9 @@ import Authentication from "@/components/Authentication";
 
 type ChatMessage = {
    sender: 'Tu' | 'Gemini';
-   text: string;
+   text: React.ReactNode;
 };
+
 
 export default function ChatPage() {
    const router = useRouter();
@@ -51,8 +52,9 @@ export default function ChatPage() {
       try {
          const res = await sendMessage(Number(sessionId), message);
 
-         const formattedReply: string = formatAIReply(res.reply).toString();
+         const formattedReply = formatAIReply(res.reply);
          setChatLog((prev) => [...prev, {sender: 'Gemini', text: formattedReply}]);
+
          setMessage("");
 
          if (res.finished) {

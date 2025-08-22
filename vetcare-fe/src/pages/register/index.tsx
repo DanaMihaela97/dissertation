@@ -4,6 +4,7 @@ import {useRouter} from "next/router";
 import styles from './Register.module.css';
 import Layout from "@/components/Layout";
 import {register} from "@/services/registerService";
+import {subscribeToNotifications} from "@/services/snsService";
 
 const RegisterPage = () => {
    const router = useRouter();
@@ -28,11 +29,20 @@ const RegisterPage = () => {
 
       try {
          await register({ email, password, firstName, lastName });
+
+         await subscribeToNotifications(email);
+
          Swal.fire({
             title: "Înregistrare reușită!",
-            text: "Te poți loga acum.",
+            html: `
+         <p>Te poți loga acum.</p>
+         <p style="margin-top:10px; font-size:14px; color:gray;">
+            📧 Am trimis și un email de confirmare pentru notificări.<br/>
+            Te rugăm să îl verifici pentru a putea primi alertele PawCare.
+         </p>
+      `,
             icon: "success",
-            timer: 2000,
+            timer: 4000,
             timerProgressBar: true,
             showConfirmButton: false,
          }).then(() => {
@@ -127,6 +137,5 @@ const RegisterPage = () => {
       </Layout>
    );
 };
-
 
 export default RegisterPage;

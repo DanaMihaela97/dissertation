@@ -293,19 +293,17 @@
 }
 @media (max-width: 1190px) {
   .customerSatisfactionBox {
-    bottom: 16px;
-    left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding: 6px 10px;
     border-radius: 6px;
     font-size: 0.85rem;
-    display: flex;         /* vertical alignment */
-    gap: 6px;
   }
 
   .customerSatisfactionTitle {
     font-size: 0.9rem;
     margin: 0;
-
     white-space: nowrap;
   }
 
@@ -313,24 +311,19 @@
     font-size: 1rem;
     margin: 0;
     color: #f59e0b;
-
   }
 
-  .customerSatisfactionSubtitle {
-    display: none;
-  }
-
-  .customerSatisfactionBox .starRating {
+  .starContainer {
     display: flex;
     align-items: center;
-    gap: 2px;
-    margin: 0;
-
+    gap: 3px;
+    margin-top: 0;
   }
 
-  .customerSatisfactionBox .starRating svg {
-    width: 14px;
-    height: 14px;
-
+  .star {
+    font-size: 14px;
+    line-height: 1;
+    vertical-align: middle;
+    margin-bottom: 0;
   }
 }

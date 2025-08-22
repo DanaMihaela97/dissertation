@@ -29,11 +29,8 @@ export default function Home() {
             console.error("eroare la incarcarea datelor:", error);
          }
       }
-
       fetchData();
    }, []);
-
-
 
    return (
       <Layout>

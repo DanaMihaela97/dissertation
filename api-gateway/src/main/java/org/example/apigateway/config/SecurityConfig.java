@@ -27,6 +27,8 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/animals/count").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/chat/count").permitAll()
                         .pathMatchers(HttpMethod.GET, "/websocket/updates").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/notifications/subscribe").permitAll()
+
                         .anyExchange().authenticated()
                 )
 
