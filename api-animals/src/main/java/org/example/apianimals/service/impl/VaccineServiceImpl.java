@@ -1,6 +1,7 @@
 package org.example.apianimals.service.impl;
 
-import org.example.apianimals.entity.Vaccine;
+import org.example.apianimals.convertor.VaccineMapper;
+import org.example.apianimals.dto.VaccineDto;
 import org.example.apianimals.repository.VaccineRepository;
 import org.example.apianimals.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class VaccineServiceImpl implements VaccineService {
     }
 
     @Override
-    public List<Vaccine> getVaccines() {
-        return vaccineRepository.findAll();
+    public List<VaccineDto> getVaccines() {
+        return vaccineRepository.findAll().stream().map(VaccineMapper::toDto).toList();
     }
 
 }

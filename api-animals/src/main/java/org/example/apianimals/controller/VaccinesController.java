@@ -1,5 +1,6 @@
 package org.example.apianimals.controller;
 
+import org.example.apianimals.dto.VaccineDto;
 import org.example.apianimals.entity.Vaccine;
 import org.example.apianimals.service.VaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class VaccinesController {
         this.vaccineService = vaccineService;
     }
     @GetMapping("/")
-    public ResponseEntity<List<Vaccine>> getAllVaccines() {
-        List<Vaccine> vaccines = vaccineService.getVaccines();
+    public ResponseEntity<List<VaccineDto>> getAllVaccines() {
+        List<VaccineDto> vaccines = vaccineService.getVaccines();
         return ResponseEntity.ok(vaccines);
     }
 }

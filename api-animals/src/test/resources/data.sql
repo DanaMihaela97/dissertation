@@ -1,0 +1,20 @@
+INSERT INTO vaccines (id, name, age_weeks, rapel_days, revaccination_interval, animal_type)
+VALUES
+    (101, 'Boala Carre (Jigodie)', 6, 21, 'Anual', 'Câine'),
+    (102, 'Hepatitis contagiosa canis (H.C.C.)', 6, 21, 'Anual', 'Câine'),
+    (103, 'Parvoviroză', 6, 21, 'Anual', 'Câine'),
+    (104, 'Leptospiroza', 8, 21, 'Anual', 'Câine'),
+    (105, 'Tusea canină (Parainfluenza, Bordetella)', 8, 14, 'Anual', 'Câine'),
+    (106, 'Rabie (Turbare)', 12, -1, 'Anual', 'Câine'),
+    (107, 'Boala Lyme (Borelioza)', 12, 21, 'Anual', 'Câine'),
+    (108, 'Babesioza (Malaria canină)', 12, 21, 'Anual', 'Câine'),
+    (109, 'Coronavirus canin', 6, 21, 'Anual', 'Câine'),
+    (110, 'Giardia', 8, 21, 'Anual', 'Câine'),
+    (111, 'Infecții micotice', 12, -1, 'La nevoie', 'Câine'),
+    (112, 'Leishmanioza', 16, 21, 'La 1-2 ani', 'Câine'),
+    (113, 'Panleucopenie felină', 8, 21, 'Anual', 'Pisică'),
+    (114, 'Rinotraheită virală', 8, 21, 'Anual', 'Pisică'),
+    (115, 'Caliciviroză felină', 8, 21, 'Anual', 'Pisică'),
+    (116, 'Virusul leucemiei feline (FeLV)', 8, 21, 'Anual', 'Pisică'),
+    (117, 'Vaccinuri secundare', 12, 21, 'Conform medicului', 'Pisică'),
+    (118, 'Vaccin antirabic', 16, -1, 'Anual', 'Pisică');

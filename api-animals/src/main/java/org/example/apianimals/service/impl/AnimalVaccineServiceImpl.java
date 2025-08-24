@@ -1,6 +1,6 @@
 package org.example.apianimals.service.impl;
 
-import org.example.apianimals.convertor.VaccineMapper;
+import org.example.apianimals.convertor.AnimalVaccineInfoMapper;
 import org.example.apianimals.dto.AnimalVaccineCreateDto;
 import org.example.apianimals.dto.AnimalVaccineInfoDto;
 import org.example.apianimals.entity.Animal;
@@ -52,14 +52,14 @@ public class AnimalVaccineServiceImpl implements AnimalVaccineService {
                 .collect(Collectors.toList());
 
         animalVaccineRepository.saveAll(newVaccines);
-        return newVaccines.stream().map(VaccineMapper::mapToInfoDto).collect(Collectors.toList());
+        return newVaccines.stream().map(AnimalVaccineInfoMapper::mapToInfoDto).collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<AnimalVaccineInfoDto> getAnimalVaccine(Long animalId) {
         List<AnimalVaccine> animalVaccines = animalVaccineRepository.findByAnimalId(animalId);
-        return animalVaccines.stream().map(VaccineMapper::mapToInfoDto).collect(Collectors.toList());
+        return animalVaccines.stream().map(AnimalVaccineInfoMapper::mapToInfoDto).collect(Collectors.toList());
     }
 
     @Override
@@ -85,6 +85,6 @@ public class AnimalVaccineServiceImpl implements AnimalVaccineService {
         }
 
         animalVaccineRepository.saveAll(savedVaccines);
-        return savedVaccines.stream().map(VaccineMapper::mapToInfoDto).collect(Collectors.toList());
+        return savedVaccines.stream().map(AnimalVaccineInfoMapper::mapToInfoDto).collect(Collectors.toList());
     }
 }
