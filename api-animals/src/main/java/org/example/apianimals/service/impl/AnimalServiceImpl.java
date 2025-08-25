@@ -47,7 +47,6 @@ public class AnimalServiceImpl implements AnimalService {
         this.animalVaccineRepository = animalVaccineRepository;
     }
 
-    // External API calls — no transactions
     public List<String> getDogBreeds() {
         String url = "https://api.thedogapi.com/v1/breeds";
         HttpHeaders headers = new HttpHeaders();
@@ -72,11 +71,10 @@ public class AnimalServiceImpl implements AnimalService {
                 .collect(Collectors.toList());
     }
 
-    // Read-only methods
     @Override
     @Transactional(readOnly = true)
     public List<AnimalInfoDto> getAnimals(String email) {
-        List<Animal> animals = animalRepository.findAnimalsByEmail(email);
+        List<Animal> animals = animalRepository.findAnimalsByOwnerEmail(email);
         return animals.stream().map(AnimalMapper::toDto).collect(Collectors.toList());
     }
 
@@ -88,12 +86,11 @@ public class AnimalServiceImpl implements AnimalService {
         return AnimalMapper.toDto(animal);
     }
 
-    // Modifying data — transactional
     @Override
     @Transactional
     public AnimalInfoDto createAnimal(AnimalCreateDto createAnimalDto, String email) {
         Animal animal = AnimalMapper.toEntity(createAnimalDto, email);
-        animal.setEmail(email);
+        animal.setOwnerEmail(email);
 
         animal = animalRepository.save(animal);
         final Animal finalAnimal = animal;
@@ -104,7 +101,8 @@ public class AnimalServiceImpl implements AnimalService {
                         AnimalVaccine av = new AnimalVaccine();
                         av.setAnimal(finalAnimal);
                         av.setVaccine(vaccineRepository.getVaccinesById(dto.getVaccineId()));
-                        av.setDateAdministered(dto.getDateAdministered());
+                        av.setFirstDoseDate(dto.getFirstDoseDate());
+                        av.setSecondDoseDate(dto.getSecondDoseDate());
                         return av;
                     })
                     .collect(Collectors.toList());

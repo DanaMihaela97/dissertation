@@ -9,6 +9,10 @@ export interface CreateAnimalProfile {
     weight: string;
     type: string;
     breed: string;
-    vaccineDates: Record<string, string>; 
-    vaccines: AnimalVaccine[];
+    vaccineDates: {
+      firstDoseDates: Record<number, string>;
+      secondDoseDates: Record<number, string>;
+    };
+
+  vaccines: AnimalVaccine[];
   }

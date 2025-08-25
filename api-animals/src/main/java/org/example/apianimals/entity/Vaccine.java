@@ -19,9 +19,8 @@ public class Vaccine {
     @Column(name = "age_weeks", nullable = false)
     private int ageWeeks;
 
-    //TODO: rapelDays ;)
     @Column(name = "rapel_days", nullable = false)
-    private int rapel_days;
+    private int rapelDays;
 
     @Column(name = "revaccination_interval", nullable = false)
     private String revaccinationInterval;

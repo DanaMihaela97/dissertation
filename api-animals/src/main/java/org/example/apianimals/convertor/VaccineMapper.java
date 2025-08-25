@@ -8,7 +8,8 @@ public class VaccineMapper {
         AnimalVaccineInfoDto dto = new AnimalVaccineInfoDto();
         dto.setAnimalId(animalVaccine.getAnimal().getId());
         dto.setVaccineId(animalVaccine.getVaccine().getId());
-        dto.setDateAdministered(animalVaccine.getDateAdministered());
+        dto.setFirstDoseDate(animalVaccine.getFirstDoseDate());
+        dto.setSecondDoseDate(animalVaccine.getSecondDoseDate());
 
         return dto;
     }

@@ -46,7 +46,8 @@ public class AnimalVaccineServiceImpl implements AnimalVaccineService {
                     AnimalVaccine av = new AnimalVaccine();
                     av.setAnimal(animal);
                     av.setVaccine(vaccine);
-                    av.setDateAdministered(dto.getDateAdministered());
+                    av.setFirstDoseDate(dto.getFirstDoseDate());
+                    av.setSecondDoseDate(dto.getSecondDoseDate());
                     return av;
                 })
                 .collect(Collectors.toList());
@@ -79,8 +80,8 @@ public class AnimalVaccineServiceImpl implements AnimalVaccineService {
             AnimalVaccine av = existing.orElseGet(AnimalVaccine::new);
             av.setAnimal(animal);
             av.setVaccine(vaccine);
-            av.setDateAdministered(dto.getDateAdministered());
-
+            av.setFirstDoseDate(dto.getFirstDoseDate());
+            av.setSecondDoseDate(dto.getSecondDoseDate());
             savedVaccines.add(av);
         }
 

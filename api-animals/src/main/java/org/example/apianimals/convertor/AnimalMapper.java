@@ -19,7 +19,7 @@ public class AnimalMapper {
         animal.setWeight(dto.weight);
         animal.setType(dto.type);
         animal.setBreed(dto.breed);
-        animal.setEmail(email);
+        animal.setOwnerEmail(email);
         return animal;
     }
 
@@ -40,7 +40,8 @@ public class AnimalMapper {
                         AnimalVaccineInfoDto animalVaccineInfoDto = new AnimalVaccineInfoDto();
                         animalVaccineInfoDto.setVaccineId(animalVaccine.getVaccine().getId());
                         animalVaccineInfoDto.setAnimalId(animal.getId());
-                        animalVaccineInfoDto.setDateAdministered(animalVaccine.getDateAdministered());
+                        animalVaccineInfoDto.setFirstDoseDate(animalVaccine.getFirstDoseDate());
+                        animalVaccineInfoDto.setSecondDoseDate(animalVaccine.getSecondDoseDate());
 
                         return animalVaccineInfoDto;
                     })

@@ -26,25 +26,11 @@ public class Animal {
     private String weight;
     private String type;
     private String breed;
-    private String email;
+    @Column(name = "owner_email")
+    private String ownerEmail;
 
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<AnimalVaccine> animalVaccines = new ArrayList<>();
-
-    private int calculateAge(String birthDate) {
-        if (birthDate == null || birthDate.isEmpty()) {
-            return 0;
-        }
-
-        try {
-            LocalDate birthDDate = LocalDate.parse(birthDate);
-            LocalDate currentDate = LocalDate.now();
-            Period period = Period.between(birthDDate, currentDate);
-            return period.getYears();
-        } catch (Exception e) {
-            return 0;
-        }
-    }
 
     @Override
     public String toString() {
@@ -57,7 +43,7 @@ public class Animal {
                 ", weight='" + weight + '\'' +
                 ", type='" + type + '\'' +
                 ", breed='" + breed + '\'' +
-                ", email='" + email + '\'' +
+                ", ownerEmail='" + ownerEmail + '\'' +
                 ", animalVaccines=" + animalVaccines +
                 '}';
     }

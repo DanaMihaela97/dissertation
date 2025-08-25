@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Stethoscope, PawPrint, Activity, ArrowBigDown} from "lucide-react";
+import {Stethoscope, PawPrint, Activity, ArrowBigDown, ArrowDown} from "lucide-react";
 import {getAnimalCount} from "@/services/animalService";
 import styles from "./Home.module.css";
 import {getConsultationCount, getReviewMean} from "@/services/reviewService";
 import Layout from "@/components/Layout";
 import StarRating from "@/components/StarRating";
-import CarouselDiseases from "@/components/Carousel";
 import Link from "next/link";
+import DiseaseCarousel from "@/components/Carousel/disease";
+import VaccineCarousel from "@/components/Carousel/vaccine";
 
 export default function Home() {
    const [animalCount, setAnimalCount] = useState(null);
@@ -59,17 +60,22 @@ export default function Home() {
                   </div>
                </div>
                <div className={styles.scrollContainer}>
-                  <p className={styles.scrollTitle}>Apasă aici pentru a vedea cele mai comune boli, în funcție de rasă
+                  <p className={styles.scrollTitle}>Descoperă ghidul practic pentru animalul tău: <br /> află ce vaccinuri sunt necesare și ce boli pot apărea în funcție de rasă
                   </p>
                   <a href="#next-section" className={styles.scrollArrow}>
-                     <ArrowBigDown size={48} strokeWidth={1.5}/>
+                     <ArrowDown size={48} strokeWidth={1.5}/>
                   </a>
                </div>
 
             </section>
 
             <div id="next-section">
-               <CarouselDiseases/>
+               <div style={{ display: 'flex', flexDirection: 'column', marginTop: '40px' }}>
+                  <VaccineCarousel />
+                  <div style={{ marginTop: '70px' }}>
+                     <DiseaseCarousel />
+                  </div>
+               </div>
 
                <div className={styles.dashboard}>
                   <h2 className={styles.h2monitoring}>Monitorizare Activitate - situație curentă</h2>

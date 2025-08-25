@@ -17,8 +17,6 @@ import {
     dateToString, fetchBreeds, fetchVaccines,
     isStep1Valid,
     stringToDate,
-    updateVaccineDate,
-    updateVaccineDates
 } from "@/utils/animalData";
 import {Step1} from "@/components/Steps/Step1";
 import Step2 from "@/components/Steps/Step2";
@@ -37,9 +35,13 @@ const CreateAnimalProfileComponent = () => {
         weight: "",
         type: "",
         breed: "",
-        vaccineDates: {},
         vaccines: [],
+        vaccineDates: {
+            firstDoseDates: {},
+            secondDoseDates: {},
+        },
     });
+
 
     const [breeds, setBreeds] = useState<string[]>([]);
     const [vaccines, setVaccines] = useState<Vaccine[]>([]);
@@ -85,19 +87,48 @@ const CreateAnimalProfileComponent = () => {
         });
     };
 
-    const handleVaccineCheck = (vaccineName: string, checked: boolean) => {
-        setFormData((prev) => ({
-            ...prev,
-            vaccineDates: updateVaccineDates(prev.vaccineDates, vaccineName, checked),
-        }));
+    const handleVaccineCheck = (
+       vaccineId: number,
+       dose: "first" | "second",
+       checked: boolean
+    ) => {
+        setFormData((prev) => {
+            const firstDoseDates = { ...prev.vaccineDates.firstDoseDates };
+            const secondDoseDates = { ...prev.vaccineDates.secondDoseDates };
+
+            if (dose === "first") {
+                if (checked) firstDoseDates[vaccineId] = firstDoseDates[vaccineId] || "pending";
+                else delete firstDoseDates[vaccineId];
+            } else {
+                if (checked) secondDoseDates[vaccineId] = secondDoseDates[vaccineId] || "pending";
+                else delete secondDoseDates[vaccineId];
+            }
+
+            return {
+                ...prev,
+                vaccineDates: {
+                    firstDoseDates,
+                    secondDoseDates,
+                },
+            };
+        });
     };
 
-    const handleVaccineDateChange = (vaccineName: string, date: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            vaccineDates: updateVaccineDate(prev.vaccineDates, vaccineName, date),
-        }));
+
+    const handleVaccineDateChange = (vaccineId: number, dose: "first" | "second", date: string) => {
+        setFormData(prev => {
+            const updated = { ...prev, vaccineDates: { ...prev.vaccineDates } };
+
+            if (dose === "first") {
+                updated.vaccineDates.firstDoseDates[vaccineId] = date;
+            } else {
+                updated.vaccineDates.secondDoseDates[vaccineId] = date;
+            }
+
+            return updated;
+        });
     };
+
 
     const handleSelectChange = (name: string, value: string) => {
         setFormData((prev) => ({
@@ -112,17 +143,21 @@ const CreateAnimalProfileComponent = () => {
             const createdAnimal = await createAnimal(formData);
             const animalId = createdAnimal.id;
 
-            const selectedVaccines = Object.entries(formData.vaccineDates)
-            .filter(([date]) => date !== "")
-            .map(([vaccineName, date]) => {
-                const vaccine = vaccines.find((v) => v.name === vaccineName);
+            const selectedVaccines = vaccines
+            .map((vaccine) => {
+                const firstDate = formData.vaccineDates.firstDoseDates[vaccine.id];
+                const secondDate = formData.vaccineDates.secondDoseDates[vaccine.id];
+                if (!firstDate && !secondDate) return null;
+
                 return {
                     animalId,
-                    vaccineId: vaccine?.id,
-                    dateAdministered: date,
-                    nextDose: ""
+                    vaccineId: vaccine.id,
+                    firstDoseDate: firstDate || null,
+                    secondDoseDate: secondDate || null,
                 };
-            });
+            })
+            .filter((v) => v !== null);
+
 
             if (selectedVaccines.length > 0) {
                 await createAnimalVaccines(animalId, selectedVaccines);
@@ -186,6 +221,7 @@ const CreateAnimalProfileComponent = () => {
                                           handleSubmit={handleSubmit}
                                        />
                                     )}
+
                                 </div>
                             </div>
                         </div>

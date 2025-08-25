@@ -57,7 +57,7 @@ public class SnsPublisher {
             System.err.println("Error: Email address cannot be null or empty.");
             return;
         }
-        // Create a payload object with the email.
+
         SesSubscribePayload payload = new SesSubscribePayload();
         payload.setEmail(email);
 

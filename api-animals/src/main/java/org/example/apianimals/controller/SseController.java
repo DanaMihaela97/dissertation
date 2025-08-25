@@ -34,7 +34,7 @@ public class SseController {
                                     " trebuie sa-si faca rapel la vaccinul " +
                                     animal.getVaccineName() +
                                     " pe data de " +
-                                    animal.getDateAdministered().plusDays(animal.getRapelDays()));
+                                    animal.getFirstDoseDate().plusDays(animal.getRapelDays()));
                 });
 //        Flux<ServerSentEvent<String>> immediate = notificationFlux
 //                .map(msg -> ServerSentEvent.<String>builder()

@@ -4,7 +4,6 @@ import {CreateAnimalProfile} from "@/components/entities/createAnimalProfile";
 import { getVaccines, updateAnimalVaccines} from "@/services/animalService";
 import styles from "./Vaccines.module.css";
 import { VaccinesList } from "@/components/Vaccines/VaccinesList";
-import {handleVaccineCheck, handleVaccineDateChange} from "@/utils/vaccinesData";
 import Swal from "sweetalert2";
 import {AnimalVaccine} from "@/components/entities/animalVaccine";
 
@@ -16,6 +15,12 @@ interface Props {
    onSave?: (updatedVaccines: AnimalVaccine[]) => void;
 }
 
+
+interface VaccineDates {
+   firstDoseDates: Record<number, string>;
+   secondDoseDates: Record<number, string>;
+}
+
 export const VaccinesModal: React.FC<Props> = ({
                                                   animalType,
                                                   animalId,
@@ -24,8 +29,11 @@ export const VaccinesModal: React.FC<Props> = ({
                                                   onSave,
                                                }) => {
    const [vaccines, setVaccines] = useState<Vaccine[]>([]);
-   const [formData, setFormData] = useState<{ vaccineDates: Record<string, string> }>({
-      vaccineDates: {},
+   const [formData, setFormData] = useState<{ vaccineDates: VaccineDates }>({
+      vaccineDates: {
+         firstDoseDates: {},
+         secondDoseDates: {},
+      },
    });
 
    useEffect(() => {
@@ -33,42 +41,72 @@ export const VaccinesModal: React.FC<Props> = ({
    }, []);
 
    useEffect(() => {
-      const datesMap: Record<string, string> = {};
-      animalVaccines.forEach((av) => {
+      const firstDoseDates: Record<number, string> = {};
+      const secondDoseDates: Record<number, string> = {};
 
-         const vac = vaccines.find((v) => v.id === av.vaccineId);
-         if (vac && av.dateAdministered) {
-            datesMap[vac.name] = av.dateAdministered;
+      animalVaccines.forEach((av) => {
+         if (av.firstDoseDate) {
+            firstDoseDates[av.vaccineId] = av.firstDoseDate;
+         }
+         if (av.secondDoseDate) {
+            secondDoseDates[av.vaccineId] = av.secondDoseDate;
          }
       });
-      setFormData({ vaccineDates: datesMap });
+
+
+      setFormData({ vaccineDates: { firstDoseDates, secondDoseDates } });
    }, [animalVaccines, vaccines]);
 
-   const handleVaccineCheckWrapper = (vaccineName: string, checked: boolean) => {
-      handleVaccineCheck(setFormData, vaccineName, checked);
+   const handleVaccineCheckWrapper = (
+      vaccineId: number,
+      dose: "first" | "second",
+      checked: boolean
+   ) => {
+      setFormData(prev => ({
+         vaccineDates: {
+            ...prev.vaccineDates,
+            [`${dose}DoseDates`]: {
+               ...prev.vaccineDates[`${dose}DoseDates`] || {},
+               [vaccineId]: checked ? (prev.vaccineDates[`${dose}DoseDates`]?.[vaccineId] || new Date().toISOString().split('T')[0]) : ""
+            }
+         }
+      }));
    };
-
-   const handleVaccineDateChangeWrapper = (vaccineName: string, date: string) => {
-      handleVaccineDateChange(setFormData, vaccineName, date);
+   const handleVaccineDateChangeWrapper = (
+      vaccineId: number,
+      dose: "first" | "second",
+      date: string
+   ) => {
+      setFormData(prev => ({
+         vaccineDates: {
+            ...prev.vaccineDates,
+            [`${dose}DoseDates`]: {
+               ...prev.vaccineDates[`${dose}DoseDates`] || {},
+               [vaccineId]: date
+            }
+         }
+      }));
    };
-
    const handleUpdateVaccines = async () => {
       try {
-         const selectedVaccines = Object.entries(formData.vaccineDates)
-         .filter(([ date]) => date !== "")
-         .map(([vaccineName, date]) => {
-            const vaccine = vaccines.find(v => v.name === vaccineName);
-            if (!vaccine) {
-               return null;
-            }
+         const selectedVaccines: AnimalVaccine[] = vaccines
+         .map((vaccine) => {
+            const firstDose = formData.vaccineDates.firstDoseDates?.[vaccine.id] || null;
+            const secondDose = formData.vaccineDates.secondDoseDates?.[vaccine.id] || null;
+
+            if (!firstDose && !secondDose) return null;
+
             return {
-               animalId: animalId,
+               animalId,
                vaccineId: vaccine.id,
-               dateAdministered: date,
+               vaccineName: vaccine.name,
+               firstDoseDate: firstDose,
+               secondDoseDate: secondDose,
                nextDose: null,
             };
          })
-         .filter((vaccine) => vaccine !== null) as AnimalVaccine[];
+         .filter(Boolean) as AnimalVaccine[];
+
 
          const updatedVaccines = await updateAnimalVaccines(animalId, selectedVaccines);
 
@@ -76,7 +114,7 @@ export const VaccinesModal: React.FC<Props> = ({
 
          Swal.fire({
             title: "Vaccinuri actualizate!",
-            text: `Lista de vaccinuri a fost actualizată cu succes!`,
+            text: "Lista de vaccinuri a fost actualizată cu succes!",
             icon: "success",
          });
 
@@ -90,6 +128,7 @@ export const VaccinesModal: React.FC<Props> = ({
          });
       }
    };
+
    const animalProfile: CreateAnimalProfile = {
       id: animalId,
       animalName: "",
@@ -102,18 +141,21 @@ export const VaccinesModal: React.FC<Props> = ({
       vaccines: animalVaccines,
       vaccineDates: formData.vaccineDates,
    };
-
    return (
       <div className={styles.modalOverlay}>
          <div className={styles.modalContent}>
             <h2>Selectează vaccinuri</h2>
-            <VaccinesList
-               vaccines={vaccines}
-               animalType={animalType}
-               formData={animalProfile}
-               handleVaccineCheck={handleVaccineCheckWrapper}
-               handleVaccineDateChange={handleVaccineDateChangeWrapper}
-            />
+
+            <div className={styles.modalBody}>
+               <VaccinesList
+                  vaccines={vaccines}
+                  animalType={animalType}
+                  formData={animalProfile}
+                  handleVaccineCheck={handleVaccineCheckWrapper}
+                  handleVaccineDateChange={handleVaccineDateChangeWrapper}
+               />
+            </div>
+
             <div className={styles.modalActions}>
                <button onClick={handleUpdateVaccines} className={styles.saveButton}>
                   Salvează

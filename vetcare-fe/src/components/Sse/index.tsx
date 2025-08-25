@@ -54,7 +54,7 @@ export default function Sse() {
             });
 
             setShowPopup(true);
-            new Audio('/notification.mp3').play();
+            // new Audio('/notification.mp3').play();
             setTimeout(() => setShowPopup(false), 4000);
         });
 

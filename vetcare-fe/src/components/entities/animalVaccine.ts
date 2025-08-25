@@ -1,7 +1,8 @@
 export interface AnimalVaccine {
     vaccineId: number;
-    vaccineName?: string;
+    vaccineName?: string; // opțional
     animalId: number;
-    dateAdministered:string,
-    nextDose: string,
-  }
+    firstDoseDate: string | null;
+    secondDoseDate: string | null;
+    nextDose?: string | null;
+}

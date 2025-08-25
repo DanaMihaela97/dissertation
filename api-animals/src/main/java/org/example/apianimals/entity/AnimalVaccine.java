@@ -23,8 +23,14 @@ public class AnimalVaccine {
     @JoinColumn
     private Vaccine vaccine;
 
-    @Column(name = "date_administered")
-    private LocalDate dateAdministered;
+    @Column(name = "first_dose_date")
+    private LocalDate firstDoseDate;
+
+    @Column(name = "second_dose_date")
+    private LocalDate secondDoseDate;
+
+//    @Column(name = "date_administered")
+//    private LocalDate dateAdministered;
 
 
 }

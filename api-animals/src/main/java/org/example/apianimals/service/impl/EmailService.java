@@ -27,7 +27,7 @@ public class EmailService {
 
 
     public void sendDailyRapelEmails() {
-        Set<String> emails = animalRepository.findAll().stream().map(a -> a.getEmail()).collect(Collectors.toSet());
+        Set<String> emails = animalRepository.findAll().stream().map(a -> a.getOwnerEmail()).collect(Collectors.toSet());
         for (String email : emails) {
             List<AnimalVaccineJoinDto> animals = repository.findAnimalsByEmail(email);
             for (AnimalVaccineJoinDto animal : animals) {
@@ -35,7 +35,7 @@ public class EmailService {
                 String bodyText = "Bună,\n\n" + "Vă informăm că animalul dumneavoastră " +
                         animal.getAnimalName() + " ar trebui să primească a doua doză (rapelul) a vaccinului \n" +
                         animal.getVaccineName() + " în jurul datei de **" +
-                        animal.getDateAdministered().plusDays(animal.getRapelDays()) + "**.\n\n" +
+                        animal.getFirstDoseDate().plusDays(animal.getRapelDays()) + "**.\n\n" +
                         "Respectarea acestui interval este importantă pentru eficiența și protecția vaccinului.\n\n" +
                         "Pentru mai multe detalii, accesați link-ul de mai jos:\n" + "PawCare: http://localhost:3000/home\n\n" +
                         "Echipa PawCare 🐾";

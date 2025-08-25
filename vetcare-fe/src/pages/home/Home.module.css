@@ -221,17 +221,23 @@
   margin-bottom: 1rem;
   text-align: center;
 }
+
 .heroSection {
-  background: linear-gradient(to bottom right, #fcfdfd, #edeff6);
+  background:
+          linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)),
+          url("https://hebbkx1anhila5yf.public.blob.vercel-storage.com/attachments/gen-images/public/veterinarian-caring-for-pets-in-modern-clinic-nqutnNNx70kHn0f8WFCdDjTOFy1AoI.png")
+          no-repeat center center;
+  background-size: cover;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
-  padding: 0 20px;
+  padding: 40px 20px;
   box-sizing: border-box;
 }
+
 .heroSection h1 {
   font-size: clamp(2rem, 4vw, 3.5rem);
   line-height: 1.2;
@@ -254,10 +260,12 @@
   50% { transform: translateY(10px); }
 }
 .scrollTitle {
-  font-size:1rem !important;
+  font-size:1.15rem !important;
   text-align: center;
   margin-bottom: 2px;
+  font-weight: bold;
   margin-top:5px;
+  color: #815434;
 }
 
 .scrollContainer {

@@ -1,38 +1,143 @@
 .carouselContainer {
-    max-width: 90vw;
+    width: 100%;
+    max-width: 960px;
     margin: 0 auto;
-    padding: 24px 16px;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+
 }
 
-.title {
-    margin-top: 3.5%;
-    font-size: 2.2rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.subtitle {
-    margin-bottom: 2rem;
-    color: #4b5563;
-    font-weight: 700;
-    font-size: 1.1rem;
-    text-align: center;
-}
-
-.carouselBox {
-    background-color: #edeff6;
-    padding: 40px 80px;
-    position: relative;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    min-height: 380px;
+.header {
     display: flex;
-    gap: 24px;
-    align-items: center;
     justify-content: space-between;
-    transition: box-shadow 0.3s ease;
-    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.header h2 {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    gap: 10px;
+    color: #000000;
+}
+
+.headerIcon {
+    width: 28px;
+    height: 28px;
+    color: #3b82f6;
+}
+
+.animalButton {
+    padding: 6px 14px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: 2px solid #3b82f6;
+    background-color: #ffffffcc;
+    color: #3b82f6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.animalButton:hover {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.animalButton.active {
+    background-color: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.carouselSlide {
+    transition: transform 0.5s ease-in-out;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 24px;
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cardHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.cardHeaderTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tag {
+    white-space: nowrap;
+    font-weight: bold;
+    color: #231f1f;
+}
+.intro {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    color: #8a8888;
+}
+.cardContent.twoColumns {
+    display: flex;
+    gap: 16px;
+}
+
+.cardSection {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    align-items: flex-start;
+}
+.cardSection div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cardSection.green {
+    background-color: #dcfce7;
+}
+
+.cardSection.red {
+    background-color: #fee2e2;
+    color: #a60808;
+}
+
+.cardSection.blue {
+    background-color: #dbeafe;
+    color:blue;
+}
+
+.cardSection:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+.alertIcon {
+    width: 24px;
+    height: 24px;
+    color:red;
+}
+.shieldIcon {
+    width: 24px;
+    height: 24px;
+    color: #159a1c;
+}
+.infoSection p:first-child {
+    font-weight: 600;
+    margin-bottom: 4px;
 }
 
 .navButton {
@@ -42,169 +147,355 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #516ec1;
-    color: #fff;
-    font-size: 24px;
-    line-height: 40px;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    border: none;
-}
-.prevButton { left: 8px; }
-.nextButton { right: 8px; }
-
-.leftSection {
-    flex: 1 1 300px;
-    text-align: left;
-}
-
-.animalType {
-    font-weight: 800;
-    font-size: 1.7rem;
-    color: #2563eb;
-    margin-bottom: 10px;
-}
-
-.diseaseName {
-    font-weight: 900;
-    font-size: 1.8rem;
-    color: #111827;
-    margin-bottom: 18px;
-}
-
-.infoSections {
+    background-color: white;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     display: flex;
-    gap: 36px;
-    font-size: 1.15rem;
-    color: #374151;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
 }
 
-.infoBlock {
-    flex: 1 1 200px;
+.navButton:hover {
+    background-color: #f3f4f6;
+    transform: translateY(-50%) scale(1.1);
 }
 
-.infoBlock h4 {
-    font-weight: 800;
-    margin-bottom: 12px;
-    color: #1f2937;
-}
 
-.infoBlock ul {
-    list-style-position: inside;
-    padding-left: 0;
-    margin: 0;
-    line-height: 1.6;
-}
-
-.infoBlock li {
-    margin-bottom: 10px;
-}
-.imageSection {
-    flex: 0 0 280px;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.imageSection img {
+.carouselContainer {
     width: 100%;
-    height: 100%;
-    display: block;
+    max-width: 960px;
+    margin: 0 auto;
+    font-family: 'Inter', sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.headerIcon {
+    width: 28px;
+    height: 28px;
+    color:red;
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 8px;
+}
+
+.animalButton {
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid #2563eb;
+    background-color: #fff;
+    color: #2563eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.animalButton:hover {
+    background-color: #e0f2fe;
+}
+
+.active {
+    background-color: #2563eb;
+    color: #fff;
+}
+
+.carouselWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+}
+.carouselOuterWrapper {
+    position: relative; /* butoanele absolute vor fi raportate la acesta */
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+}
+.card {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardTitle {
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #1d4ed8;
+}
+
+.tag {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.animalInfo {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.animalImage {
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
     object-fit: cover;
 }
 
-@media (max-width: 1024px) {
-    .carouselBox {
-        padding: 30px 40px;
-        gap: 20px;
-    }
-    .title {
-        font-size: 2rem;
-    }
-    .diseaseName {
-        font-size: 1.6rem;
-    }
-    .animalType {
-        font-size: 1.5rem;
-    }
-    .infoSections {
-        gap: 20px;
-    }
-    .imageSection {
-        flex: 0 0 220px;
-    }
+.animalText {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subTitle {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #1e3a8a;
+}
+
+.animalTags {
+    display: flex;
+    gap: 8px;
+}
+
+.breedTag {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+}
+
+.red {
+    background-color: #ef4444;
+}
+
+.gray {
+    background-color: #6b7280;
+}
+
+.twoColumns {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.cardSection {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.orange {
+    background-color: #fff7ed;
+}
+
+.orange ul li::before {
+    content: "•";
+    color: #f97316;
+    margin-right: 6px;
+}
+
+.green {
+    color: #0a830a;
+}
+
+.green ul li::before {
+    content: "•";
+    color: #10b981;
+    margin-right: 6px;
+}
+
+.sectionIcon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.cardSection p {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.cardSection ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 4px;
+}
+
+.carouselIndicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.indicator.active {
+    background-color: #2563eb;
+}
+
+.prevButton {
+    left: -50px;
+}
+
+.nextButton {
+    right: -50px;
 }
 
 @media (max-width: 768px) {
-    .carouselBox {
+    .carouselContainer {
+        padding: 16px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .buttonGroup {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .animalButton {
+        padding: 4px 10px;
+        font-size: 0.85rem;
+    }
+
+    .carouselWrapper {
+        padding: 0;
+    }
+
+    .card {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .cardHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .cardTitle {
+        font-size: 1.25rem;
+    }
+
+    .tag {
+        font-size: 0.75rem;
+        padding: 2px 8px;
+    }
+
+    .animalInfo {
         flex-direction: column;
         align-items: center;
-        padding: 16px;
-        min-height: auto;
+        gap: 12px;
     }
 
-    .animalType {
-        order: -1;
-        font-size: 1.5rem;
-    }
-    .imageSection {
-        width: 100%;
-        max-width: 300px;
-        margin-bottom: 16px;
-        order: 1;
+    .animalImage {
+        width: 140px;
+        height: 140px;
     }
 
-    .leftSection {
+    .animalText {
         width: 100%;
         text-align: center;
-        order: 2;
     }
 
-    .infoSections {
+    .subTitle {
+        font-size: 1rem;
+    }
+
+    .animalTags {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .twoColumns {
         flex-direction: column;
         gap: 12px;
-        text-align: left;
+    }
+
+    .cardSection {
+        justify-content: flex-start;
+        gap: 6px;
+        padding: 10px;
+    }
+
+    .sectionIcon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .carouselIndicators {
+        margin-top: 12px;
     }
 
     .navButton {
-        width: 32px;
-        height: 32px;
-        font-size: 20px;
-        line-height: 32px;
-        top: 10px;
-        transform: none;
+        font-size: 1.5rem;
     }
 
     .prevButton {
-        left: 10px;
+        left: 0;
     }
 
     .nextButton {
-        right: 10px;
+        right: 0;
     }
 }
+.tagRow {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
 
-@media (max-width: 480px) {
-    .title {
-        font-size: 1.5rem;
-    }
-    .subtitle {
-        font-size: 0.95rem;
-    }
-    .diseaseName {
-        font-size: 1.3rem;
-    }
-    .animalType {
-        font-size: 1.1rem;
-    }
-    .imageSection {
-        width: 100%;
-    }
-    .carouselBox {
-        padding: 16px;
-    }
+.animalTag {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background-color: #dbeafe;
+    color: #1e40af;
+    font-size: 0.875rem;
+    font-weight: 500;
 }

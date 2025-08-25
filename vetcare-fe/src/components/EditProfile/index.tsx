@@ -11,7 +11,7 @@ type EditProfileModalProps = {
    onClose: () => void;
 };
 
-export default function Index({
+export default function EditModal({
                                             isOpen,
                                             formData,
                                             breeds,

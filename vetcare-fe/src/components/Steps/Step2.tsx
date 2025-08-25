@@ -1,29 +1,35 @@
 import React from "react";
-import styles from './steps.module.css';
-import {CreateAnimalProfile} from "@/components/entities/createAnimalProfile";
+import { Vaccine } from "@/components/entities/vaccines";
+import { CreateAnimalProfile } from "@/components/entities/createAnimalProfile";
+import styles from "./steps.module.css";
 import {SyringeIcon} from "lucide-react";
 import {VaccinesList} from "@/components/Vaccines/VaccinesList";
-import {Vaccine} from "@/components/entities/vaccines";
 
-
-type Step2Props = {
+interface Props {
    vaccines: Vaccine[];
    formData: CreateAnimalProfile;
-   handleVaccineCheck: (vaccineName: string, checked: boolean) => void;
-   handleVaccineDateChange: (vaccineName: string, date: string) => void;
+   handleVaccineCheck: (
+      vaccineId: number,
+      dose: "first" | "second",
+      checked: boolean
+   ) => void;
+   handleVaccineDateChange: (
+      vaccineId: number,
+      dose: "first" | "second",
+      date: string
+   ) => void;
    setStep: (step: number) => void;
    handleSubmit: () => void;
-};
+}
 
-
-export const Step2: React.FC<Step2Props> = ({
-                                        vaccines,
-                                        formData,
-                                        handleVaccineCheck,
-                                        handleVaccineDateChange,
-                                        setStep,
-                                        handleSubmit,
-                                     }) => {
+const Step2: React.FC<Props> = ({
+                                   vaccines,
+                                   formData,
+                                   handleVaccineCheck,
+                                   handleVaccineDateChange,
+                                   setStep,
+                                   handleSubmit,
+                                }) => {
    return (
       <div>
          <div className={styles.headerContainer}>

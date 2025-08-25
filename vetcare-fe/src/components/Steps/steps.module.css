@@ -143,3 +143,100 @@
 .btnSubmit:hover {
     background-color: #0f521d;
 }
+.vaccineGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 0 30px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .vaccineGrid {
+        grid-template-columns: 1fr;
+        margin: 0 15px;
+    }
+}
+
+.vaccineCard {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.vaccineCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.vaccineCard h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #3640d1;
+}
+
+.vaccineCard label {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dateInput {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 4px;
+}
+
+.checked {
+    border-color: #28a745;
+    background-color: #e6f4ea;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.saveButton {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.saveButton:hover {
+    background-color: #0f521d;
+}
+
+.cancelButton {
+    padding: 8px 16px;
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #888;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.cancelButton:hover {
+    background-color: #e2e6ea;
+}

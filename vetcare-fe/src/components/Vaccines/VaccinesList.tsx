@@ -1,14 +1,14 @@
 import { Vaccine } from "@/components/entities/vaccines";
 import styles from "./Vaccines.module.css";
 import { CalendarIcon, ClockIcon } from "lucide-react";
-import {CreateAnimalProfile} from "@/components/entities/createAnimalProfile";
+import { CreateAnimalProfile } from "@/components/entities/createAnimalProfile";
 
 interface Props {
    vaccines: Vaccine[];
    animalType: string;
    formData: CreateAnimalProfile;
-   handleVaccineCheck: (name: string, checked: boolean) => void;
-   handleVaccineDateChange: (name: string, date: string) => void;
+   handleVaccineCheck: (vaccineId: number, dose: "first" | "second", checked: boolean) => void;
+   handleVaccineDateChange: (vaccineId: number, dose: "first" | "second", date: string) => void;
 }
 
 export const VaccinesList: React.FC<Props> = ({
@@ -24,40 +24,65 @@ export const VaccinesList: React.FC<Props> = ({
             vaccines
             .filter((vaccine) => vaccine.animalType === animalType)
             .map((vaccine) => {
-               const isChecked = vaccine.name in (formData.vaccineDates || {});
+               const isChecked =
+                  !!formData.vaccineDates.firstDoseDates[vaccine.id] ||
+                  !!formData.vaccineDates.secondDoseDates[vaccine.id];
 
                return (
                   <div
                      key={vaccine.id}
                      className={`${styles.vaccineCard} ${isChecked ? styles.checked : ""}`}
                   >
-                     <div className="flex items-start mb-2">
-                        <input
-                           type="checkbox"
-                           checked={isChecked}
-                           onChange={(e) =>
-                              handleVaccineCheck(vaccine.name, e.target.checked)
-                           }
-                           id={`vaccine-${vaccine.id}`}
-                           className="mt-1"
-                        />
-                        <label
-                           htmlFor={`vaccine-${vaccine.id}`}
-                           className="font-semibold cursor-pointer select-none"
-                           style={{ marginLeft: '8px' }}
-                        >
-                           {vaccine.name}
-                        </label>
+                     <div className="flex items-center gap-4 mb-2">
+                        <div>
+                           <input
+                              type="checkbox"
+                              id={`first-${vaccine.id}`}
+                              checked={!!formData.vaccineDates.firstDoseDates[vaccine.id]}
+                              onChange={(e) =>
+                                 handleVaccineCheck(vaccine.id, "first", e.target.checked)
+                              }
+                           />
+                           <label htmlFor={`first-${vaccine.id}`} className="ml-2">
+                              Prima doză
+                           </label>
+                        </div>
+
+                        <div>
+                           <input
+                              type="checkbox"
+                              id={`second-${vaccine.id}`}
+                              checked={!!formData.vaccineDates.secondDoseDates[vaccine.id]}
+                              onChange={(e) =>
+                                 handleVaccineCheck(vaccine.id, "second", e.target.checked)
+                              }
+                           />
+                           <label htmlFor={`second-${vaccine.id}`} className="ml-2">
+                              A doua doză
+                           </label>
+                        </div>
+
                      </div>
 
-                     {isChecked && (
+                     {formData.vaccineDates.firstDoseDates[vaccine.id] && (
                         <input
                            type="date"
-                           className={styles.dateInput}
-                           value={formData.vaccineDates[vaccine.name] || ""}
+                           value={formData.vaccineDates.firstDoseDates[vaccine.id] || ""}
                            onChange={(e) =>
-                              handleVaccineDateChange(vaccine.name, e.target.value)
+                              handleVaccineDateChange(vaccine.id, "first", e.target.value)
                            }
+                           className={styles.dateInput}
+                        />
+                     )}
+
+                     {formData.vaccineDates.secondDoseDates[vaccine.id] && (
+                        <input
+                           type="date"
+                           value={formData.vaccineDates.secondDoseDates[vaccine.id] || ""}
+                           onChange={(e) =>
+                              handleVaccineDateChange(vaccine.id, "second", e.target.value)
+                           }
+                           className={styles.dateInput}
                         />
                      )}
 
@@ -68,7 +93,7 @@ export const VaccinesList: React.FC<Props> = ({
                         </div>
                         <div className={styles.infoRow}>
                            <CalendarIcon />
-                           <span>Rapel: {vaccine.rapel_days} zile</span>
+                           <span>Rapel: {vaccine.rapelDays} zile</span>
                         </div>
                      </div>
                   </div>

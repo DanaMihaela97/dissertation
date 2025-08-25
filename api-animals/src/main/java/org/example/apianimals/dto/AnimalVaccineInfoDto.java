@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Setter
 public class AnimalVaccineInfoDto {
     private Long vaccineId;
-    private LocalDate dateAdministered;
+    private LocalDate firstDoseDate;
+    private LocalDate secondDoseDate;
     private Long animalId;
 }

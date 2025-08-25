@@ -94,8 +94,12 @@ export const Step1: React.FC<Step1Props> = ({
                   dateFormat="yyyy-MM-dd"
                   placeholderText="yyyy-MM-dd (ex: 2020-12-25)"
                   maxDate={new Date()}
+                  showYearDropdown
+                  scrollableYearDropdown
+                  yearDropdownItemNumber={100}
                   calendarClassName={styles.customCalendar}
                />
+
                <Calendar
                   onClick={() => datePickerRef.current.setOpen(true)}
                   size={20}

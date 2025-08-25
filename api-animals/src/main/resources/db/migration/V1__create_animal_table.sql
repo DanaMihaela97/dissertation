@@ -7,7 +7,7 @@ CREATE TABLE animal (
                         weight VARCHAR(255),
                         type VARCHAR(255),
                         breed VARCHAR(255),
-                        email VARCHAR(255)
+                        owner_email VARCHAR(255)
 );
 
 CREATE TABLE vaccines (
@@ -18,20 +18,14 @@ CREATE TABLE vaccines (
                         revaccination_interval VARCHAR(255) NOT NULL,
                         animal_type VARCHAR(255) NOT NULL
 );
-
 CREATE TABLE animal_vaccines (
-                        id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                        animal_id BIGINT NOT NULL,
-                        vaccine_id BIGINT NOT NULL,
-                        date_administered DATE NOT NULL,
-                        FOREIGN KEY (animal_id) REFERENCES animal(id) ON DELETE CASCADE,
-                        FOREIGN KEY (vaccine_id) REFERENCES vaccines(id) ON DELETE CASCADE
+                                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                                 animal_id BIGINT NOT NULL,
+                                 vaccine_id BIGINT NOT NULL,
+                                 first_dose_date DATE,
+                                 second_dose_date DATE,
+                                 next_dose DATE,
+                                 FOREIGN KEY (animal_id) REFERENCES animal(id) ON DELETE CASCADE,
+                                 FOREIGN KEY (vaccine_id) REFERENCES vaccines(id) ON DELETE CASCADE
 );
 
-CREATE TABLE anamnesis (
-                           id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                           anamnesis VARCHAR(255) NOT NULL,
-                           address VARCHAR(255) NOT NULL,
-                           animal_id BIGINT NOT NULL,
-                           FOREIGN KEY (animal_id) REFERENCES animal(id) ON DELETE CASCADE
-);

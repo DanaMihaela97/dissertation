@@ -23,6 +23,7 @@
     transition: all 0.3s ease;
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
 }
 
 .vaccineCard.checked {
@@ -75,18 +76,32 @@
 }
 
 .modalContent {
-    background: white;
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    max-width: 900px;
+    max-height: 85vh;
     padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 800px;
-    max-height: 90vh;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modalBody {
+    flex: 1;
     overflow-y: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .modalActions {
-    margin-top: 15px;
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    flex-shrink: 0;
 }
 
 .btnClose {
@@ -127,3 +142,6 @@
      justify-content: flex-end;
      gap: 10px;
  }
+.vaccineCard input[type="checkbox"] + label {
+    margin-left: 8px;
+}

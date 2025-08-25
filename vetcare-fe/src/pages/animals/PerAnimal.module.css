@@ -207,26 +207,7 @@
   color: #a84415;
 }
 
-.vaccinCard {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 400px;
-  min-height: 200px;
-  padding: 16px;
-  margin: 8px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  position: relative;
-  box-sizing: border-box;
-}
 
-.mainCardVaccine {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
 
 .deleteButton {
   align-self: flex-end;
@@ -241,21 +222,7 @@
   font-weight: 600;
 }
 
-.vaccinBox {
-  background-color: #faebff;
-  border-radius: 6px;
-  padding: 12px 16px;
-  color: #5e15a3;
-  font-size: 1rem;
-  white-space: pre-wrap;
-  margin-bottom:15px;
-}
 
-.vaccinIcon {
-  margin-right: 8px;
-  color: #5e15a3;
-
-}
 
 .dateContainer {
   display: flex;
@@ -342,16 +309,13 @@
   justify-content: space-evenly;
 }.vaccineHeader {
    display: flex;
-   justify-content: space-between;
    align-items: center;
    margin-bottom: 20px;
  }
 
 .vaccineTitle {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 4px;
+  font-size: 1.25rem !important;
+  color:black !important;
 }
 
 .vaccineSubtitle {
@@ -374,17 +338,6 @@
   transition: background-color 0.3s ease;
 }
 
-.editButtonVac{
-  background-color: #000000;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
 
 @keyframes slideDown {
   from {
@@ -435,20 +388,6 @@
   justify-content: flex-end;
 }
 
-.deleteButton {
-  background: none;
-  border: none;
-  color: #ef4444;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: color 0.3s ease, transform 0.2s ease;
-}
-
-.deleteButton:hover {
-  color: #b91c1c;
-  transform: scale(1.05);
-}
 
 @media (max-width: 768px) {
   .nav {
@@ -585,12 +524,6 @@
   background-color: #ffe5cc;
 }
 
-.vaccineSection {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: flex-start;
-}
 
 @media (min-width: 768px) {
   .vaccineSection {
@@ -602,6 +535,13 @@
   .vaccineSection > div {
     flex: 1 1 100%;
   }
+}
+
+.vaccineSection {
+  display: flex;
+  flex-wrap: wrap; /* permite să se treacă pe rândul următor */
+  gap: 1rem;       /* distanța între carduri */
+  justify-content: flex-start;
 }
 
 .createPrf {
@@ -791,4 +731,79 @@
     background-color: #14197b !important;
     color: #fff !important;
   }
+}
+.mainCardVaccine {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.editButtonVac {
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.vaccinCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+  min-height: 200px;
+  padding: 16px;
+  margin: 8px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  box-sizing: border-box;
+}
+
+.vaccinBox {
+  background-color: #f7f0fa;
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #5e15a3;
+  white-space: pre-wrap;
+  margin-bottom: 15px;
+}
+
+.vaccinCard .vaccinBox p {
+  margin: 2px 0 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #8c48bf;
+}
+
+.vaccinCard .vaccinBox strong {
+  font-size: 1.1rem;
+  color: #500b78;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.vaccinCard .vaccinIcon {
+  margin-right: 8px;
+  color: #5e15a3;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.deleteButton:hover {
+  color: #b91c1c;
+  transform: scale(1.05);
 }

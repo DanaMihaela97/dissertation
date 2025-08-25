@@ -11,15 +11,17 @@ public class AnimalVaccineJoinDto {
     private Long animalId;
     private String animalName;
     private Long vaccineId;
-    private LocalDate dateAdministered;
+    private LocalDate firstDoseDate;
+    private LocalDate secondDoseDate;
     private String vaccineName;
     private int rapelDays;
 
-    public AnimalVaccineJoinDto(Long animalId, String animalName, Long vaccineId, java.sql.Date dateAdministered, String vaccineName, int rapelDays) {
+    public AnimalVaccineJoinDto(Long animalId, String animalName, Long vaccineId, java.sql.Date firstDoseDate, java.sql.Date secondDoseDate, String vaccineName, int rapelDays) {
         this.animalId = animalId;
         this.animalName = animalName;
         this.vaccineId = vaccineId;
-        this.dateAdministered = dateAdministered.toLocalDate();
+        this.firstDoseDate= firstDoseDate.toLocalDate();
+        this.secondDoseDate=secondDoseDate.toLocalDate();
         this.vaccineName = vaccineName;
         this.rapelDays = rapelDays;
     }

@@ -21,6 +21,7 @@ import {VaccinesModal} from "@/components/Vaccines/VaccinesModal";
 import Authentication from "@/components/Authentication";
 import Index from "@/components/EditProfile";
 import {TABS, TAB_DETAILS, Tab} from "@/constants/tabs";
+import EditModal from "@/components/EditProfile";
 
 export default function AnimalPage() {
    const router = useRouter();
@@ -82,11 +83,22 @@ export default function AnimalPage() {
    };
 
    function calcNextDoseDate(animalVaccine: AnimalVaccine, vaccine: Vaccine): string | null {
-      if (!animalVaccine.dateAdministered || vaccine?.rapel_days === -1) {
-         return "Nu exista o urmatoare doza!";
+      if (vaccine?.rapelDays === -1) {
+         return "Nu există o următoare doză!";
       }
-      const nextDose = new Date(new Date(animalVaccine.dateAdministered).getTime() + vaccine.rapel_days * 86400000);
-      return nextDose.toLocaleDateString();
+
+      if (animalVaccine.secondDoseDate) {
+         return "Schema de vaccinare este completă";
+      }
+
+      if (animalVaccine.firstDoseDate && !animalVaccine.secondDoseDate) {
+         const firstDate = new Date(animalVaccine.firstDoseDate);
+         const nextDose = new Date(firstDate);
+         nextDose.setDate(firstDate.getDate() + vaccine.rapelDays);
+         return nextDose.toLocaleDateString();
+      }
+
+      return null;
    }
 
    useEffect(() => {
@@ -199,7 +211,7 @@ export default function AnimalPage() {
                      className={`${styles.nav} ${isMobile && window.innerWidth <= 684 ? styles.navMobile : styles.navDesktop}`}
                   >
 
-                     {(isOpen || !isMobile || (isMobile && window.innerWidth <= 684 )) &&
+                     {(isOpen || !isMobile || (isMobile && window.innerWidth <= 684)) &&
                         TABS.map((tab) => (
                            <button
                               key={tab}
@@ -229,25 +241,25 @@ export default function AnimalPage() {
                      <div className={styles.headerRow}>
                         <h1 className={styles.headerTitle}>
                            <div className={styles.titleWrapper}>
-        <span className={`${styles.tabIcon} 
-                         ${activeTab === 'Profil' ? styles.tabProfil : ''} 
-                         ${activeTab === 'Vaccinuri' ? styles.tabVaccinuri : ''} 
-                         ${activeTab === 'Diagnostic' ? styles.tabDiagnostic : ''} 
-                         ${activeTab === 'Tratament' ? styles.tabTratament : ''} 
-                         ${activeTab === 'Recomandări' ? styles.tabSfaturi : styles.tabDefault}`}
-        >
-          <span className={`${styles.iconBase} ${tabClass}`}>
-            {TAB_DETAILS[activeTab as Tab].icon}
-          </span>
-        </span>
+                          <span className={`${styles.tabIcon} 
+                                           ${activeTab === 'Profil' ? styles.tabProfil : ''} 
+                                           ${activeTab === 'Vaccinuri' ? styles.tabVaccinuri : ''} 
+                                           ${activeTab === 'Diagnostic' ? styles.tabDiagnostic : ''} 
+                                           ${activeTab === 'Tratament' ? styles.tabTratament : ''} 
+                                           ${activeTab === 'Recomandări' ? styles.tabSfaturi : styles.tabDefault}`}
+                          >
+                         <span className={`${styles.iconBase} ${tabClass}`}>
+                           {TAB_DETAILS[activeTab as Tab].icon}
+                         </span>
+                       </span>
 
-                              <div className={styles.textWrapper}>
-          <span className={styles.mainTitle}>
-            {TAB_DETAILS[activeTab as Tab].title}
-          </span>
-                                 <span className={styles.subTitle}>
-            {TAB_DETAILS[activeTab as Tab].subtitle}
-          </span>
+                                             <div className={styles.textWrapper}>
+                         <span className={styles.mainTitle}>
+                           {TAB_DETAILS[activeTab as Tab].title}
+                         </span>
+                                                <span className={styles.subTitle}>
+                           {TAB_DETAILS[activeTab as Tab].subtitle}
+                         </span>
                               </div>
                            </div>
                         </h1>
@@ -306,7 +318,7 @@ export default function AnimalPage() {
                                  </button>
 
                                  {isEditOpen && formData && (
-                                    <Index
+                                    <EditModal
                                        isOpen={isEditOpen}
                                        formData={formData}
                                        breeds={breeds}
@@ -322,7 +334,8 @@ export default function AnimalPage() {
                         {activeTab === 'Vaccinuri' && (
                            <div className={styles.mainCardVaccine}>
                               <div>
-                                 <button className={styles.editButtonVac} onClick={handleAddVaccines}>Adaugă / Editează vaccinuri
+                                 <button className={styles.editButtonVac} onClick={handleAddVaccines}>Adaugă / Editează
+                                    vaccinuri
                                  </button>
                               </div>
                               <div className={styles.vaccineSection}>
@@ -330,24 +343,37 @@ export default function AnimalPage() {
                                     animal.vaccines.map((animalVaccine) => {
                                        const vaccine = vaccinesMap[animalVaccine.vaccineId];
                                        const nextDoseDate = calcNextDoseDate(animalVaccine, vaccine);
+
                                        return (
                                           <div key={vaccine.id} className={styles.vaccinCard}>
-                                             <div className={styles.cardHeader}>
-                                                <span className={styles.cardTitle}>{vaccine.name}</span>
-                                                <div className={styles.dateWithIcon}>
-                                                   <Calendar size={16} className={styles.calendarIcon}/>
-                                                   <span>{new Date(animalVaccine.dateAdministered).toLocaleDateString()}</span>
-                                                </div>
-                                             </div>
                                              <div className={styles.vaccinBox}>
-                                                <Syringe size={20} className={styles.vaccinIcon}/>
-                                                <strong>Administrat</strong>
-                                                <p>{new Date(animalVaccine.dateAdministered).toLocaleDateString()}</p>
+                                                <div className={styles.vaccineHeader}>
+                                                   <Syringe size={20} className={styles.vaccinIcon} />
+                                                   <p className={styles.vaccineTitle}>{vaccine.name}</p>
+                                                </div>
+                                                <strong>Prima doză</strong>
+                                                <p>
+                                                   {animalVaccine.firstDoseDate
+                                                      ? new Date(animalVaccine.firstDoseDate).toLocaleDateString()
+                                                      : "Nu a fost administrată"}
+                                                </p>
+
+                                                <strong>A doua doză</strong>
+                                                <p>
+                                                   {animalVaccine.secondDoseDate
+                                                      ? new Date(animalVaccine.secondDoseDate).toLocaleDateString()
+                                                      : "Nu a fost administrată"}
+                                                </p>
+                                                <br />
                                                 <strong>Următoarea doză</strong>
-                                                <p>{nextDoseDate || 'Nespecificat'}</p>
+                                                <p>{nextDoseDate || "Nespecificat"}</p>
                                              </div>
-                                             <button className={styles.deleteButton}
-                                                     onClick={() => handleDelete(vaccine.id)}>Șterge
+
+                                             <button
+                                                className={styles.deleteButton}
+                                                onClick={() => handleDelete(vaccine.id)}
+                                             >
+                                                Șterge
                                              </button>
                                           </div>
                                        );
@@ -355,6 +381,7 @@ export default function AnimalPage() {
                                  ) : (
                                     <p>Nu există vaccinuri înregistrate.</p>
                                  )}
+
                               </div>
                            </div>
                         )}

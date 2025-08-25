@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
-    List<Animal> findAnimalsByEmail(String email);
-    List<String> findDistinctEmailBy();
-    List<Animal> findDistinctByEmail(String email);
+    List<Animal> findAnimalsByOwnerEmail(String ownerEmail);
+
+//    List<String> findDistinctEmailBy();
+//    List<Animal> findDistinctByEmail(String email);
 }
