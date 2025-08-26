@@ -65,7 +65,7 @@ class ApiGatewayE2ETest {
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(authHeaders);
         ResponseEntity<String> animalsResponse = restTemplate.exchange(
-                "/api/animals/list",
+                "/api/animals/",
                 HttpMethod.GET,
                 requestEntity,
                 String.class

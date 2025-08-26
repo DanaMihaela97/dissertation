@@ -118,7 +118,14 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>test</scope>
+<!--			<scope>test</scope>-->
+			<scope>testare</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+						<scope>test</scope>
+<!--			<scope>testare</scope>-->
 		</dependency>
 
 	</dependencies>

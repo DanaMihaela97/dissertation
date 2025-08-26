@@ -18,7 +18,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-   #     ddl-auto: create
+    #     ddl-auto: create
   flyway:
     driver-class-name: com.mysql.cj.jdbc.Driver
     enabled: true
@@ -34,9 +34,9 @@ spring:
         static: eu-north-1
 
 logging.level:
-#  org.springframework.cloud.gateway: DEBUG
-#  org.springframework.security: DEBUG
-#  org.springframework.web.reactive.function.client: TRACE
+  #  org.springframework.cloud.gateway: DEBUG
+  #  org.springframework.security: DEBUG
+  #  org.springframework.web.reactive.function.client: TRACE
   org.flywaydb.core: DEBUG
   # API Keys (external services)
 dog:

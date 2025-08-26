@@ -59,22 +59,30 @@ const Navbar = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                <ul className="navbar-nav mx-auto">
                   <li className="nav-item">
-                     <Link href="/home" className={`${styles.navLink} nav-link`}>
+                     <Link className={`${styles.navLink} nav-link`}
+                           data-cy="nav-home-link"
+                           href="/home">
                         Acasă
                      </Link>
                   </li>
                   <li className="nav-item">
-                     <Link href="/about" className={`${styles.navLink} nav-link`}>
+                     <Link className={`${styles.navLink} nav-link`}
+                           data-cy="nav-about-link"
+                           href="/about">
                         Despre
                      </Link>
                   </li>
                   <li className="nav-item">
-                     <Link className={`${styles.navLink} nav-link`} href="/services">
+                     <Link className={`${styles.navLink} nav-link`}
+                           data-cy="nav-services-link"
+                           href="/services">
                         Servicii
                      </Link>
                   </li>
                   <li className="nav-item">
-                     <Link className={`${styles.navLink} nav-link`} href="/review">
+                     <Link className={`${styles.navLink} nav-link`}
+                           data-cy="nav-reviews-link"
+                           href="/review">
                         Recenzii
                      </Link>
                   </li>
@@ -124,7 +132,7 @@ const Navbar = () => {
                <ul className="navbar-nav ms-auto d-flex">
                   {session && (
                      <li className="nav-item d-flex align-items-center me-3">
-            <span>
+            <span data-cy="nav-user-name">
                 Bună, {session.user?.name || session.user?.email}!
             </span>
                      </li>
@@ -132,12 +140,14 @@ const Navbar = () => {
                   {!session ? (
                      <>
                         <li className="nav-item">
-                           <Link href="/login" className={`${styles.navLink} nav-link`} role="button">
+                           <Link href="/login" className={`${styles.navLink} nav-link`} role="button"
+                           data-cy="nav-login-link">
                               Autentificare
                            </Link>
                         </li>
                         <li className="nav-item">
-                           <Link href="/register" className={`${styles.navLink} ${styles.btnDark} nav-link ms-2`}>
+                           <Link href="/register" className={`${styles.navLink} ${styles.btnDark} nav-link ms-2`}
+                                 data-cy="nav-register-link">
                               Înregistrare
                            </Link>
                         </li>
@@ -148,6 +158,7 @@ const Navbar = () => {
                            onClick={handleLogout}
                            className={`${styles.navLink} btn-logout nav-link`}
                            style={{border: 'none', background: 'transparent'}}
+                           data-cy="nav-logout-link"
                         >
                            Deconectează-te
                         </button>

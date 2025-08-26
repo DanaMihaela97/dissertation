@@ -88,7 +88,7 @@ export default function ReviewPage() {
       const stars = [];
       for (let i = 1; i <= 5; i++) {
          stars.push(
-            <span
+            <span data-cy="rating-stars"
                key={i}
                className={`${styles.star} ${i <= selected ? "" : styles.empty}`}
                onClick={() => onSelect && onSelect(i)}
@@ -100,7 +100,7 @@ export default function ReviewPage() {
         </span>
          );
       }
-      return <div className={styles.starContainer}>{stars}</div>;
+      return <span className={styles.starContainer}>{stars}</span>;
    };
 
    return (
@@ -151,13 +151,17 @@ export default function ReviewPage() {
                         rows={4}
                         className={styles.textarea}
                         placeholder="Scrie aici ce părere ai despre aplicație..."
+                        data-cy="feedback-textarea"
                      />
                   </div>
 
                   {error && <div className={styles.error}>{error}</div>}
 
 
-                  <button type="submit" className="btn btn-success" disabled={loading}>
+                  <button type="submit"
+                          className="btn btn-success"
+                          disabled={loading}
+                          data-cy="submit-review-button">
                      Trimite recenzia
                   </button>
                </form>
@@ -177,9 +181,9 @@ export default function ReviewPage() {
             ) : reviews.length === 0 ? (
                <p>Nu există recenzii încă. Fii primul care își împărtășește părerea!</p>
             ) : (
-               <ul className={styles.reviewList}>
+               <ul className={styles.reviewList} data-cy="review-list">
                   {reviews.map(({name, rating, feedback, createdAt}, index) => (
-                     <li key={index} className={styles.reviewCard}>
+                     <li key={index} className={styles.reviewCard} data-cy="review-card">
                         <div className={styles.reviewName}>{name}</div>
                         {renderStars(rating)}
                         <p className={styles.reviewFeedback}>{feedback}</p>
