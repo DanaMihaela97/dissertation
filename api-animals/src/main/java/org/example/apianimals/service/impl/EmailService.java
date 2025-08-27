@@ -7,6 +7,7 @@ import org.example.apianimals.repository.AnimalVaccineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,11 +26,10 @@ public class EmailService {
         this.animalRepository = animalRepository;
     }
 
-
     public void sendDailyRapelEmails() {
         Set<String> emails = animalRepository.findAll().stream().map(a -> a.getOwnerEmail()).collect(Collectors.toSet());
         for (String email : emails) {
-            List<AnimalVaccineJoinDto> animals = repository.findAnimalsByEmail(email);
+            List<AnimalVaccineJoinDto> animals = repository.findAnimalsByEmail(email, LocalDate.now().minusDays(14));
             for (AnimalVaccineJoinDto animal : animals) {
                 String subject = "Rapel vaccin - " + animal.getAnimalName();
                 String bodyText = "Bună,\n\n" + "Vă informăm că animalul dumneavoastră " +

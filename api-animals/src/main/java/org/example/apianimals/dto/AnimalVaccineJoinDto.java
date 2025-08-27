@@ -1,12 +1,11 @@
 package org.example.apianimals.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 public class AnimalVaccineJoinDto {
     private Long animalId;
     private String animalName;
@@ -14,15 +13,5 @@ public class AnimalVaccineJoinDto {
     private LocalDate firstDoseDate;
     private LocalDate secondDoseDate;
     private String vaccineName;
-    private int rapelDays;
-
-    public AnimalVaccineJoinDto(Long animalId, String animalName, Long vaccineId, java.sql.Date firstDoseDate, java.sql.Date secondDoseDate, String vaccineName, int rapelDays) {
-        this.animalId = animalId;
-        this.animalName = animalName;
-        this.vaccineId = vaccineId;
-        this.firstDoseDate= firstDoseDate.toLocalDate();
-        this.secondDoseDate=secondDoseDate.toLocalDate();
-        this.vaccineName = vaccineName;
-        this.rapelDays = rapelDays;
-    }
+    private Integer rapelDays;
 }

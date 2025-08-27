@@ -4,23 +4,28 @@ import org.example.apianimals.dto.AnimalVaccineJoinDto;
 import org.example.apianimals.entity.AnimalVaccine;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface AnimalVaccineRepository extends JpaRepository<AnimalVaccine, Long> {
     List<AnimalVaccine> findByAnimalId(Long animalId);
+
     Optional<AnimalVaccine> findByAnimalIdAndVaccineId(Long animalId, Long vaccineId);
+
     void deleteByAnimalIdAndVaccineId(Long animalId, Long vaccineId);
 
-    @NativeQuery(
-            "SELECT A.id, A.animal_name, AV.vaccine_id, AV.date_administered, V.name, V.rapel_days " +
-                    "FROM Animal A " +
-                    "INNER JOIN animal_vaccines AV ON A.id = AV.animal_id " +
-                    "INNER JOIN vaccines V ON AV.vaccine_id = V.id " +
-                    "WHERE A.email LIKE CONCAT('%', ?1) " +
-                    "AND V.rapel_days != -1 " +
-                    "AND DATEDIFF(DATE_ADD(AV.date_administered, INTERVAL 14 DAY), CURDATE()) < 0"
-    )
-    List<AnimalVaccineJoinDto> findAnimalsByEmail(String email);
+    @Query("SELECT new org.example.apianimals.dto.AnimalVaccineJoinDto(" +
+            "A.id, A.animalName, V.id, AV.firstDoseDate, AV.secondDoseDate, V.name, V.rapelDays) " +
+            "FROM Animal A " +
+            "JOIN A.animalVaccines AV " +
+            "JOIN AV.vaccine V " +
+            "WHERE A.ownerEmail = :email " +
+            "AND V.rapelDays != -1 " +
+            "AND AV.firstDoseDate < :cutoffDate")
+    List<AnimalVaccineJoinDto> findAnimalsByEmail(@Param("email") String email,
+                                                  @Param("cutoffDate") LocalDate cutoffDate);
 }

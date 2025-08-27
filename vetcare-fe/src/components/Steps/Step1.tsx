@@ -52,7 +52,7 @@ export const Step1: React.FC<Step1Props> = ({
 
          <div className={styles.formGrid}>
             <div className={styles.inputGroup}>
-               <label htmlFor="animalName">
+               <label htmlFor="animalName" data-cy="animal-name">
                   <PawPrint className={styles.icons} />
                   Nume animal<span className={styles.requiredIcon}> *</span>
                </label>
@@ -67,7 +67,7 @@ export const Step1: React.FC<Step1Props> = ({
             </div>
 
             <div className={styles.inputGroup} style={{ position: "relative" }}>
-               <label htmlFor="birthdate">
+               <label htmlFor="birthdate" data-cy="animal-birthdate">
                   <Calendar className={styles.icons} />
                   Data nașterii
                   <span className={styles.requiredIcon}> *</span>
@@ -114,6 +114,7 @@ export const Step1: React.FC<Step1Props> = ({
                   <span className={styles.requiredIcon}> *</span>
                </label>
                <select
+                  data-cy="animal-sex"
                   value={formData.sex}
                   onChange={(e) => handleSelectChange("sex", e.target.value)}
                >
@@ -124,7 +125,7 @@ export const Step1: React.FC<Step1Props> = ({
             </div>
 
             <div className={styles.inputGroup}>
-               <label htmlFor="weight">
+               <label htmlFor="weight" data-cy="animal-weight">
                   <WeightIcon className={styles.icons} />
                   Greutate (kg)
                   <span className={styles.requiredIcon}> *</span>
@@ -140,12 +141,13 @@ export const Step1: React.FC<Step1Props> = ({
             </div>
 
             <div className={styles.inputGroup}>
-               <label htmlFor="type">
+               <label htmlFor="type" >
                   <PawPrint className={styles.icons} />
                   Tip animal
                   <span className={styles.requiredIcon}> *</span>
                </label>
                <select
+                  data-cy="animal-type"
                   value={formData.type}
                   onChange={(e) => handleSelectChange("type", e.target.value)}
                >
@@ -167,6 +169,7 @@ export const Step1: React.FC<Step1Props> = ({
                   </div>
                ) : (
                   <select
+                     data-cy="animal-breed"
                      value={formData.breed}
                      onChange={(e) => handleSelectChange("breed", e.target.value)}
                      disabled={!formData.type}

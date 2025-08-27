@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/websocket")
@@ -23,7 +24,7 @@ public class SseController {
             return Flux.empty();
         }
 
-        Flux<String> notificationFlux = Mono.fromCallable(() -> animalVaccineRepository.findAnimalsByEmail(email))
+        Flux<String> notificationFlux = Mono.fromCallable(() -> animalVaccineRepository.findAnimalsByEmail(email, LocalDate.now().minusDays(14)))
                 .subscribeOn(Schedulers.boundedElastic())
                 .flatMapMany(list -> {
                     if (list.isEmpty()) {

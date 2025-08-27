@@ -29,8 +29,5 @@ public class AnimalVaccine {
     @Column(name = "second_dose_date")
     private LocalDate secondDoseDate;
 
-//    @Column(name = "date_administered")
-//    private LocalDate dateAdministered;
-
 
 }
