@@ -8,11 +8,11 @@ spring:
         oauth2:
             resourceserver:
                 jwt:
-                    jwk-set-uri: http://localhost:8080/realms/vetcare/protocol/openid-connect/certs
+                    jwk-set-uri: http://172.31.31.52:8080/realms/pawcare/protocol/openid-connect/certs
     datasource:
-        url: jdbc:mysql://localhost:3306/consultation_api
-        username: root
-        password: root
+        url: jdbc:mysql://13.61.108.126:3306/consultation_api
+        username: admin
+        password: A6kS3IEZW7XH31aqcMFH
         driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
         properties:
