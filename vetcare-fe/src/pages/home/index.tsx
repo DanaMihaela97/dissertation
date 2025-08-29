@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Stethoscope, PawPrint, Activity, ArrowBigDown, ArrowDown} from "lucide-react";
+import {Stethoscope, PawPrint, Activity, ArrowDown} from "lucide-react";
 import {getAnimalCount} from "@/services/animalService";
 import styles from "./Home.module.css";
 import {getConsultationCount, getReviewMean} from "@/services/reviewService";

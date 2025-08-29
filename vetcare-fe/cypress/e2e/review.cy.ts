@@ -1,11 +1,11 @@
 /// <reference types="cypress" />
 
 describe("Fluxul de adăugare recenzii", () => {
-  let token: string;
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = "http://ip-172-31-27-81.eu-north-1.compute.internal:3000";
+  const keycloakUrl = "http://ec2-13-61-108-126.eu-north-1.compute.amazonaws.com:8080"
 
   it("permite unui utilizator să posteze o recenzie și să fie vizibilă în UI și API", () => {
-    cy.visit("http://localhost:3000/login"); // Sau unde se află pagina ta de login
+    cy.visit(`${baseUrl}/login`); // Sau unde se află pagina ta de login
 
     // 2. Dăm click pe butonul de autentificare
     // Adaugă `data-cy="keycloak-login-button"` pe butonul tău pentru un selector robust
@@ -13,7 +13,7 @@ describe("Fluxul de adăugare recenzii", () => {
 
     // 3. Cypress va fi redirecționat către Keycloak.
     // Folosim cy.origin() pentru a executa comenzi pe pagina Keycloak.
-    cy.origin("http://localhost:8080", () => {
+    cy.origin(keycloakUrl, () => {
       // Așteptăm ca elementele de pe pagina Keycloak să fie vizibile
       cy.get("input#username")
         .should("be.visible")

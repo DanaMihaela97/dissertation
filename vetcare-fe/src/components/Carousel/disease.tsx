@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./Carousel.module.css";
 import { diseases } from "@/data/diseases";
 import {AlertTriangle, ChevronLeft, ChevronRight, Heart, Shield} from "lucide-react";
+import Image from "next/image";
 
    export default function DiseaseCarousel() {
       const animals = Array.from(new Set(diseases.map(d => d.animal)))
@@ -48,7 +49,11 @@ import {AlertTriangle, ChevronLeft, ChevronRight, Heart, Shield} from "lucide-re
 
                      <div className={styles.cardContent}>
                         <div className={styles.animalInfo}>
-                           <img src={currentDisease.image} alt={currentDisease.animal} className={styles.animalImage} />
+                           <Image
+                              src={currentDisease.image}
+                              alt={currentDisease.animal}
+                              className={styles.animalImage}
+                           />
                            <div className={styles.animalText}>
                               <p className={styles.subTitle}>
                                  {currentDisease.name}

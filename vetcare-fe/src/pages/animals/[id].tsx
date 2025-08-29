@@ -19,7 +19,6 @@ import {getAgeString} from "@/utils/animalData";
 import Swal from "sweetalert2";
 import {VaccinesModal} from "@/components/Vaccines/VaccinesModal";
 import Authentication from "@/components/Authentication";
-import Index from "@/components/EditProfile";
 import {TABS, TAB_DETAILS, Tab} from "@/constants/tabs";
 import EditModal from "@/components/EditProfile";
 
