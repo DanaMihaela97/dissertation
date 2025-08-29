@@ -34,11 +34,11 @@ spring:
   security.oauth2:
     resourceserver:
       jwt:
-        jwk-set-uri: http://172.31.31.52:8080/realms/pawcare/protocol/openid-connect/certs
+        jwk-set-uri: http://ec2-13-51-246-3.eu-north-1.compute.amazonaws.com:8080/realms/pawcare/protocol/openid-connect/certs
     client:
       provider:
         keycloak:
-          issuer-uri: http://172.31.31.52:8080/realms/pawcare
+          issuer-uri: http://ec2-13-51-246-3.eu-north-1.compute.amazonaws.com:8080/realms/pawcare
       registration:
         keycloak:
           provider: keycloak
@@ -62,7 +62,7 @@ spring:
       hibernate.dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
 keycloak:
-  url: http://172.31.31.52:8080
+  url: http://ec2-13-51-246-3.eu-north-1.compute.amazonaws.com:8080
   realm: pawcare
   admin:
     username: admin
@@ -76,5 +76,5 @@ server:
   port: 8060
 
 
-realms_master: http://172.31.31.52:8080/realms/master/protocol/openid-connect/token
-realms_admin: http://172.31.31.52:8080/admin/realms/pawcare
+realms_master: http://ec2-13-51-246-3.eu-north-1.compute.amazonaws.com:8080/realms/master/protocol/openid-connect/token
+realms_admin: http://ec2-13-51-246-3.eu-north-1.compute.amazonaws.com:8080/admin/realms/pawcare
