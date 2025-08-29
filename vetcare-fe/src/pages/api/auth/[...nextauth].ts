@@ -71,6 +71,9 @@ export const authOptions = {
       session.error = token.error;
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      return process.env.GATEWAY_API_URL || baseUrl;
+    }
   },
 };
 
