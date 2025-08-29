@@ -33,6 +33,7 @@ export const VaccinesList: React.FC<Props> = ({
                      key={vaccine.id}
                      className={`${styles.vaccineCard} ${isChecked ? styles.checked : ""}`}
                   >
+                     <h4 className={styles.vaccineName}>{vaccine.name}</h4>
                      <div className="flex items-center gap-4 mb-2">
                         <div>
                            <input

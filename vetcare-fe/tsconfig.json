@@ -29,7 +29,8 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "cypress/**/*.ts"        // adaugă asta
   ],
   "exclude": [
     "node_modules"

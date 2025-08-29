@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
             payload.put("username", request.getEmail());
             payload.put("email", request.getEmail());
             payload.put("enabled", true);
-
             payload.put("firstName", request.getFirstName());
             payload.put("lastName", request.getLastName());
 
@@ -86,6 +85,11 @@ public class UserServiceImpl implements UserService {
                     String.class
             );
 
+            if (response.getStatusCode() == HttpStatus.CONFLICT) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("email deja folosit");
+            }
+
             if (response.getStatusCode() == HttpStatus.CREATED) {
                 User user = new User();
                 user.setEmail(request.getEmail());
@@ -99,6 +103,11 @@ public class UserServiceImpl implements UserService {
             }
 
         } catch (Exception e) {
+            if (e.getMessage().contains("User exists")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("email deja folosit");
+            }
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
         }

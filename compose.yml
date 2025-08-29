@@ -1,0 +1,35 @@
+services:
+  api-animals:
+    build: ./api-animals
+    ports:
+      - "7003:7003"
+    networks:
+      - pawcare-network
+
+  api-chat:
+    build: ./api-chat
+    ports:
+      - "7004:7004"
+    networks:
+      - pawcare-network
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8060:8060"
+    networks:
+      - pawcare-network
+
+  vetcare-fe:
+    build: ./vetcare-fe
+    ports:
+      - "3000:3000"
+    networks:
+      - pawcare-network
+
+volumes:
+  mysql_data:
+
+networks:
+  pawcare-network:
+    external: true

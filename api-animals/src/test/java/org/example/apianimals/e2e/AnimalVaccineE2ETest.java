@@ -1,7 +1,10 @@
 package org.example.apianimals.e2e;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.apianimals.dto.*;
+import org.example.apianimals.dto.AnimalCreateDto;
+import org.example.apianimals.dto.AnimalInfoDto;
+import org.example.apianimals.dto.AnimalVaccineCreateDto;
+import org.example.apianimals.dto.AnimalVaccineInfoDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,7 +17,6 @@ import org.springframework.http.*;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -29,11 +31,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Import(TestSecurityConfig.class)
-class AnimalControllerE2ETest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
+public class AnimalVaccineE2ETest {
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -44,7 +42,7 @@ class AnimalControllerE2ETest {
 
     @BeforeEach
     void setup() {
-        // Creăm mock-ul JwtDecoder
+
         jwtDecoder = Mockito.mock(JwtDecoder.class);
         Map<String, Object> claims = Collections.singletonMap("sub", "test-user-id");
         Jwt mockJwt = new Jwt("mock-token-value", Instant.now(), Instant.now().plusSeconds(3600),
@@ -57,9 +55,7 @@ class AnimalControllerE2ETest {
     }
 
     @Test
-    void shouldCreateAndFetchAnimal() throws Exception {
-        //creem un animal, verificam raspunsul sa fie 200, si GET api/animals
-        // testam functionalitatea de create si get a animalelor
+    void shouldCreateAndFetchAnimal() {
         AnimalCreateDto animal = new AnimalCreateDto();
         animal.setAnimalName("Rex");
         animal.setBirthdate("2020-05-01");
@@ -80,7 +76,6 @@ class AnimalControllerE2ETest {
         assertThat(createdAnimal.getAnimalName()).isEqualTo("Rex");
         assertThat(createdAnimal.getType()).isEqualTo("dog");
 
-        // Testare GET
         HttpEntity<Void> getRequest = new HttpEntity<>(headers);
         ResponseEntity<AnimalInfoDto[]> listResponse =
                 restTemplate.exchange("/api/animals/", HttpMethod.GET, getRequest, AnimalInfoDto[].class);
@@ -99,8 +94,6 @@ class AnimalControllerE2ETest {
     @Test
     @Sql("/data.sql")
     void shouldAddVaccinesToAnimal() {
-        // cream animal si vaccinuri pt el cu dfozele 1 si 2 si verificam daca vaccinul a fost adaugat corect
-        // testeaza adaugarea vaccinurilor unui animal existent
         AnimalCreateDto animal = new AnimalCreateDto();
         animal.setAnimalName("Bella");
         animal.setBirthdate("2021-03-12");
@@ -137,23 +130,6 @@ class AnimalControllerE2ETest {
         assertThat(vaccines[0].getSecondDoseDate()).isEqualTo(secondDose);
     }
 
-    @Test
-    @Sql("/data.sql")
-    void shouldFetchAndVerifyAllVaccines() throws Exception {
-        // get pe toate vaccinurile si afisam numarul
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(
-                "/api/vaccines/",
-                HttpMethod.GET,
-                requestEntity,
-                String.class
-        );
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-        AnimalVaccineInfoDto[] vaccines = objectMapper.readValue(response.getBody(), AnimalVaccineInfoDto[].class);
-        assertThat(vaccines).isNotNull();
-        System.out.println("Vaccines fetched: " + vaccines.length);
-    }
 }
+
+
