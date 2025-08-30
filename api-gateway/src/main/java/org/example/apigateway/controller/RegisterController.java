@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://13.61.108.126:3000"},
+@CrossOrigin(origins = {"http://localhost:3000",
+        "http://13.61.108.126:3000",
+        "http://ec2-16-170-160-108.eu-north-1.compute.amazonaws.com:3000/"},
         allowedHeaders = "*",
         methods = {RequestMethod.POST, RequestMethod.OPTIONS})
 public class RegisterController {

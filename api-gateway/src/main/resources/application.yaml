@@ -7,7 +7,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: ["http://13.61.108.126:3000", "http://localhost:3000"]
+            allowedOrigins: ["http://13.61.108.126:3000", "http://localhost:3000", "http://ec2-16-170-160-108.eu-north-1.compute.amazonaws.com:3000"]
             allowedMethods:
               - DELETE
               - GET
