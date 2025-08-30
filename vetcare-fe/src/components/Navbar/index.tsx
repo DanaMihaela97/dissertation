@@ -113,7 +113,7 @@ const Navbar = () => {
                            {isOpenAnimal && (
                               <ul className="dropdown-menu show" style={{display: 'block', position: 'absolute'}}>
                                  <li>
-                                    <Link href="/create-animal-profile" className={styles.dropdownItem}>
+                                    <Link href="/create-animal" className={styles.dropdownItem}>
                                        Creează profil pentru animăluțul tău
                                     </Link>
                                  </li>

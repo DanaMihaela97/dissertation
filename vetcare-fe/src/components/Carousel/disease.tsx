@@ -52,6 +52,8 @@ import Image from "next/image";
                            <Image
                               src={currentDisease.image}
                               alt={currentDisease.animal}
+                              width={500}
+                              height={300}
                               className={styles.animalImage}
                            />
                            <div className={styles.animalText}>

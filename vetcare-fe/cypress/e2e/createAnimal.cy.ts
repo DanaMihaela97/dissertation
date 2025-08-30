@@ -41,7 +41,7 @@ describe("Fluxul de autentificare in aplicatie", () => {
       cy.contains("Creează profil pentru animăluțul tău").click();
 
 // Verificăm că am ajuns pe pagina de creare profil
-      cy.url().should("include", "/create-animal-profile");
+      cy.url().should("include", "/create-animal");
 
 // --- Step 1 - informații despre animal ---
       cy.get('[data-cy="animal-name"]').type("Bella");

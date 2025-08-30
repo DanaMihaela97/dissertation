@@ -104,7 +104,7 @@ const Animals = () => {
                 <p className={styles.noPrfMsg}>Nu ai niciun profil de animal creat.</p>
                 <button
                    className={styles.createPrf}
-                   onClick={() => router.push("/create-animal-profile")}
+                   onClick={() => router.push("/create-animal")}
                 >
                   Creează un profil de animal
                 </button>
