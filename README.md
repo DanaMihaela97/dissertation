@@ -23,3 +23,11 @@ sudo docker run --name mykeycloak -p 8443:8443 -p 8080:8080 -p 9000:9000 -e KC_B
 ```
 
 ```
+
+## Network
+```
+docker network create \
+  --driver bridge \
+  --subnet=172.20.0.0/16 \
+  pawcare-network
+```

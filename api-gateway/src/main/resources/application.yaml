@@ -4,33 +4,36 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: ["http://13.61.108.126:3000", "http://localhost:3000", "http://ec2-16-170-160-108.eu-north-1.compute.amazonaws.com:3000"]
-            allowedMethods:
-              - DELETE
-              - GET
-              - HEAD
-              - OPTIONS
-              - PATCH
-              - POST
-              - PUT
-              - TRACE
-            allowedHeaders:
-              - "*"
-            allowCredentials: true
-      default-filters:
-        - TokenRelay=
-      routes:
-        - id: api-animals
-          uri: http://api-animals:7003
-          predicates:
-            - Path=/api/animals/**,/api/vaccines/**,/websocket/**,/api/notifications/**
-        - id: api-chat
-          uri: http://api-chat:7004
-          predicates:
-            - Path=/api/chat/**,/api/reviews/**,/api/locate/**
+      server:
+        webflux:
+          trusted-proxies: 172.20.0.10
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: ["http://13.61.108.126:3000", "http://localhost:3000", "http://ec2-16-170-160-108.eu-north-1.compute.amazonaws.com:3000"]
+                allowedMethods:
+                  - DELETE
+                  - GET
+                  - HEAD
+                  - OPTIONS
+                  - PATCH
+                  - POST
+                  - PUT
+                  - TRACE
+                allowedHeaders:
+                  - "*"
+                allowCredentials: true
+          default-filters:
+            - TokenRelay=
+          routes:
+            - id: api-animals
+              uri: http://api-animals:7003
+              predicates:
+                - Path=/api/animals/**,/api/vaccines/**,/websocket/**,/api/notifications/**
+            - id: api-chat
+              uri: http://api-chat:7004
+              predicates:
+                - Path=/api/chat/**,/api/reviews/**,/api/locate/**
   security.oauth2:
     resourceserver:
       jwt:
