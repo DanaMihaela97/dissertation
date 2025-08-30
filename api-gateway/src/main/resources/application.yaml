@@ -6,7 +6,7 @@ spring:
     gateway:
       server:
         webflux:
-          trusted-proxies: 172.20.0.10
+          trusted-proxies: "^10\\.5\\.0\\.\\d{1,3}$"
           globalcors:
             cors-configurations:
               '[/**]':
