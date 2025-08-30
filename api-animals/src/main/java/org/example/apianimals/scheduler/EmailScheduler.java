@@ -18,7 +18,7 @@ public class EmailScheduler {
         this.emailService = emailService;
         this.snsPublisher = snsPublisher;
     }
-    @Scheduled(cron = "0 0 9 * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     public void sendRapelEmailsDaily() {
         emailService.sendDailyRapelEmails();
     }
