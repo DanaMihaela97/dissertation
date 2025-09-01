@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="api-chat" />
+        <module name="api-location" />
         <module name="api-animals" />
       </profile>
     </annotationProcessing>
@@ -18,6 +19,7 @@
       <module name="api-animals" options="-parameters" />
       <module name="api-chat" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
+      <module name="api-location" options="-parameters" />
     </option>
   </component>
 </project>

@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/api-animals/pom.xml" />
         <option value="$PROJECT_DIR$/api-chat/pom.xml" />
+        <option value="$PROJECT_DIR$/api-location/pom.xml" />
       </list>
     </option>
   </component>

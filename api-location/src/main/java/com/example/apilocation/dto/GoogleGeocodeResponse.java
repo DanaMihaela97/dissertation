@@ -1,4 +1,4 @@
-package org.example.apichat.dto.places;
+package com.example.apilocation.dto;
 
 import lombok.Getter;
 import lombok.Setter;

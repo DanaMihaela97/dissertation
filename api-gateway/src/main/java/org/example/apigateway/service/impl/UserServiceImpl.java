@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.apigateway.dto.RegisterRequest;
 import org.example.apigateway.entity.User;
 import org.example.apigateway.repository.UserRepository;
-import org.example.apigateway.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -20,10 +19,9 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl{
     private final UserRepository userRepository;
     private final RestTemplate restTemplate = new RestTemplate();
     private final PasswordEncoder passwordEncoder;
@@ -40,17 +38,6 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public User saveUser(String email) {
-        User user = new User();
-        user.setEmail(email);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
 
     public ResponseEntity<String> registerUser(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {

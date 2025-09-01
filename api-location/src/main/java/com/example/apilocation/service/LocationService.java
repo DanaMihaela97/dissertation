@@ -1,32 +1,24 @@
-package org.example.apichat.controller;
+package com.example.apilocation.service;
 
-import org.example.apichat.dto.places.*;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import com.example.apilocation.dto.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 
-@RestController
-@RequestMapping("/api/locate")
-public class ChatController {
+@Service
+public class LocationService {
 
-    @PostMapping("/locateVeterinaryOffices")
-    public ResponseEntity<List<Map<String, Object>>> locateVeterinaryOffices(@RequestBody Map<String, String> location) {
-        double[] coordinates = geocodeAddress(location);
-        if (coordinates == null) {
-            return ResponseEntity.badRequest().body(Collections.emptyList());
-        }
+    private final String googleGeocodeApiKey = "AIzaSyBi_pbMjgl7WW04y_U3Pvyg4wV8V3d-Xkw";
+    private final String googlePlacesApiKey = "AIzaSyBi_pbMjgl7WW04y_U3Pvyg4wV8V3d-Xkw";
 
-        List<Map<String, Object>> closestOffices = findClosestVeterinaryOffices(coordinates[0], coordinates[1]);
-        return ResponseEntity.ok(closestOffices);
-    }
-
-    private double[] geocodeAddress(Map<String, String> place) {
+    public double[] geocodeAddress(Map<String, String> place) {
         String address = place.get("address");
         String city = place.get("city");
-        String googleGeocodeApiKey = "AIzaSyBi_pbMjgl7WW04y_U3Pvyg4wV8V3d-Xkw";
+
         String fullAddress = String.format("%s+%s",
                 address.trim().replaceAll("\\s+", "+"),
                 city);
@@ -44,19 +36,7 @@ public class ChatController {
                 url, HttpMethod.GET, null, GoogleGeocodeResponse.class);
 
         GoogleGeocodeResponse rsp = response.getBody();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
-        headers.set("Accept-Language", "ro-RO,ro;q=0.9,en-US;q=0.8,en;q=0.7");
 
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<String> rawResponse = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                entity,
-                String.class
-        );
-        System.out.println(rawResponse.getBody());
         if (rsp == null || rsp.getResults() == null || rsp.getResults().isEmpty()) {
             System.out.println("Adresă invalidă!");
             return null;
@@ -66,8 +46,7 @@ public class ChatController {
         return new double[]{ location.getLat(), location.getLng() };
     }
 
-    private List<Map<String, Object>> findClosestVeterinaryOffices(double latitude, double longitude) {
-        String googlePlacesApiKey = "AIzaSyBi_pbMjgl7WW04y_U3Pvyg4wV8V3d-Xkw";
+    public List<Map<String, Object>> findClosestVeterinaryOffices(double latitude, double longitude) {
         String region = "ro";
         String radius = "1000";
         String type = "veterinary_care";
@@ -127,7 +106,7 @@ public class ChatController {
         return offices;
     }
 
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371;
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
@@ -141,9 +120,7 @@ public class ChatController {
         return R * c;
     }
 
-    private Map<String, Object> fetchDetails(String placeId) {
-        String googlePlacesApiKey = "AIzaSyBi_pbMjgl7WW04y_U3Pvyg4wV8V3d-Xkw";
-
+    public Map<String, Object> fetchDetails(String placeId) {
         String detailsUrl = UriComponentsBuilder.fromHttpUrl("https://maps.googleapis.com/maps/api/place/details/json")
                 .queryParam("place_id", placeId)
                 .queryParam("fields", "formatted_phone_number,opening_hours,formatted_address")
@@ -151,12 +128,6 @@ public class ChatController {
                 .toUriString();
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> rawResponse = restTemplate.exchange(
-                detailsUrl,
-                HttpMethod.GET,
-                null,
-                String.class
-        );
         ResponseEntity<PlaceDetailsResponse> response = restTemplate.exchange(
                 detailsUrl, HttpMethod.GET, null, PlaceDetailsResponse.class);
 
@@ -170,6 +141,4 @@ public class ChatController {
         }
         return detailsMap;
     }
-
-
 }

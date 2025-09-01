@@ -1,0 +1,11 @@
+server:
+  port: 7005
+
+spring:
+  application:
+    name: api-locaiton
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://172.31.31.52:8080/realms/pawcare/protocol/openid-connect/certs
