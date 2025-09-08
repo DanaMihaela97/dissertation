@@ -2,8 +2,9 @@ import React from "react";
 import { Vaccine } from "@/components/entities/vaccines";
 import { CreateAnimalProfile } from "@/components/entities/createAnimalProfile";
 import styles from "./steps.module.css";
-import {SyringeIcon} from "lucide-react";
-import {VaccinesList} from "@/components/Vaccines/VaccinesList";
+import { SyringeIcon } from "lucide-react";
+import { VaccinesList } from "@/components/Vaccines/VaccinesList";
+import Swal from "sweetalert2";
 
 interface Props {
    vaccines: Vaccine[];
@@ -30,6 +31,25 @@ const Step2: React.FC<Props> = ({
                                    setStep,
                                    handleSubmit,
                                 }) => {
+
+   const handleStep2Submit = () => {
+      for (const vaccine of vaccines.filter(v => v.animalType === formData.type)) {
+         const firstDate = formData.vaccineDates.firstDoseDates[vaccine.id];
+         const secondDate = formData.vaccineDates.secondDoseDates[vaccine.id];
+
+         if (firstDate && secondDate && new Date(secondDate) < new Date(firstDate)) {
+            Swal.fire("Eroare", `Data celei de-a doua doze pentru ${vaccine.name} nu poate fi mai devreme decât prima doză.`, "error");
+            return;
+         }
+
+         if (!firstDate && secondDate) {
+            Swal.fire("Eroare", `Trebuie să selectezi întâi data primei doze pentru ${vaccine.name}.`, "error");
+            return;
+         }
+      }
+      handleSubmit();
+   }
+
    return (
       <div>
          <div className={styles.headerContainer}>
@@ -64,7 +84,7 @@ const Step2: React.FC<Props> = ({
                Înapoi
             </button>
 
-            <button onClick={handleSubmit} className={styles.btnSubmit}>
+            <button onClick={handleStep2Submit} className={styles.btnSubmit}>
                Trimite
             </button>
          </div>

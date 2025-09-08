@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from './LocateClinics.module.css';
 import {locateVetClinics} from "@/services/locateVetClinics";
 import {Clinic} from "@/components/entities/clinic";
-import {Clock, MapPin, Phone} from 'lucide-react';
+import {Clock, MapPin, Phone, X} from 'lucide-react';
 
 export default function LocateClinics() {
    const [number, setNumber] = useState('');
@@ -51,7 +51,11 @@ export default function LocateClinics() {
 
    return (
       <div className={styles.locateContainer}>
-         <h2 className={styles.title}>Găsește rapid cabinetele veterinare din zona ta</h2>
+         <h2 className={styles.title}>
+            <MapPin size={28} color="#2563eb" style={{ marginRight: '10px' }}/>
+            Găsește rapid cabinetele veterinare din zona ta
+         </h2>
+
 
          <form onSubmit={handleLocate} className={styles.form}>
             <label className={styles.label}>Introdu adresa ta</label>
@@ -140,11 +144,16 @@ export default function LocateClinics() {
                setError(null);
             }}>
                <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                  <button className={styles.closeButton} onClick={() => {
-                     setShowModal(false);
-                     setLoading(false);
-                     setError(null);
-                  }}>X</button>
+                  <button
+                     className={styles.closeButton}
+                     onClick={() => {
+                        setShowModal(false);
+                        setLoading(false);
+                        setError(null);
+                     }}
+                  >
+                     <X className="w-5 h-5"/>
+                  </button>
                   <h3><MapPin size={28} style={{marginRight: '8px'}} color="#28a745"/>Clinici Veterinare din Zona Ta
                   </h3>
                   {clinics.map((clinic, i) => {
@@ -178,11 +187,10 @@ export default function LocateClinics() {
                               </div>
                            </div>
 
-
                            <div className={styles.cardActions}>
                               <a href={`tel:${clinic.phone}`} className={styles.callButton}>Sună</a>
                               <a href={mapsUrl} target="_blank" rel="noopener noreferrer"
-                                 className={styles.detailsButton}>Vezi pe harta</a>
+                                 className={styles.detailsButton}>Vezi pe hartă</a>
                            </div>
                         </div>
                      );
@@ -191,5 +199,6 @@ export default function LocateClinics() {
             </div>
          )}
       </div>
+
    );
 }

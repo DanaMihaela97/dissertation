@@ -3,7 +3,7 @@ import { defineConfig } from 'cypress'
 export default defineConfig({
    e2e: {
       baseUrl: 'http://localhost:3000',
-      specPattern: 'cypress/e2e/**/*.cy.{js,ts}',  // unde se află review.cy.ts
-      supportFile: false,                           // dezactivează fișierul de support
+      specPattern: 'cypress/e2e/**/*.cy.{js,ts}',
+      supportFile: false,
    },
 })

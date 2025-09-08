@@ -37,7 +37,8 @@ export const diseases = [
       symptoms: [
          "Cardiomiopatie hipertrofică (HCM)",
          "Probleme articulare, displazie de șold",
-         "Probleme dentare"
+         "Probleme dentare",
+         "Tendință la obezitate – datorită nivelului de activitate redus."
       ],
       prevention: [
          "Teste genetice pentru HCM",

@@ -35,12 +35,12 @@ const RegisterPage = () => {
          Swal.fire({
             title: "Înregistrare reușită!",
             html: `
-         <p>Te poți loga acum.</p>
-         <p style="margin-top:10px; font-size:14px; color:gray;">
-            📧 Am trimis și un email de confirmare pentru notificări.<br/>
-            Te rugăm să îl verifici pentru a putea primi alertele PawCare.
-         </p>
-      `,
+            <p>Te poți loga acum.</p>
+            <p style="margin-top:10px; font-size:14px; color:gray;">
+               📧 Am trimis și un email de confirmare pentru notificări.<br/>
+               Te rugăm să îl verifici pentru a putea primi alertele PawCare.
+            </p>
+         `,
             icon: "success",
             timer: 4000,
             timerProgressBar: true,
@@ -49,12 +49,18 @@ const RegisterPage = () => {
             router.push("/login");
          });
 
-      } catch (err) {
+      } catch (err: any) {
          console.error(err);
-         const message = err.response?.data?.message || "A apărut o eroare la înregistrare. Încearcă din nou.";
+
+         if (err.response?.status === 409) {
+            setError("Email-ul este deja folosit!");
+         } else {
+            setError("A apărut o eroare la înregistrare. Încearcă din nou.");
+         }
+
          Swal.fire({
             title: "Eroare",
-            text: message,
+            text: error || "A apărut o eroare la înregistrare.",
             icon: "error",
             confirmButtonText: "OK",
          });

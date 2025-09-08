@@ -1,7 +1,6 @@
 import {CreateAnimalProfile} from "@/components/entities/createAnimalProfile";
 import {getCatBreeds, getDogBreeds, getVaccines} from "@/services/animalService";
 
-
 export function getAgeString(birthdate: string): string {
    const birth = new Date(birthdate);
    const now = new Date();

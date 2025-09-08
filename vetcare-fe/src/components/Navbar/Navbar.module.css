@@ -24,6 +24,7 @@
   transition: color 0.3s ease;
   padding: 0.5rem 0.8rem;
   border-radius: 6px;
+
 }
 
 .navLink:hover,
@@ -68,6 +69,7 @@
 .navbar-toggler {
   border: none;
   outline: none;
+
 }
 
 .navbar-toggler-icon {

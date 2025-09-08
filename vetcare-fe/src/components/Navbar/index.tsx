@@ -86,6 +86,7 @@ const Navbar = () => {
                         Recenzii
                      </Link>
                   </li>
+
                   <li className="nav-item dropdown" ref={dropdownRef}>
                      {session ? (
                         <>
@@ -94,7 +95,7 @@ const Navbar = () => {
                               className={`${styles.navLink} nav-link d-flex align-items-center`}
                               style={{cursor: 'pointer'}}
                            >
-                              Animăluțul tău
+                              Animale de companie
                               <svg
                                  width="12"
                                  height="12"
@@ -114,12 +115,12 @@ const Navbar = () => {
                               <ul className="dropdown-menu show" style={{display: 'block', position: 'absolute'}}>
                                  <li>
                                     <Link href="/create-animal" className={styles.dropdownItem}>
-                                       Creează profil pentru animăluțul tău
+                                       Adaugă un animal
                                     </Link>
                                  </li>
                                  <li>
                                     <Link href="/animals" className={styles.dropdownItem}>
-                                       Profilurile mele
+                                       Animalele mele
                                     </Link>
                                  </li>
                               </ul>

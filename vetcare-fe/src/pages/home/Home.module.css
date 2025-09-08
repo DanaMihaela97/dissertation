@@ -335,3 +335,40 @@
     margin-bottom: 0;
   }
 }
+
+.carouselsWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1400px;
+  margin: 40px auto;
+}
+
+.divider {
+  width: 1px;
+  background-color: #ccc;
+  margin: 0 20px;
+}
+
+.carouselFixed {
+  flex: 1;
+  min-width: 500px;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+}
+
+.carouselFixed .carouselContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.carouselFixed .card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

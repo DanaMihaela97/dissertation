@@ -15,14 +15,14 @@ const LoginPage = () => {
                   <LogIn className="w-6 h-6"/>
                </div>
                <h1 className={styles.loginHeading}>Bine ai venit!</h1>
-               <p className={styles.loginText}>Autentifică-te cu contul tău Keycloak pentru a accesa aplicația.</p>
+               <p className={styles.loginText}>Autentifică-te pentru a accesa aplicația.</p>
 
                <button
                   data-cy="keycloak-login-button"
                   onClick={() => signIn("keycloak", { callbackUrl: "/home" })}
                   className={styles.keycloakButton}
                >
-                  <span>Autentifică-te cu Keycloak</span>
+                  <span>Continuă către aplicație</span>
                   <ArrowRight className={styles.arrow}/>
                </button>
             </div>

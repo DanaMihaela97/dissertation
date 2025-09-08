@@ -6,8 +6,7 @@ import {getConsultationCount, getReviewMean} from "@/services/reviewService";
 import Layout from "@/components/Layout";
 import StarRating from "@/components/StarRating";
 import Link from "next/link";
-import DiseaseCarousel from "@/components/Carousel/disease";
-import VaccineCarousel from "@/components/Carousel/vaccine";
+import CarouselsWrapper from "@/components/Carousel/CarouselWrapper";
 
 export default function Home() {
    const [animalCount, setAnimalCount] = useState(null);
@@ -70,12 +69,7 @@ export default function Home() {
             </section>
 
             <div id="next-section">
-               <div style={{ display: 'flex', flexDirection: 'column', marginTop: '40px' }}>
-                  <VaccineCarousel />
-                  <div style={{ marginTop: '70px' }}>
-                     <DiseaseCarousel />
-                  </div>
-               </div>
+            <CarouselsWrapper />
 
                <div className={styles.dashboard}>
                   <h2 className={styles.h2monitoring}>Monitorizare Activitate - situație curentă</h2>

@@ -222,7 +222,7 @@
     border-radius: 16px;
 }
 .carouselOuterWrapper {
-    position: relative; /* butoanele absolute vor fi raportate la acesta */
+    position: relative;
     width: 100%;
     max-width: 960px;
     margin: 0 auto;
@@ -498,4 +498,27 @@
     color: #1e40af;
     font-size: 0.875rem;
     font-weight: 500;
+}
+.carouselsWrapper {
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1400px;
+    margin: 60px auto;
+}
+
+.divider {
+    width: 1px;
+    background-color: #ccc;
+    margin: 0 20px;
+}
+
+.carouselFixed {
+    flex: 1;
+    min-width: 500px;
+    max-width: 650px;
+    display: flex;
+    flex-direction: column;
 }

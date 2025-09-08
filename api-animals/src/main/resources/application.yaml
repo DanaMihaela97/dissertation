@@ -7,12 +7,14 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://172.31.31.52:8080/realms/pawcare/protocol/openid-connect/certs
-
+          jwk-set-uri: http://localhost:8080/realms/pawcare/protocol/openid-connect/certs
+          # http://172.31.31.52:8080/realms/pawcare/protocol/openid-connect/certs
   datasource:
-    url: jdbc:mysql://pawcare-db.cbymoe2yia17.eu-north-1.rds.amazonaws.com:3306/animal_api
-    username: admin
-    password: A6kS3IEZW7XH31aqcMFH
+    url: jdbc:mysql://localhost:3306/animal_api
+    #jdbc:mysql://pawcare-db.cbymoe2yia17.eu-north-1.rds.amazonaws.com:3306/animal_api
+    username: root
+    password: root
+    # admin + A6kS3IEZW7XH31aqcMFH
   jpa:
     show-sql: true
     properties:
@@ -33,12 +35,6 @@ spring:
       region:
         static: eu-north-1
 
-logging.level:
-  #  org.springframework.cloud.gateway: DEBUG
-  #  org.springframework.security: DEBUG
-  #  org.springframework.web.reactive.function.client: TRACE
-  org.flywaydb.core: DEBUG
-  # API Keys (external services)
 dog:
   api:
     key: live_RbE6Q73mvZcPNpCsClhTZBRg5GpjDSJt0VRWTe1icJb9C7JuFg0qXpBuP8DNA2e6

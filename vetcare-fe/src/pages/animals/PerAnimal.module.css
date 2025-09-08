@@ -539,8 +539,8 @@
 
 .vaccineSection {
   display: flex;
-  flex-wrap: wrap; /* permite să se treacă pe rândul următor */
-  gap: 1rem;       /* distanța între carduri */
+  flex-wrap: wrap;
+  gap: 1rem;
   justify-content: flex-start;
 }
 

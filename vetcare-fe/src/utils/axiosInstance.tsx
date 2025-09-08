@@ -7,7 +7,8 @@ interface MySession extends Session {
 }
 
 const axiosInstance = axios.create({
-   baseURL: "http://ec2-13-61-108-126.eu-north-1.compute.amazonaws.com:8060",
+   baseURL: "http://localhost:8060",
+   //http://ec2-13-61-108-126.eu-north-1.compute.amazonaws.com:8060
 });
 
 axiosInstance.interceptors.request.use(

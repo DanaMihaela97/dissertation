@@ -84,7 +84,6 @@ export default function ChatPage() {
       });
    };
 
-
    return (
       <Layout>
          <Authentication>

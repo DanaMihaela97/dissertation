@@ -1,34 +1,72 @@
+version: "3.9"
+
+networks:
+  pawcare-network:
+
 services:
-  api-animals:
-    build: ./api-animals
+
+  # MySQL pentru API-Chat
+  mysql-chat:
+    image: mysql:8.1
+    environment:
+      MYSQL_DATABASE: consultation_api
+      MYSQL_ROOT_PASSWORD: root
     ports:
-      - "7003:7003"
+      - "3307:3306"
     networks:
       - pawcare-network
 
+  # MySQL pentru API-Animals
+  mysql-animals:
+    image: mysql:8.1
+    environment:
+      MYSQL_DATABASE: animal_api
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3308:3306"
+    networks:
+      - pawcare-network
+
+  # Microserviciul API-Chat
   api-chat:
     build: ./api-chat
     ports:
       - "7004:7004"
     networks:
       - pawcare-network
+    depends_on:
+      - mysql-chat
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-chat:3306/consultation_api
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
 
+  # Microserviciul API-Animals
+  api-animals:
+    build: ./api-animals
+    ports:
+      - "7003:7003"
+    networks:
+      - pawcare-network
+    depends_on:
+      - mysql-animals
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-animals:3306/animal_api
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  # Microserviciul API-Gateway (fără DB)
   api-gateway:
     build: ./api-gateway
     ports:
-      - "8060:8060"
+      - "7005:7005"
     networks:
-      pawcare-network:
-        ipv4_address: 10.5.0.5
+      - pawcare-network
 
-
-volumes:
-  mysql_data:
-
-networks:
-  pawcare-network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.5.0.0/16
-          gateway: 10.5.0.1
+  # Microserviciul API-Location (fără DB)
+  api-location:
+    build: ./api-location
+    ports:
+      - "7006:7006"
+    networks:
+      - pawcare-network

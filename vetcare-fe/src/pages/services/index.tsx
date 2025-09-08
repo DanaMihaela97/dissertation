@@ -40,7 +40,7 @@ export default function VetConsultations() {
                      <Image src="/bell.png" alt="Stethoscope" width={60} height={60}/>
                   </div>
                   <h3>Memento-uri Automate</h3>
-                  <p>Memento-uri pentru administrarea medicamentelor și programări</p>
+                  <p>Memento-uri pentru revaccinări</p>
                </div>
 
                <div className={styles.featureCard}>
@@ -73,20 +73,20 @@ export default function VetConsultations() {
 
                   <div className={styles.step}>
                      <div className={styles.stepNumber}>3</div>
-                     <h3>Completează formularul</h3>
-                     <p>Introdu informațiile despre animalul tău</p>
+                     <h3>Selectează vaccinurile efectuate</h3>
+                     <p>Alege vaccinurile efectuate și data la care au fost aplicate</p>
                   </div>
 
                   <div className={styles.step}>
                      <div className={styles.stepNumber}>4</div>
                      <h3>Începe consultația</h3>
-                     <p>Introdu simptomele observate la animalul tău</p>
+                     <p>Mergi pe pagina cu toate animalele tale și selectează animalul dorit pentru consultația online</p>
                   </div>
 
                   <div className={styles.step}>
                      <div className={styles.stepNumber}>5</div>
                      <h3>Urmează recomandările</h3>
-                     <p>Primești recomandări de tratament și memento-uri pentru administrarea medicamentelor</p>
+                     <p>Primești diagnosticul, tratament și recomandări (poate chiar și legate de nutriție)</p>
                   </div>
                </div>
 
@@ -95,7 +95,7 @@ export default function VetConsultations() {
                      className={styles.fixedCtaButton}
                      onClick={() => router.push('/register')}
                   >
-                     Creează profilul animalului și începe consultația
+                     Adaugă un animal și începe consultația
                   </button>
                </div>
             </section>

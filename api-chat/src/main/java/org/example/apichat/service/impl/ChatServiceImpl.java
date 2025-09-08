@@ -50,7 +50,7 @@ public class ChatServiceImpl implements ChatService {
                 animal.getAnimalName()
         );
 
-        String fullPrompt = "Context veterinar:\n" + medicalContext + "\nAI: " + opening + "\n";
+        String fullPrompt = "Context veterinar:\n" + medicalContext  + opening + "\n";
 
         session.setConversationHistory(fullPrompt);
         chatSessionRepository.save(session);

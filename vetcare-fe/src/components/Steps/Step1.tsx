@@ -23,9 +23,6 @@ export const Step1: React.FC<Step1Props> = ({
                                         handleChange,
                                         handleSelectChange,
                                         setFieldValue,
-                                        stringToDate,
-                                        dateToString,
-                                        datePickerRef,
                                         breeds,
                                         loadingBreeds,
                                         setStep,
@@ -66,46 +63,23 @@ export const Step1: React.FC<Step1Props> = ({
                />
             </div>
 
-            <div className={styles.inputGroup} style={{ position: "relative" }}>
+            <div className={styles.inputGroup}>
                <label htmlFor="birthdate" data-cy="animal-birthdate">
                   <Calendar className={styles.icons} />
                   Data nașterii
                   <span className={styles.requiredIcon}> *</span>
                </label>
-               <DatePicker
+               <input
+                  type="date"
                   id="birthdate"
-                  ref={datePickerRef}
-                  selected={stringToDate(formData.birthdate)}
-                  onChange={(date: Date) => {
-                     if (date) {
-                        setFieldValue("birthdate", dateToString(date));
-                     }
-                  }}
-                  onChangeRaw={(e) => {
-                     if (!e) return;
-                     const input = e.target as HTMLInputElement;
-                     const rawValue = input.value;
-
-                     const parsed = new Date(rawValue);
-                     if (!isNaN(parsed.getTime())) {
-                        setFieldValue("birthdate", dateToString(parsed));
-                     }
-                  }}
-                  dateFormat="yyyy-MM-dd"
-                  placeholderText="yyyy-MM-dd (ex: 2020-12-25)"
-                  maxDate={new Date()}
-                  showYearDropdown
-                  scrollableYearDropdown
-                  yearDropdownItemNumber={100}
-                  calendarClassName={styles.customCalendar}
-               />
-
-               <Calendar
-                  onClick={() => datePickerRef.current.setOpen(true)}
-                  size={20}
-                  style={{ position: "absolute", right: 10, top: "57%", cursor: "pointer", color: "#666" }}
+                  name="birthdate"
+                  value={formData.birthdate || ""}
+                  onChange={(e) => setFieldValue("birthdate", e.target.value)}
+                  max={new Date().toISOString().split("T")[0]}
+                  className="w-full rounded-md border px-3 py-2 focus:outline-none"
                />
             </div>
+
 
             <div className={styles.inputGroup}>
                <label htmlFor="sex">

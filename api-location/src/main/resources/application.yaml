@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: api-locaiton
+    name: api-location
   security:
     oauth2:
       resourceserver:

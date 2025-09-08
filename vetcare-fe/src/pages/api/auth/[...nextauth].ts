@@ -72,7 +72,7 @@ export const authOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      return process.env.HOME_PAGE_URL;
+      return `${baseUrl}/home`;
     }
   },
 };
