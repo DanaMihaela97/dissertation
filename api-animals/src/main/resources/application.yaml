@@ -7,10 +7,10 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8080/realms/pawcare/protocol/openid-connect/certs
+          jwk-set-uri: http://keycloak:8080/realms/pawcare/protocol/openid-connect/certs
           # http://172.31.31.52:8080/realms/pawcare/protocol/openid-connect/certs
   datasource:
-    url: jdbc:mysql://localhost:3306/animal_api
+    url: jdbc:mysql://mysql-animals:3306/animal_api
     #jdbc:mysql://pawcare-db.cbymoe2yia17.eu-north-1.rds.amazonaws.com:3306/animal_api
     username: root
     password: root

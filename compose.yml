@@ -5,25 +5,16 @@ networks:
 
 services:
 
-  # MySQL pentru API-Chat
-  mysql-chat:
-    image: mysql:8.1
-    environment:
-      MYSQL_DATABASE: consultation_api
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "3307:3306"
-    networks:
-      - pawcare-network
-
   # MySQL pentru API-Animals
   mysql-animals:
-    image: mysql:8.1
+    image: mysql
+    restart: always
     environment:
-      MYSQL_DATABASE: animal_api
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3308:3306"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - pawcare-network
 
@@ -35,11 +26,7 @@ services:
     networks:
       - pawcare-network
     depends_on:
-      - mysql-chat
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-chat:3306/consultation_api
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      - mysql-animals
 
   # Microserviciul API-Animals
   api-animals:
@@ -50,23 +37,28 @@ services:
       - pawcare-network
     depends_on:
       - mysql-animals
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-animals:3306/animal_api
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
 
   # Microserviciul API-Gateway (fără DB)
   api-gateway:
     build: ./api-gateway
     ports:
-      - "7005:7005"
+      - "8060:8060"
     networks:
       - pawcare-network
+    depends_on:
+      - mysql-animals
 
   # Microserviciul API-Location (fără DB)
   api-location:
     build: ./api-location
     ports:
-      - "7006:7006"
+      - "7005:7005"
+    networks:
+      - pawcare-network
+
+  keycloak:
+    image: danamihaela9/pawcare:latest
+    ports:
+      - "8080:8080"
     networks:
       - pawcare-network
