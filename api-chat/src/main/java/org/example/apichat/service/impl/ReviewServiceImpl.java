@@ -2,6 +2,7 @@ package org.example.apichat.service.impl;
 
 import org.example.apichat.entity.Review;
 import org.example.apichat.repository.ReviewRepository;
+import org.example.apichat.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

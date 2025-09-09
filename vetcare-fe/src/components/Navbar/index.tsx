@@ -7,7 +7,6 @@ import Image from 'next/image'
 
 const Navbar = () => {
    const {data: session} = useSession();
-
    const [isOpenAnimal, setIsOpenAnimal] = useState(false);
    const dropdownRef = useRef<HTMLLIElement | null>(null);
 

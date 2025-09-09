@@ -426,6 +426,20 @@ export default function AnimalPage() {
                                                 <strong>Diagnostic</strong>
                                                 <p>{c.diagnosis || 'Nicio informație disponibilă.'}</p>
                                              </div>
+
+                                             <div style={{ marginTop: "8px" }}>
+                                                {c.validated ? (
+                                                   <span style={{ color: "green", fontWeight: "bold" }}>✅ Validată de medic</span>
+                                                ) : c.adminComment ? (
+                                                   <span style={{ color: "red", fontWeight: "bold" }}>
+                                                    ❌ Invalidată ({c.adminComment})
+                                                  </span>
+                                                ) : (
+                                                   <span style={{ color: "orange", fontWeight: "bold" }}>
+                                              ⚠️ În curs de verificare de către un medic
+                                            </span>
+                                                )}
+                                             </div>
                                           </div>
                                        )}
 
@@ -441,7 +455,24 @@ export default function AnimalPage() {
                                              <div className={styles.treatmentBox}>
                                                 <Pill size={20} className={styles.treatmentIcon}/>
                                                 <strong>Tratament</strong>
-                                                <p>{c.treatment || 'Nicio informație disponibilă.'}</p>
+                                                <p style={{ whiteSpace: "pre-line" }}>
+                                                   {(c.treatment || 'Nicio informație disponibilă.').replace(/^\d+\.\s*/gm, "")}
+                                                </p>
+
+                                             </div>
+
+                                             <div style={{ marginTop: "8px" }}>
+                                                {c.validated ? (
+                                                   <span style={{ color: "green", fontWeight: "bold" }}>✅ Validată de medic</span>
+                                                ) : c.adminComment ? (
+                                                   <span style={{ color: "red", fontWeight: "bold" }}>
+                                                       ❌ Invalidată ({c.adminComment})
+                                                     </span>
+                                                ) : (
+                                                   <span style={{ color: "orange", fontWeight: "bold" }}>
+                                                 ⚠️ În curs de verificare de către un medic
+                                               </span>
+                                                )}
                                              </div>
                                           </div>
                                        )}
@@ -460,8 +491,23 @@ export default function AnimalPage() {
                                                 <strong>Recomandări</strong>
                                                 <p>{c.advice || 'Nicio informație disponibilă.'}</p>
                                              </div>
+
+                                             <div style={{ marginTop: "8px" }}>
+                                                {c.validated ? (
+                                                   <span style={{ color: "green", fontWeight: "bold" }}>✅ Validată de medic</span>
+                                                ) : c.adminComment ? (
+                                                   <span style={{ color: "red", fontWeight: "bold" }}>
+                                                    ❌ Invalidată ({c.adminComment})
+                                                  </span>
+                                                ) : (
+                                                   <span style={{ color: "orange", fontWeight: "bold" }}>
+                                                 ⚠️ În curs de verificare de către un medic
+                                               </span>
+                                                )}
+                                             </div>
                                           </div>
                                        )}
+
                                     </div>
                                  ))
                               ) : (

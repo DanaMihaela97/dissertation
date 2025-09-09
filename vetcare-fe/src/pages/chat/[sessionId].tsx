@@ -50,7 +50,7 @@ export default function ChatPage() {
       setChatLog((prev) => [...prev, {sender: 'Tu', text: message}]);
 
       try {
-         const res = await sendMessage(Number(sessionId), message);
+         const res = await sendMessage(Number(sessionId), decodeURIComponent(message));
 
          const formattedReply = formatAIReply(res.reply);
          setChatLog((prev) => [...prev, {sender: 'Gemini', text: formattedReply}]);
@@ -67,22 +67,43 @@ export default function ChatPage() {
          setLoading(false);
       }
    };
-
    const formatAIReply = (reply: string) => {
-      const sections = reply.split(/(?=Diagnostic:|Tratament:|Recomandări:)/i);
-      return sections.map((section, idx) => {
+      // elimină numerotări de tip "1.", "2.", "3." oriunde apar la început de linie
+      const cleanedReply = reply.replace(/(?:^|\n)\s*\d+\.\s*/g, "\n");
 
-         if (section.includes('*')) {
-            const parts = section.split('*').map((part, i) => {
+      const sections = cleanedReply.split(/(?=Diagnostic:|Tratament:|Recomandări:)/i);
+
+      return sections.map((section, idx) => {
+         const headerMatch = section.match(/^(Diagnostic|Tratament|Recomandări):/i);
+         const header = headerMatch ? headerMatch[1] : "";
+
+         const content = section.replace(/^(Diagnostic|Tratament|Recomandări):/i, "").trim();
+
+         if (!content) return null;
+
+         if (content.includes("*")) {
+            const parts = content.split("*").map((part, i) => {
                const trimmed = part.trim();
                if (!trimmed) return null;
                return <li key={i}>{trimmed}</li>;
             });
-            return <div key={idx}><strong>{section.match(/^(.*?):/)?.[1]}:</strong><ul>{parts}</ul></div>;
+            return (
+               <div key={idx}>
+                  <strong>{header}:</strong>
+                  <ul>{parts}</ul>
+               </div>
+            );
          }
-         return <p key={idx}>{section.trim()}</p>;
+
+         return (
+            <p key={idx}>
+               <strong>{header}:</strong> {content}
+            </p>
+         );
       });
    };
+
+
 
    return (
       <Layout>

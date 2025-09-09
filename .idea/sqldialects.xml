@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/api-animals/src/main/resources/db/migration/V1__create_animal_table.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/api-animals/src/main/resources/db/migration/V2__insert_vaccines.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/api-animals/src/main/resources/db/migration/V3__create_index.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/api-animals/src/test/resources/data.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/api-gateway/src/test/resources/schema.sql" dialect="GenericSQL" />

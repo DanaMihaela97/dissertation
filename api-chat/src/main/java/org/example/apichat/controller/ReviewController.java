@@ -1,7 +1,7 @@
 package org.example.apichat.controller;
 
 import org.example.apichat.entity.Review;
-import org.example.apichat.service.impl.ReviewService;
+import org.example.apichat.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

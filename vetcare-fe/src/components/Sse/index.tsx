@@ -98,8 +98,6 @@ export default function Sse() {
                       ))}
                   </div>
                )}
-
-
                <button
                   className={`${styles.bellButton} ${hasNotification ? styles.hasNotification : ''}`}
                   onClick={handleBellClick}

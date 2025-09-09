@@ -98,29 +98,29 @@ public class ChatServiceImpl implements ChatService {
 
         int maxQuestions = 4;
         boolean shouldForceFinal = session.getAiQuestionsCount() >= maxQuestions;
-
         String prompt;
         if (shouldForceFinal) {
-            prompt = "Ești un medic veterinar. Ai primit suficiente informații de la proprietar.\n"
-                    + "Oferă un răspuns clar și concis, limitat la maxim 7 rânduri, structurat astfel:\n"
-                    + "1. Diagnostic (scurt, 1-2 fraze)\n"
-                    + "2. Tratament (esențial, fără detalii inutile)\n"
-                    + "3. Recomandări (maxim 2-3 puncte scurte)\n\n"
-                    + "Dacă situația necesită consult fizic la cabinet, menționează clar acest lucru în recomandări.\n"
-                    + "Dacă este cazul, recomandă și un tip de hrană potrivită pentru animal.\n\n"
-                    + "Nu adăuga explicații medicale complexe sau redundante.\n\n"
-                    + "Context conversație:\n" + conversation;
+            prompt = "Ești un medic veterinar. Ai primit suficiente informații de la proprietar.\n" +
+                    "Oferă un răspuns clar și concis, limitat la maxim 7 rânduri, strict structurat astfel:\n" +
+                    "1. Diagnostic (1-2 fraze)\n" +
+                    "2. Tratament: sugerează doar măsuri generale posibile acasă (ex: hidratare, pauză de la hrană, hrană ușor digerabilă). NU recomanda medicamente prescrise de veterinar.\n" +
+                    "3. Recomandări: include obligatoriu vizita la cabinet pentru evaluare și tratament precis. Dacă este cazul, adaugă recomandări legate de hrană (tip, textură, modul de administrare).\n\n" +
+                    "Reguli stricte:\n" +
+                    "- Nu pune întrebări în răspunsul final.\n" +
+                    "- Nu repeta detalii deja menționate despre animal.\n" +
+                    "- Nu adăuga explicații medicale complexe sau redundante.\n\n" +
+                    "Context conversație:\n" + conversation;
         } else {
             prompt = "Ești un medic veterinar. Pacientul a descris următoarele simptome:\n" + conversation +
-                    "\nPune o singură întrebare clară și relevantă pentru a aduna informații suplimentare. " +
-                    "Nu oferi diagnostic sau tratament până nu ai suficiente informații. " +
-                    "După cel mult " + maxQuestions + " întrebări, oferă un răspuns clar și structurat astfel:\n" +
-                    "1. Diagnostic\n2. Tratament\n3. Recomandări\n" +
-                    "Dacă situația necesită consult fizic la cabinet, menționează clar acest lucru la recomandări.\n" +
-                    "Dacă este cazul, recomandă și un tip de hrană potrivită pentru animal.\n" +
+                    "\nInstrucțiuni pentru întrebare:\n" +
+                    "- Pune o singură întrebare clară și relevantă pentru a aduna informații suplimentare.\n" +
+                    "- Nu oferi diagnostic, tratament sau recomandări până nu ai suficiente informații.\n" +
+                    "- Întrebarea trebuie să fie concisă și să se refere doar la aspecte necunoscute sau neclare.\n\n" +
+                    "După cel mult " + maxQuestions + " întrebări, oferă un răspuns final structurat:\n" +
+                    "1. Diagnostic\n2. Tratament: măsuri generale posibile acasă\n3. Recomandări: include obligatoriu vizita la cabinet și, dacă este cazul, recomandări legate de hrană.\n" +
+                    "Nu repeta detalii deja menționate.\n" +
                     "Limitează răspunsul final la maxim 7 rânduri.";
         }
-
         String aiReply = callGeminiApi(prompt);
         conversation +=  aiReply + "\n";
         session.setConversationHistory(conversation);
@@ -130,14 +130,16 @@ public class ChatServiceImpl implements ChatService {
 
         if (isFinal || shouldForceFinal) {
             session.setFinished(true);
-            saveFinalConsultation(aiReply, session.getAnimalId(), userEmail);
-        }
-
-        if (!session.getFinished()) {
+        } else if (!session.getFinished()) {
             session.setAiQuestionsCount(session.getAiQuestionsCount() + 1);
         }
 
         chatSessionRepository.save(session);
+        if (session.getFinished()) {
+            Consultation consultation = saveFinalConsultation(aiReply, session.getAnimalId(), userEmail);
+            consultation.setChatSession(session);
+            consultationRepository.save(consultation);
+        }
 
         return Map.of("reply", aiReply, "finished", session.getFinished());
     }
@@ -168,18 +170,25 @@ public class ChatServiceImpl implements ChatService {
         }
     }
 
-    private void saveFinalConsultation(String aiReply, Long animalId, String userEmail) {
+    private Consultation saveFinalConsultation(String aiReply, Long animalId, String userEmail) {
         Map<String, String> sections = parseSections(aiReply);
 
         Consultation consultation = new Consultation();
         consultation.setAnimalId(animalId);
-        consultation.setDiagnosis(sections.getOrDefault("Diagnostic", "").replace("**", "").trim());
-        consultation.setTreatment(sections.getOrDefault("Tratament", "").replace("**", "").trim());
-        consultation.setAdvice(sections.getOrDefault("Recomandări", sections.getOrDefault("Sfaturi", "")).replace("**", "").trim());
+        consultation.setDiagnosis(cleanText(sections.getOrDefault("Diagnostic", "")));
+        consultation.setTreatment(cleanText(sections.getOrDefault("Tratament", "")));
+        consultation.setAdvice(cleanText(sections.getOrDefault("Recomandări", sections.getOrDefault("Sfaturi", ""))));
         consultation.setCreatedAt(LocalDateTime.now());
         consultation.setUserEmail(userEmail);
 
-        consultationRepository.save(consultation);
+        return consultation;
+    }
+
+    private String cleanText(String text) {
+        if (text == null) return "";
+        return text.replaceAll("(?m)^\\d+\\.\\s*", "")
+                .replaceAll("\\*\\*", "")
+                .trim();
     }
 
     private Map<String, String> parseSections(String text) {

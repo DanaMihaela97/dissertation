@@ -27,4 +27,13 @@ public class Consultation {
     private String advice;
 
     private LocalDateTime createdAt;
+
+    private Boolean validated = false;
+    private String validatedBy;
+    @Lob
+    private String adminComment;
+
+    @OneToOne
+    @JoinColumn(name = "chat_session_id")
+    private ChatSession chatSession;
 }

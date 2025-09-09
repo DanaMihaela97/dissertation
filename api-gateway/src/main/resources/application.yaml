@@ -38,7 +38,7 @@ spring:
               uri: http://localhost:7004
               # http://api-chat:7004
               predicates:
-                - Path=/api/chat/**,/api/reviews/**
+                - Path=/api/chat/**,/api/reviews/**,/api/admin/**
             - id: api-location
               uri: http://localhost:7005
               predicates:

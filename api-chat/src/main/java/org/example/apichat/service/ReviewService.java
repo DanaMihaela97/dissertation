@@ -1,4 +1,4 @@
-package org.example.apichat.service.impl;
+package org.example.apichat.service;
 
 import org.example.apichat.entity.Review;
 
