@@ -38,7 +38,7 @@ PawCare is a web application designed to help pet owners manage their pets’ in
 - Real-time in-app notifications are implemented using Server-Sent Events (SSE).
    
 - Email notifications are handled via AWS services:
-- 
+ 
   SNS triggers events (for subscriptions or vaccine reminders).
     
   Lambda processes events and invokes SES to send personalized emails.
