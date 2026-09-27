@@ -10,15 +10,15 @@ services:
     image: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: 
     ports:
       - "3308:3306"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - 
     networks:
       - pawcare-network
 
-  # Microserviciul API-Chat
+  # microserviciul API-Chat
   api-chat:
     build: ./api-chat
     ports:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - mysql-animals
 
-  # Microserviciul API-Animals
+  # microserviciul API-Animals
   api-animals:
     build: ./api-animals
     ports:
@@ -38,7 +38,7 @@ services:
     depends_on:
       - mysql-animals
 
-  # Microserviciul API-Gateway (fără DB)
+  # microserviciul API-Gateway
   api-gateway:
     build: ./api-gateway
     ports:
@@ -48,7 +48,7 @@ services:
     depends_on:
       - mysql-animals
 
-  # Microserviciul API-Location (fără DB)
+  # microserviciul API-Location
   api-location:
     build: ./api-location
     ports:
@@ -57,7 +57,7 @@ services:
       - pawcare-network
 
   keycloak:
-    image: danamihaela9/pawcare:latest
+    image: 
     ports:
       - "8080:8080"
     networks:
